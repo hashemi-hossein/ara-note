@@ -47,6 +47,10 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    sourceSets {
+        androidTest.java.srcDirs += "src/test_common/java"
+        test.java.srcDirs += "src/test_common/java"
+    }
 }
 
 dependencies {
