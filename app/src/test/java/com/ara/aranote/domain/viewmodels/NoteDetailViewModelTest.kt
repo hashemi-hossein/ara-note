@@ -19,6 +19,7 @@ class NoteDetailViewModelTest {
     val testCoroutineRule = TestCoroutineRule()
 
     private val textModifiedNote = TestUtil.tEntity.copy(text = "modified")
+
     private val navigateUp = { println("navigateUp") }
     private val disableAlarm: (Int) -> Unit = { println("disableAlarm id=$it") }
     private val onOperationError = { println("onOperationError") }
