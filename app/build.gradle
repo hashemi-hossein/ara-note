@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -49,17 +51,115 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation "androidx.appcompat:appcompat:1.3.1"
+    implementation "com.google.android.material:material:1.4.0"
+
+    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$androidx_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle"
+//    implementation "androidx.lifecycle:lifecycle-common:$androidx_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$androidx_lifecycle"
+//    androidTestImplementation "androidx.lifecycle:lifecycle-runtime-testing:$androidx_lifecycle"
+
+    // ### Jetpack Compose ####
     implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.3.1'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    // Tooling support (Previews, etc.)
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    // Material Design
+    implementation "androidx.compose.material:material:$compose_version"
+    // Material design icons
+    implementation "androidx.compose.material:material-icons-core:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    // Integration with activities
+    implementation "androidx.activity:activity-compose:1.3.1"
+    // Integration with ViewModels
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-beta01"
+    // Compose Testing
+    testImplementation "androidx.compose.ui:ui-test:$compose_version"
+    androidTestImplementation "androidx.compose.ui:ui-test:$compose_version"
+    // Test rules and transitive dependencies:
+    testImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    // Needed for createComposeRule, but not createAndroidComposeRule:
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    // Animation
+    implementation "androidx.compose.animation:animation:$compose_version"
+    implementation "androidx.compose.animation:animation-core:$compose_version"
+//    implementation "androidx.compose.animation:animation-graphics:compose_animation"
+    // Other Compose Libs
+    implementation "com.google.android.material:compose-theme-adapter:1.0.2"
+//    implementation "androidx.paging:paging-compose:1.0.0-alpha12"
+
+    // Navigation Compose
+    implementation "androidx.navigation:navigation-compose:$navigation_compose"
+    implementation "androidx.hilt:hilt-navigation-compose:$hiltComposeNavigation"
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+//    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_compose"
+
+    // Hilt Dependency Injection
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    // Hilt Testing
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // Room DB
+//    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+//    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+
+    // DateTime
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
+    implementation "org.ocpsoft.prettytime:prettytime:5.0.2.Final"
+
+    // Kotlinx Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines_version"
+//    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines_version"
+
+    // ### Unit and Instrumented Test ###
+    testImplementation "junit:junit:$junit_version"
+//    androidTestImplementation "junit:junit:$junit_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
+//    testImplementation "io.mockk:mockk-agent-api:$mockk_version"
+    testImplementation "io.mockk:mockk-agent-jvm:$mockk_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    // Androidx Test Core
+//    androidTestImplementation "androidx.test:core:$androidx_test"
+    testImplementation "androidx.test:core-ktx:$androidx_test"
+    androidTestImplementation "androidx.test:core-ktx:$androidx_test"
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation "androidx.test:runner:$androidx_test"
+    androidTestImplementation "androidx.test:rules:$androidx_test"
+    // Assertions
+//    androidTestImplementation "androidx.test.ext:junit:$androidx_test_junit"
+    testImplementation "androidx.test.ext:junit-ktx:$androidx_test_junit"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test_junit"
+    androidTestImplementation "androidx.test.ext:truth:$androidx_test_truth"
+    testImplementation "com.google.truth:truth:$google_truth_version"
+    androidTestImplementation "com.google.truth:truth:$google_truth_version"
+    // Espresso dependencies
+    testImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
+    // Other Test Libs
+    // TODO: Bump to 4.6.* after https://github.com/robolectric/robolectric/issues/6593 is fixed
+    //noinspection GradleDependency
+    testImplementation "org.robolectric:robolectric:$robolectric_version"
+//    testImplementation "io.kotest:kotest-property:$kotest_version"
+//    testImplementation "androidx.arch.core:core-testing:2.1.0"
+//    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+//    androidTestImplementation "org.hamcrest:hamcrest-library:2.2"
+//    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
+
+    // Other Libs
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation "io.karn:notify:1.4.0"
 }
