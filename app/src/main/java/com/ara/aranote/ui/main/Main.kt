@@ -1,6 +1,11 @@
 package com.ara.aranote.ui.main
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,9 +30,35 @@ fun AppMain(
     startDestination: String = NavScreen.Home.route,
 ) {
     BoxWithConstraints {
+        val boxWith = constraints.maxWidth / 2
+
         AnimatedNavHost(
             navController = navController,
             startDestination = startDestination,
+            enterTransition = { _, _ ->
+                slideInHorizontally(
+                    initialOffsetX = { boxWith },
+                    animationSpec = tween(300),
+                ).plus(fadeIn(animationSpec = tween(300)))
+            },
+            popExitTransition = { _, _ ->
+                slideOutHorizontally(
+                    targetOffsetX = { boxWith },
+                    animationSpec = tween(300),
+                ).plus(fadeOut(animationSpec = tween(300)))
+            },
+            exitTransition = { _, _ ->
+                slideOutHorizontally(
+                    targetOffsetX = { -boxWith },
+                    animationSpec = tween(300),
+                ).plus(fadeOut(animationSpec = tween(300)))
+            },
+            popEnterTransition = { _, _ ->
+                slideInHorizontally(
+                    initialOffsetX = { -boxWith },
+                    animationSpec = tween(300),
+                ).plus(fadeIn(animationSpec = tween(300)))
+            }
         ) {
 
             composable(NavScreen.Home.route) {
