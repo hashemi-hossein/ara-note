@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Ara Note</string>
+
+    <string name="delete">Delete</string>
+    <string name="discard">Discard</string>
+    <string name="add_note">Add Note</string>
+
+    <!--  Content Descriptions  -->
+    <string name="cd_discard">Discard</string>
+    <string name="cd_happbar_back">Back To Previous Screen</string>
+    <string name="cd_happbar_menu">Open Menu</string>
+    <string name="cd_edit_note_alarm">Edit Note Alarm</string>
+    <string name="cd_add_alarm">Add Alarm</string>
+    <string name="cd_delete_alarm">Delete Alarm</string>
+    <string name="cd_add_note">Add Note</string>
+
 </resources>
