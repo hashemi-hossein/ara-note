@@ -6,6 +6,7 @@
     <string name="add_note">Add Note</string>
     <string name="invalid_date_and_time">invalid Date and Time</string>
     <string name="ok">OK</string>
+    <string name="notebooks">Notebooks</string>
 
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>

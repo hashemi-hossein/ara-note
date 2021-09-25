@@ -1,6 +1,7 @@
 package com.ara.aranote.domain.repository
 
 import com.ara.aranote.domain.entity.Note
+import com.ara.aranote.domain.entity.Notebook
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
@@ -18,4 +19,6 @@ interface NoteRepository {
     suspend fun getLastId(): Int
 
     suspend fun getAllNotesWithAlarm(): List<Note>
+
+    fun observeNotebooks(): Flow<List<Notebook>>
 }
