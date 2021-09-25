@@ -1,8 +1,11 @@
 package com.ara.aranote.data.repository
 
 import com.ara.aranote.data.local_data_source.NoteDao
+import com.ara.aranote.data.local_data_source.NotebookDao
 import com.ara.aranote.data.model.NoteModel
+import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.domain.entity.Note
+import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.util.DomainMapper
 import com.ara.aranote.test_util.TestUtil
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -32,10 +35,19 @@ class NoteRepositoryImplTest {
         every { toDomainList(tModelList) } returns tEntityList
         every { fromDomainList(tEntityList) } returns tModelList
     }
+    private val notebookDaoMock = mockk<NotebookDao>()
+    private val notebookDomainMapperMock = mockk<DomainMapper<NotebookModel, Notebook>>() {
+//        every { mapToDomainEntity(TestUtil.tModel) } returns TestUtil.tEntity
+//        every { mapFromDomainEntity(TestUtil.tEntity) } returns TestUtil.tModel
+//        every { toDomainList(tModelList) } returns tEntityList
+//        every { fromDomainList(tEntityList) } returns tModelList
+    }
 
     private val systemUnderTest = NoteRepositoryImpl(
         noteDao = noteDaoMock,
-        noteDomainMapper = noteDomainMapperMock
+        noteDomainMapper = noteDomainMapperMock,
+        notebookDao = notebookDaoMock,
+        notebookDomainMapper = notebookDomainMapperMock,
     )
 
     @Test

@@ -1,8 +1,11 @@
 package com.ara.aranote.data.repository
 
 import com.ara.aranote.data.local_data_source.NoteDao
+import com.ara.aranote.data.local_data_source.NotebookDao
 import com.ara.aranote.data.model.NoteModel
+import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.domain.entity.Note
+import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.util.DomainMapper
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -15,7 +18,9 @@ import javax.inject.Inject
 class NoteRepositoryImpl
 @Inject constructor(
     private val noteDao: NoteDao,
-    private val noteDomainMapper: DomainMapper<NoteModel, Note>
+    private val noteDomainMapper: DomainMapper<NoteModel, Note>,
+    private val notebookDao: NotebookDao,
+    private val notebookDomainMapper: DomainMapper<NotebookModel, Notebook>,
 ) : NoteRepository {
 
     override suspend fun insertNote(note: Note): Int {
