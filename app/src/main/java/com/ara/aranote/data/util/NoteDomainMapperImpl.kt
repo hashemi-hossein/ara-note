@@ -4,7 +4,7 @@ import com.ara.aranote.data.model.NoteModel
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.util.DomainMapper
 
-class DomainMapperImpl : DomainMapper<NoteModel, Note> {
+class NoteDomainMapperImpl : DomainMapper<NoteModel, Note> {
 
     override fun mapToDomainEntity(model: NoteModel): Note {
         return Note(

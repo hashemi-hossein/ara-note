@@ -15,35 +15,35 @@ import javax.inject.Inject
 class NoteRepositoryImpl
 @Inject constructor(
     private val noteDao: NoteDao,
-    private val domainMapper: DomainMapper<NoteModel, Note>
+    private val noteDomainMapper: DomainMapper<NoteModel, Note>
 ) : NoteRepository {
 
     override suspend fun insertNote(note: Note): Int {
-        val result = noteDao.insertNote(domainMapper.mapFromDomainEntity(note))
+        val result = noteDao.insertNote(noteDomainMapper.mapFromDomainEntity(note))
         Timber.tag(TAG).d("insert note result = $result")
         return result?.toInt() ?: INVALID_NOTE_ID
     }
 
     override fun observeNotes(): Flow<List<Note>> {
         return noteDao.observeNotes().map {
-            domainMapper.toDomainList(it)
+            noteDomainMapper.toDomainList(it)
         }
     }
 
     override suspend fun getNote(id: Int): Note? {
         return noteDao.getNote(id)?.let {
-            domainMapper.mapToDomainEntity(it)
+            noteDomainMapper.mapToDomainEntity(it)
         }
     }
 
     override suspend fun updateNote(note: Note): Boolean {
-        val result = noteDao.updateNote(domainMapper.mapFromDomainEntity(note))
+        val result = noteDao.updateNote(noteDomainMapper.mapFromDomainEntity(note))
         Timber.tag(TAG).d("update note result = $result")
         return result == 1
     }
 
     override suspend fun deleteNote(note: Note): Boolean {
-        val result = noteDao.deleteNote(domainMapper.mapFromDomainEntity(note))
+        val result = noteDao.deleteNote(noteDomainMapper.mapFromDomainEntity(note))
         Timber.tag(TAG).d("delete note result = $result")
         return result == 1
     }
@@ -54,7 +54,7 @@ class NoteRepositoryImpl
 
     override suspend fun getAllNotesWithAlarm(): List<Note> {
         return noteDao.getAllNotesWithAlarm()?.let {
-            domainMapper.toDomainList(it)
+            noteDomainMapper.toDomainList(it)
         } ?: listOf()
     }
 }
