@@ -8,8 +8,12 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import org.ocpsoft.prettytime.PrettyTime
+import java.time.format.DateTimeFormatter
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
+
+private const val DATE_PATTERN = "yyyy/MM/dd"
+private const val TIME_PATTERN = "hh:mm a"
 
 val TIME_ZONE = TimeZone.currentSystemDefault()
 
@@ -22,6 +26,11 @@ object HDateTime {
     private val prettyTime = PrettyTime()
     fun gerPrettyDateTime(dateTime: LocalDateTime): String =
         prettyTime.format(dateTime.toJavaLocalDateTime())
+
+    fun formatDateAndTime(dateTime: LocalDateTime, isDate: Boolean): String =
+        dateTime.toJavaLocalDateTime().format(
+            DateTimeFormatter.ofPattern(if (isDate) DATE_PATTERN else TIME_PATTERN)
+        )
 }
 
 fun LocalDateTime.change(
