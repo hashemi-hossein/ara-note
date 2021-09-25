@@ -7,13 +7,17 @@ import kotlinx.datetime.LocalDateTime
 
 @Entity(tableName = "tblNotes")
 data class NoteModel(
+
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     val id: Int,
+
     @ColumnInfo(name = "text")
     val text: String,
+
     @ColumnInfo(name = "added_datetime")
     val addedDateTime: LocalDateTime,
+
     @ColumnInfo(name = "alarm_datetime")
     val alarmDateTime: LocalDateTime? = null,
 )
