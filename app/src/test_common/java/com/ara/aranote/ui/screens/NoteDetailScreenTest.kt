@@ -17,11 +17,14 @@ import androidx.test.filters.SmallTest
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.util.HDateTime
+import com.ara.aranote.util.plus
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -69,7 +72,75 @@ class NoteDetailScreenTest {
     }
 
     @Test
-    fun add_and_delete_alarm() {
+    fun open_alarm_bottomSheet() {
+        // act
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))
+            .assertIsDisplayed().performClick()
+
+        // assert
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_set_alarm))
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun set_invalid_alarm() {
+        // act
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))
+            .assertIsDisplayed().performClick()
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_set_alarm))
+            .assertIsDisplayed().performClick()
+
+        // assert
+        composeTestRule.onNodeWithText(context.getString(R.string.invalid_date_and_time))
+            .assertIsDisplayed()
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun set_and_reset_alarmDateTime() {
+        // arrange
+        val newAlarmDateTime = HDateTime.getCurrentDateTime().plus(Duration.hours(25))
+
+        // act
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))
+            .assertIsDisplayed().performClick()
+        note.value = note.value.copy(alarmDateTime = newAlarmDateTime)
+
+        // assert
+        composeTestRule.onNodeWithText(
+            HDateTime.formatDateAndTime(
+                newAlarmDateTime,
+                isDate = true
+            )
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithText(
+            HDateTime.formatDateAndTime(
+                newAlarmDateTime,
+                isDate = false
+            )
+        ).assertIsDisplayed()
+
+        // act
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_reset_date_and_time))
+            .assertIsDisplayed().performClick()
+
+        // assert
+        composeTestRule.onNodeWithText(
+            HDateTime.formatDateAndTime(
+                HDateTime.getCurrentDateTime(),
+                isDate = true
+            )
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithText(
+            HDateTime.formatDateAndTime(
+                HDateTime.getCurrentDateTime(),
+                isDate = false
+            )
+        ).assertIsDisplayed()
+    }
+
+    @Test
+    fun delete_alarm() {
         // arrange
         note.value = note.value.copy(alarmDateTime = HDateTime.getCurrentDateTime())
 
