@@ -29,12 +29,12 @@ class HomeViewModelTest {
     @Test
     fun observeNotes() = runBlockingTest {
         // arrange
-        repository.insertNote(TestUtil.tEntity)
+        repository.insertNote(TestUtil.tNoteEntity)
 
         // act
         val r = systemUnderTest.notes.value
 
         // assert
-        assertThat(r).containsExactly(TestUtil.tEntity).inOrder()
+        assertThat(r).containsExactly(TestUtil.tNoteEntity).inOrder()
     }
 }

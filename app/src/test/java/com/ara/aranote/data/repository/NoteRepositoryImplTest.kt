@@ -25,13 +25,13 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class NoteRepositoryImplTest {
 
-    private val tEntityList = listOf(TestUtil.tEntity)
-    private val tModelList = listOf(TestUtil.tModel)
+    private val tEntityList = listOf(TestUtil.tNoteEntity)
+    private val tModelList = listOf(TestUtil.tNoteModel)
 
     private val noteDaoMock = mockk<NoteDao>()
     private val noteDomainMapperMock = mockk<DomainMapper<NoteModel, Note>>() {
-        every { mapToDomainEntity(TestUtil.tModel) } returns TestUtil.tEntity
-        every { mapFromDomainEntity(TestUtil.tEntity) } returns TestUtil.tModel
+        every { mapToDomainEntity(TestUtil.tNoteModel) } returns TestUtil.tNoteEntity
+        every { mapFromDomainEntity(TestUtil.tNoteEntity) } returns TestUtil.tNoteModel
         every { toDomainList(tModelList) } returns tEntityList
         every { fromDomainList(tEntityList) } returns tModelList
     }
@@ -53,28 +53,28 @@ class NoteRepositoryImplTest {
     @Test
     fun insertNote_onDbSuccessful() = runBlockingTest {
         // arrange
-        coEvery { noteDaoMock.insertNote(TestUtil.tModel) } returns 1
+        coEvery { noteDaoMock.insertNote(TestUtil.tNoteModel) } returns 1
 
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tEntity)
+        val r = systemUnderTest.insertNote(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tEntity) }
-        coVerify { noteDaoMock.insertNote(TestUtil.tModel) }
+        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
+        coVerify { noteDaoMock.insertNote(TestUtil.tNoteModel) }
         assertThat(r).isEqualTo(1)
     }
 
     @Test
     fun insertNote_onDbError() = runBlockingTest {
         // arrange
-        coEvery { noteDaoMock.insertNote(TestUtil.tModel) } returns null
+        coEvery { noteDaoMock.insertNote(TestUtil.tNoteModel) } returns null
 
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tEntity)
+        val r = systemUnderTest.insertNote(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tEntity) }
-        coVerify { noteDaoMock.insertNote(TestUtil.tModel) }
+        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
+        coVerify { noteDaoMock.insertNote(TestUtil.tNoteModel) }
         assertThat(r).isEqualTo(INVALID_NOTE_ID)
     }
 
@@ -96,15 +96,15 @@ class NoteRepositoryImplTest {
     @Test
     fun getNote_onDbSuccessful() = runBlockingTest {
         // arrange
-        coEvery { noteDaoMock.getNote(1) } returns TestUtil.tModel
+        coEvery { noteDaoMock.getNote(1) } returns TestUtil.tNoteModel
 
         // act
         val r = systemUnderTest.getNote(1)
 
         // assert
-        coVerify { noteDomainMapperMock.mapToDomainEntity(TestUtil.tModel) }
+        coVerify { noteDomainMapperMock.mapToDomainEntity(TestUtil.tNoteModel) }
         coVerify { noteDaoMock.getNote(1) }
-        assertThat(r).isEqualTo(TestUtil.tEntity)
+        assertThat(r).isEqualTo(TestUtil.tNoteEntity)
     }
 
     @Test
@@ -124,56 +124,56 @@ class NoteRepositoryImplTest {
     @Test
     fun updateNote_onDbSuccessful() = runBlockingTest {
         // arrange
-        coEvery { noteDaoMock.updateNote(TestUtil.tModel) } returns 1
+        coEvery { noteDaoMock.updateNote(TestUtil.tNoteModel) } returns 1
 
         // act
-        val r = systemUnderTest.updateNote(TestUtil.tEntity)
+        val r = systemUnderTest.updateNote(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tEntity) }
-        coVerify { noteDaoMock.updateNote(TestUtil.tModel) }
+        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
+        coVerify { noteDaoMock.updateNote(TestUtil.tNoteModel) }
         assertThat(r).isTrue()
     }
 
     @Test
     fun updateNote_onDbError() = runBlockingTest {
         // arrange
-        coEvery { noteDaoMock.updateNote(TestUtil.tModel) } returns null
+        coEvery { noteDaoMock.updateNote(TestUtil.tNoteModel) } returns null
 
         // act
-        val r = systemUnderTest.updateNote(TestUtil.tEntity)
+        val r = systemUnderTest.updateNote(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tEntity) }
-        coVerify { noteDaoMock.updateNote(TestUtil.tModel) }
+        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
+        coVerify { noteDaoMock.updateNote(TestUtil.tNoteModel) }
         assertThat(r).isFalse()
     }
 
     @Test
     fun deleteNote_onDbSuccessful() = runBlockingTest {
         // arrange
-        coEvery { noteDaoMock.deleteNote(TestUtil.tModel) } returns 1
+        coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) } returns 1
 
         // act
-        val r = systemUnderTest.deleteNote(TestUtil.tEntity)
+        val r = systemUnderTest.deleteNote(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tEntity) }
-        coEvery { noteDaoMock.deleteNote(TestUtil.tModel) }
+        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
+        coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) }
         assertThat(r).isTrue()
     }
 
     @Test
     fun deleteNote_onDbError() = runBlockingTest {
         // arrange
-        coEvery { noteDaoMock.deleteNote(TestUtil.tModel) } returns null
+        coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) } returns null
 
         // act
-        val r = systemUnderTest.deleteNote(TestUtil.tEntity)
+        val r = systemUnderTest.deleteNote(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tEntity) }
-        coEvery { noteDaoMock.deleteNote(TestUtil.tModel) }
+        coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
+        coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) }
         assertThat(r).isFalse()
     }
 
@@ -216,7 +216,7 @@ class NoteRepositoryImplTest {
         // assert
         coVerify { noteDomainMapperMock.toDomainList(tModelList) }
         coVerify { noteDaoMock.getAllNotesWithAlarm() }
-        assertThat(r).containsExactly(TestUtil.tEntity).inOrder()
+        assertThat(r).containsExactly(TestUtil.tNoteEntity).inOrder()
     }
 
     @Test

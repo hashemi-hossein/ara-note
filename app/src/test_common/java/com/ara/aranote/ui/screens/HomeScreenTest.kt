@@ -35,7 +35,7 @@ class HomeScreenTest {
 
     @Before
     fun setUp() {
-        notes = mutableStateOf(listOf(TestUtil.tEntity))
+        notes = mutableStateOf(listOf(TestUtil.tNoteEntity))
         idToNavigate = null
         composeTestRule.setContent {
             HomeScreen(
@@ -48,8 +48,8 @@ class HomeScreenTest {
     @Test
     fun note_visibility() {
         // assert
-        composeTestRule.onNodeWithText(TestUtil.tEntity.text).assertExists()
-        composeTestRule.onNodeWithText(HDateTime.gerPrettyDateTime(TestUtil.tEntity.addedDateTime))
+        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).assertExists()
+        composeTestRule.onNodeWithText(HDateTime.gerPrettyDateTime(TestUtil.tNoteEntity.addedDateTime))
             .assertExists()
     }
 
@@ -66,9 +66,9 @@ class HomeScreenTest {
     @Test
     fun click_note() {
         // act
-        composeTestRule.onNodeWithText(TestUtil.tEntity.text).performClick()
+        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).performClick()
 
         // assert
-        assertThat(idToNavigate).isEqualTo(TestUtil.tEntity.id)
+        assertThat(idToNavigate).isEqualTo(TestUtil.tNoteEntity.id)
     }
 }

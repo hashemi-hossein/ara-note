@@ -18,7 +18,7 @@ class NoteDetailViewModelTest {
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
-    private val textModifiedNote = TestUtil.tEntity.copy(text = "modified")
+    private val textModifiedNote = TestUtil.tNoteEntity.copy(text = "modified")
 
     private val navigateUp = { println("navigateUp") }
     private val disableAlarm: (Int) -> Unit = { println("disableAlarm id=$it") }
@@ -45,10 +45,10 @@ class NoteDetailViewModelTest {
     @Test
     fun `prepareNote-invalidId and notFresh`() = runBlockingTest {
         // arrange
-        repository.insertNote(TestUtil.tEntity)
+        repository.insertNote(TestUtil.tNoteEntity)
 
         // act
-        systemUnderTest.prepareNote(TestUtil.tEntity.id)
+        systemUnderTest.prepareNote(TestUtil.tNoteEntity.id)
 
         // assert
         assertThat(systemUnderTest.note.value.id).isEqualTo(1)
@@ -57,7 +57,7 @@ class NoteDetailViewModelTest {
     @Test
     fun `prepareNote-invalidId and notFresh and idNotFound`() = runBlockingTest {
         // arrange
-        repository.insertNote(TestUtil.tEntity)
+        repository.insertNote(TestUtil.tNoteEntity)
 
         // act
         systemUnderTest.prepareNote(100)
@@ -70,10 +70,10 @@ class NoteDetailViewModelTest {
     @Test
     fun modifyNote() = runBlockingTest {
         // arrange
-        repository.insertNote(TestUtil.tEntity)
+        repository.insertNote(TestUtil.tNoteEntity)
 
         // act
-        systemUnderTest.prepareNote(TestUtil.tEntity.id)
+        systemUnderTest.prepareNote(TestUtil.tNoteEntity.id)
         systemUnderTest.modifyNote(textModifiedNote)
 
         // assert
@@ -83,7 +83,7 @@ class NoteDetailViewModelTest {
     @Test
     fun `backPressed-insert when isNewNote and doNotDelete`() = runBlockingTest {
         // arrange
-        systemUnderTest.modifyNote(TestUtil.tEntity)
+        systemUnderTest.modifyNote(TestUtil.tNoteEntity)
 
         // act
         systemUnderTest.backPressed(
@@ -95,13 +95,13 @@ class NoteDetailViewModelTest {
         )
 
         // assert
-        assertThat(repository.getLastId()).isEqualTo(TestUtil.tEntity.id)
+        assertThat(repository.getLastId()).isEqualTo(TestUtil.tNoteEntity.id)
     }
 
     @Test
     fun `backPressed-ignore when isNewNote and doDelete`() = runBlockingTest {
         // arrange
-        systemUnderTest.modifyNote(TestUtil.tEntity)
+        systemUnderTest.modifyNote(TestUtil.tNoteEntity)
 
         // act
         systemUnderTest.backPressed(
@@ -119,8 +119,8 @@ class NoteDetailViewModelTest {
     @Test
     fun `backPressed-delete when isNotNewNote and doDelete`() = runBlockingTest {
         // arrange
-        repository.insertNote(TestUtil.tEntity)
-        systemUnderTest.prepareNote(TestUtil.tEntity.id)
+        repository.insertNote(TestUtil.tNoteEntity)
+        systemUnderTest.prepareNote(TestUtil.tNoteEntity.id)
 
         // act
         systemUnderTest.backPressed(
@@ -138,8 +138,8 @@ class NoteDetailViewModelTest {
     @Test
     fun `backPressed-update when isNotNewNote and doNotDelete`() = runBlockingTest {
         // arrange
-        repository.insertNote(TestUtil.tEntity)
-        systemUnderTest.prepareNote(TestUtil.tEntity.id)
+        repository.insertNote(TestUtil.tNoteEntity)
+        systemUnderTest.prepareNote(TestUtil.tNoteEntity.id)
         systemUnderTest.modifyNote(textModifiedNote)
 
         // act
@@ -153,6 +153,6 @@ class NoteDetailViewModelTest {
 
         // assert
         assertThat(repository.getLastId()).isEqualTo(textModifiedNote.id)
-        assertThat(repository.getNote(TestUtil.tEntity.id)?.text).isEqualTo(textModifiedNote.text)
+        assertThat(repository.getNote(TestUtil.tNoteEntity.id)?.text).isEqualTo(textModifiedNote.text)
     }
 }

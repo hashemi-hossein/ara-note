@@ -47,30 +47,30 @@ class NoteDaoTest {
         val note3 = NoteModel(5, "t5", TestUtil.tDateTime, TestUtil.tDateTime)
 
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tModel)
+        val r = systemUnderTest.insertNote(TestUtil.tNoteModel)
         val r2 = systemUnderTest.insertNote(note2)
         val r3 = systemUnderTest.insertNote(note3)
         val r4 = systemUnderTest.observeNotes().take(1).toList()[0]
 
         // assert
-        assertThat(r).isEqualTo(TestUtil.tModel.id)
+        assertThat(r).isEqualTo(TestUtil.tNoteModel.id)
         assertThat(r2).isEqualTo(note2.id)
         assertThat(r3).isEqualTo(note3.id)
-        assertThat(r4).containsExactly(TestUtil.tModel, note2, note3).inOrder()
+        assertThat(r4).containsExactly(TestUtil.tNoteModel, note2, note3).inOrder()
     }
 
     @Test
     @Throws(Exception::class)
     fun getNote() = runBlocking {
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tModel)
-        val r2 = systemUnderTest.getNote(TestUtil.tModel.id)
-        val r3 = systemUnderTest.getNote(TestUtil.tModel.id + 1)
+        val r = systemUnderTest.insertNote(TestUtil.tNoteModel)
+        val r2 = systemUnderTest.getNote(TestUtil.tNoteModel.id)
+        val r3 = systemUnderTest.getNote(TestUtil.tNoteModel.id + 1)
         val r4 = systemUnderTest.getNote(-1)
 
         // assert
         assertThat(r).isEqualTo(1)
-        assertThat(r2).isEqualTo(TestUtil.tModel)
+        assertThat(r2).isEqualTo(TestUtil.tNoteModel)
         assertThat(r3).isEqualTo(null)
         assertThat(r4).isEqualTo(null)
     }
@@ -79,21 +79,21 @@ class NoteDaoTest {
     @Throws(Exception::class)
     fun updateNote() = runBlocking {
         // arrange
-        val textModifiedNote = TestUtil.tModel.copy(text = "textModified")
-        val idModifiedNote = TestUtil.tModel.copy(id = 5)
+        val textModifiedNote = TestUtil.tNoteModel.copy(text = "textModified")
+        val idModifiedNote = TestUtil.tNoteModel.copy(id = 5)
 
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tModel)
-        val r2 = systemUnderTest.getNote(TestUtil.tModel.id)
+        val r = systemUnderTest.insertNote(TestUtil.tNoteModel)
+        val r2 = systemUnderTest.getNote(TestUtil.tNoteModel.id)
         val r3 = systemUnderTest.updateNote(textModifiedNote)
-        val r4 = systemUnderTest.getNote(TestUtil.tModel.id)
+        val r4 = systemUnderTest.getNote(TestUtil.tNoteModel.id)
         val r5 = systemUnderTest.updateNote(idModifiedNote)
-        val r6 = systemUnderTest.getNote(TestUtil.tModel.id)
+        val r6 = systemUnderTest.getNote(TestUtil.tNoteModel.id)
         val r7 = systemUnderTest.getNote(idModifiedNote.id)
 
         // assert
-        assertThat(r).isEqualTo(TestUtil.tModel.id)
-        assertThat(r2).isEqualTo(TestUtil.tModel)
+        assertThat(r).isEqualTo(TestUtil.tNoteModel.id)
+        assertThat(r2).isEqualTo(TestUtil.tNoteModel)
         assertThat(r3).isEqualTo(1)
         assertThat(r4).isEqualTo(textModifiedNote)
         assertThat(r5).isEqualTo(0)
@@ -105,14 +105,14 @@ class NoteDaoTest {
     @Throws(Exception::class)
     fun deleteNote() = runBlocking {
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tModel)
-        val r2 = systemUnderTest.getNote(TestUtil.tModel.id)
-        val r3 = systemUnderTest.deleteNote(TestUtil.tModel)
-        val r4 = systemUnderTest.getNote(TestUtil.tModel.id)
+        val r = systemUnderTest.insertNote(TestUtil.tNoteModel)
+        val r2 = systemUnderTest.getNote(TestUtil.tNoteModel.id)
+        val r3 = systemUnderTest.deleteNote(TestUtil.tNoteModel)
+        val r4 = systemUnderTest.getNote(TestUtil.tNoteModel.id)
 
         // assert
-        assertThat(r).isEqualTo(TestUtil.tModel.id)
-        assertThat(r2).isEqualTo(TestUtil.tModel)
+        assertThat(r).isEqualTo(TestUtil.tNoteModel.id)
+        assertThat(r2).isEqualTo(TestUtil.tNoteModel)
         assertThat(r3).isEqualTo(1)
         assertThat(r4).isEqualTo(null)
     }
@@ -125,13 +125,13 @@ class NoteDaoTest {
         val note3 = NoteModel(5, "t5", TestUtil.tDateTime, TestUtil.tDateTime)
 
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tModel)
+        val r = systemUnderTest.insertNote(TestUtil.tNoteModel)
         val r2 = systemUnderTest.insertNote(note2)
         val r3 = systemUnderTest.insertNote(note3)
         val r4 = systemUnderTest.getLastId()
 
         // assert
-        assertThat(r).isEqualTo(TestUtil.tModel.id)
+        assertThat(r).isEqualTo(TestUtil.tNoteModel.id)
         assertThat(r2).isEqualTo(note2.id)
         assertThat(r3).isEqualTo(note3.id)
         assertThat(r4).isEqualTo(note3.id)
@@ -141,7 +141,7 @@ class NoteDaoTest {
     @Throws(Exception::class)
     fun insertNoteWithoutAlarm_then_getAllWithAlarm() = runBlocking {
         // arrange
-        val noteWithoutAlarm = TestUtil.tModel.copy(alarmDateTime = null)
+        val noteWithoutAlarm = TestUtil.tNoteModel.copy(alarmDateTime = null)
 
         // act
         val r = systemUnderTest.insertNote(noteWithoutAlarm)
