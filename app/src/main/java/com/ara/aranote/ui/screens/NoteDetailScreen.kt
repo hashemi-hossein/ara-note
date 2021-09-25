@@ -48,9 +48,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -121,7 +124,7 @@ fun NoteDetailScreen(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun NoteDetailScreen(
     note: Note,
@@ -134,8 +137,14 @@ internal fun NoteDetailScreen(
     modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
         ModalBottomSheetValue.Hidden
     ),
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
-    BackHandler(onBack = { onBackPressed(false) })
+    BackHandler(onBack = {
+        if (modalBottomSheetState.isVisible)
+            scope.launch { modalBottomSheetState.hide() }
+        else
+            onBackPressed(false)
+    })
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
         sheetContent = {
@@ -165,6 +174,7 @@ internal fun NoteDetailScreen(
                             scaffoldState = scaffoldState,
                             context = context,
                             modalBottomSheetState = modalBottomSheetState,
+                            keyboardController = keyboardController,
                         )
                     },
                     onNavButtonClick = { onBackPressed(false) },
@@ -224,7 +234,7 @@ private fun HBody(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun HAppBarActions(
     note: Note,
@@ -235,6 +245,7 @@ private fun HAppBarActions(
     scaffoldState: ScaffoldState,
     context: Context,
     modalBottomSheetState: ModalBottomSheetState,
+    keyboardController: SoftwareKeyboardController?
 ) {
     val doesHasAlarm = note.alarmDateTime != null
 
@@ -251,6 +262,7 @@ private fun HAppBarActions(
             Icon(imageVector = Icons.Default.Delete, contentDescription = null)
         }
     IconButton(onClick = {
+        keyboardController?.hide()
         scope.launch { modalBottomSheetState.show() }
     }) {
         Icon(

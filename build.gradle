@@ -51,21 +51,21 @@ subprojects {
     }
 }
 
-task createSpotlessPreCommitHook() {
-    def gitHooksPreCommitFile = new File("$project.rootDir/.git/hooks/pre-commit")
-    if (!gitHooksPreCommitFile.exists()) {
-        def gitHooksDirectory = new File("$project.rootDir/.git/hooks/")
-        if (!gitHooksDirectory.exists()) gitHooksDirectory.mkdirs()
-        new File("$project.rootDir/.git/hooks", "pre-commit").text =
-                """#!/bin/sh
-
-echo "Running spotless"
-./gradlew :app:spotlessApply
-git add .
-"""
-        "chmod +x .git/hooks/pre-commit".execute()
-        println("pre-commit gitHook created successfully")
-    } else {
-        println("pre-commit gitHook exists")
-    }
-}
+//task createSpotlessPreCommitHook() {
+//    def gitHooksPreCommitFile = new File("$project.rootDir/.git/hooks/pre-commit")
+//    if (!gitHooksPreCommitFile.exists()) {
+//        def gitHooksDirectory = new File("$project.rootDir/.git/hooks/")
+//        if (!gitHooksDirectory.exists()) gitHooksDirectory.mkdirs()
+//        new File("$project.rootDir/.git/hooks", "pre-commit").text =
+//                """#!/bin/sh
+//
+//echo "Running spotless"
+//./gradlew :app:spotlessApply
+//git add .
+//"""
+//        "chmod +x .git/hooks/pre-commit".execute()
+//        println("pre-commit gitHook created successfully")
+//    } else {
+//        println("pre-commit gitHook exists")
+//    }
+//}
