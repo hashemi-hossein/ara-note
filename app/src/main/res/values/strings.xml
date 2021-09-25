@@ -4,6 +4,8 @@
     <string name="delete">Delete</string>
     <string name="discard">Discard</string>
     <string name="add_note">Add Note</string>
+    <string name="invalid_date_and_time">invalid Date and Time</string>
+    <string name="ok">OK</string>
 
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>
@@ -13,5 +15,7 @@
     <string name="cd_add_alarm">Add Alarm</string>
     <string name="cd_delete_alarm">Delete Alarm</string>
     <string name="cd_add_note">Add Note</string>
+    <string name="cd_set_alarm">Set Alarm</string>
+    <string name="cd_reset_date_and_time">Reset Date and Time</string>
 
 </resources>
