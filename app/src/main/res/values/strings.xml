@@ -7,6 +7,8 @@
     <string name="invalid_date_and_time">invalid Date and Time</string>
     <string name="ok">OK</string>
     <string name="notebooks">Notebooks</string>
+    <string name="add_notebook">Add Notebook</string>
+    <string name="name">name</string>
 
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>
@@ -18,5 +20,7 @@
     <string name="cd_add_note">Add Note</string>
     <string name="cd_set_alarm">Set Alarm</string>
     <string name="cd_reset_date_and_time">Reset Date and Time</string>
+    <string name="cd_add_notebook">Add Notebook</string>
+    <string name="cd_confirm_adding_notebook">confirm adding notebook</string>
 
 </resources>

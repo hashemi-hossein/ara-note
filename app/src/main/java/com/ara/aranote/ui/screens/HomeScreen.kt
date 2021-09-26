@@ -151,7 +151,10 @@ private fun HDrawer(
                 style = MaterialTheme.typography.h6
             )
             IconButton(onClick = { setDialogVisibility(true) }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.cd_add_notebook)
+                )
             }
         }
         LazyColumn() {
@@ -186,13 +189,16 @@ fun HDialog(
                     setDialogVisibility(false)
                     addNotebook(text)
                 }) {
-                    Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                    Icon(
+                        imageVector = Icons.Default.Done,
+                        contentDescription = stringResource(R.string.cd_confirm_adding_notebook)
+                    )
                 }
             },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text(
-                        text = "Add Notebook",
+                        text = stringResource(R.string.add_notebook),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.Bold,
                     )
@@ -200,7 +206,6 @@ fun HDialog(
                         value = text,
                         onValueChange = { text = it },
                         singleLine = true,
-                        label = { Text("name") },
                     )
                 }
             },
