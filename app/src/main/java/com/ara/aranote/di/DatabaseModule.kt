@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.ara.aranote.data.local_data_source.NoteDao
 import com.ara.aranote.data.local_data_source.NoteDatabase
+import com.ara.aranote.data.local_data_source.NotebookDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,4 +28,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideDao(database: NoteDatabase): NoteDao = database.getNoteDao()
+
+    @Singleton
+    @Provides
+    fun provideNotebookDao(database: NoteDatabase): NotebookDao = database.getNotebookDao()
 }

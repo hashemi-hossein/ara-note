@@ -2,10 +2,14 @@ package com.ara.aranote.di
 
 import android.content.Context
 import com.ara.aranote.data.local_data_source.NoteDao
+import com.ara.aranote.data.local_data_source.NotebookDao
 import com.ara.aranote.data.model.NoteModel
+import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.data.repository.NoteRepositoryImpl
 import com.ara.aranote.data.util.NoteDomainMapperImpl
+import com.ara.aranote.data.util.NotebookDomainMapperImpl
 import com.ara.aranote.domain.entity.Note
+import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.util.DomainMapper
 import com.ara.aranote.ui.BaseApplication
@@ -31,9 +35,21 @@ object AppModule {
     fun provideNoteRepository(
         noteDao: NoteDao,
         noteDomainMapper: DomainMapper<NoteModel, Note>,
-    ): NoteRepository = NoteRepositoryImpl(noteDao = noteDao, noteDomainMapper = noteDomainMapper)
+        notebookDao: NotebookDao,
+        notebookDomainMapper: DomainMapper<NotebookModel, Notebook>
+    ): NoteRepository = NoteRepositoryImpl(
+        noteDao = noteDao,
+        noteDomainMapper = noteDomainMapper,
+        notebookDao = notebookDao,
+        notebookDomainMapper = notebookDomainMapper,
+    )
 
     @Singleton
     @Provides
     fun provideNoteDomainMapper(): DomainMapper<NoteModel, Note> = NoteDomainMapperImpl()
+
+    @Singleton
+    @Provides
+    fun provideNotebookDomainMapper(): DomainMapper<NotebookModel, Notebook> =
+        NotebookDomainMapperImpl()
 }
