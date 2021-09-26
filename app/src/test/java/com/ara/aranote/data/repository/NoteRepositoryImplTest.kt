@@ -216,7 +216,7 @@ class NoteRepositoryImplTest {
         // assert
         coVerify { noteDomainMapperMock.toDomainList(TestUtil.tNoteModelList) }
         coVerify { noteDaoMock.getAllNotesWithAlarm() }
-        assertThat(r).containsExactly(TestUtil.tNoteEntity).inOrder()
+        assertThat(r).isEqualTo(TestUtil.tNoteEntityList)
     }
 
     @Test

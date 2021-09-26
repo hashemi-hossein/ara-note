@@ -62,4 +62,10 @@ class NoteRepositoryImpl
             noteDomainMapper.toDomainList(it)
         } ?: listOf()
     }
+
+    override fun observeNotebooks(): Flow<List<Notebook>> {
+        return notebookDao.observeNotebooks().map {
+            notebookDomainMapper.toDomainList(it)
+        }
+    }
 }
