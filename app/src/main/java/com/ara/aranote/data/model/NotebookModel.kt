@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tblNotebooks")
 data class NotebookModel(
 
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int,
 

@@ -38,4 +38,10 @@ constructor(
             }
         }
     }
+
+    fun addNotebook(name: String) {
+        viewModelScope.launch {
+            repository.insertNotebook(Notebook(id = 0, name = name))
+        }
+    }
 }
