@@ -21,4 +21,6 @@ interface NoteRepository {
     suspend fun getAllNotesWithAlarm(): List<Note>
 
     fun observeNotebooks(): Flow<List<Notebook>>
+
+    suspend fun insertNotebook(notebook: Notebook): Int
 }

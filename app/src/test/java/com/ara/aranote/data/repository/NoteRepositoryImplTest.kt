@@ -8,6 +8,7 @@ import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.util.DomainMapper
 import com.ara.aranote.test_util.TestUtil
+import com.ara.aranote.util.INVALID_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.google.common.truth.Truth.assertThat
 import io.mockk.Called
@@ -231,5 +232,52 @@ class NoteRepositoryImplTest {
         coVerify { noteDomainMapperMock wasNot Called }
         coVerify { noteDaoMock.getAllNotesWithAlarm() }
         assertThat(r).isEmpty()
+    }
+
+    @Test
+    fun observeNotebooks() = runBlockingTest {
+        // arrange
+        every { notebookDaoMock.observeNotebooks() } returns flowOf(
+            TestUtil.tNotebookModelList,
+            TestUtil.tNotebookModelList
+        )
+
+        // act
+        val r = systemUnderTest.observeNotebooks()
+        val r2 = r.toList()
+
+        // assert
+        verify { notebookDomainMapperMock.toDomainList(TestUtil.tNotebookModelList) }
+        verify { notebookDaoMock.observeNotebooks() }
+        assertThat(r2).containsExactly(TestUtil.tNotebookEntityList, TestUtil.tNotebookEntityList)
+            .inOrder()
+    }
+
+    @Test
+    fun insertNotebook_onDbSuccessful() = runBlockingTest {
+        // arrange
+        coEvery { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) } returns 1
+
+        // act
+        val r = systemUnderTest.insertNotebook(TestUtil.tNotebookEntity)
+
+        // assert
+        coVerify { notebookDomainMapperMock.mapFromDomainEntity(TestUtil.tNotebookEntity) }
+        coVerify { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) }
+        assertThat(r).isEqualTo(1)
+    }
+
+    @Test
+    fun insertNotebook_onDbError() = runBlockingTest {
+        // arrange
+        coEvery { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) } returns null
+
+        // act
+        val r = systemUnderTest.insertNotebook(TestUtil.tNotebookEntity)
+
+        // assert
+        coVerify { notebookDomainMapperMock.mapFromDomainEntity(TestUtil.tNotebookEntity) }
+        coVerify { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) }
+        assertThat(r).isEqualTo(INVALID_NOTEBOOK_ID)
     }
 }

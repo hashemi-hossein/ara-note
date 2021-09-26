@@ -8,6 +8,7 @@ import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.util.DomainMapper
+import com.ara.aranote.util.INVALID_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.TAG
 import kotlinx.coroutines.flow.Flow
@@ -67,5 +68,11 @@ class NoteRepositoryImpl
         return notebookDao.observeNotebooks().map {
             notebookDomainMapper.toDomainList(it)
         }
+    }
+
+    override suspend fun insertNotebook(notebook: Notebook): Int {
+        val result = notebookDao.insertNotebook(notebookDomainMapper.mapFromDomainEntity(notebook))
+        Timber.tag(TAG).d("insert notebook result = $result")
+        return result?.toInt() ?: INVALID_NOTEBOOK_ID
     }
 }

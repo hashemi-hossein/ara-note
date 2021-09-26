@@ -2,6 +2,7 @@ package com.ara.aranote.domain.repository
 
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
+import com.ara.aranote.util.INVALID_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,5 +58,12 @@ class FakeNoteRepository : NoteRepository {
         return flow {
             notebooksFlow.collect { emit(it) }
         }
+    }
+
+    override suspend fun insertNotebook(notebook: Notebook): Int {
+        val r =
+            if (notebooks.put(notebook.id, notebook) == null) notebook.id else INVALID_NOTEBOOK_ID
+        notebooksFlow.update { notebooks.values.toList() }
+        return r
     }
 }
