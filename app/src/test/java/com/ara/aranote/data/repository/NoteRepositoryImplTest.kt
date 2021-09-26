@@ -25,22 +25,19 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class NoteRepositoryImplTest {
 
-    private val tEntityList = listOf(TestUtil.tNoteEntity)
-    private val tModelList = listOf(TestUtil.tNoteModel)
-
     private val noteDaoMock = mockk<NoteDao>()
     private val noteDomainMapperMock = mockk<DomainMapper<NoteModel, Note>>() {
         every { mapToDomainEntity(TestUtil.tNoteModel) } returns TestUtil.tNoteEntity
         every { mapFromDomainEntity(TestUtil.tNoteEntity) } returns TestUtil.tNoteModel
-        every { toDomainList(tModelList) } returns tEntityList
-        every { fromDomainList(tEntityList) } returns tModelList
+        every { toDomainList(TestUtil.tNoteModelList) } returns TestUtil.tNoteEntityList
+        every { fromDomainList(TestUtil.tNoteEntityList) } returns TestUtil.tNoteModelList
     }
     private val notebookDaoMock = mockk<NotebookDao>()
     private val notebookDomainMapperMock = mockk<DomainMapper<NotebookModel, Notebook>>() {
-//        every { mapToDomainEntity(TestUtil.tModel) } returns TestUtil.tEntity
-//        every { mapFromDomainEntity(TestUtil.tEntity) } returns TestUtil.tModel
-//        every { toDomainList(tModelList) } returns tEntityList
-//        every { fromDomainList(tEntityList) } returns tModelList
+        every { mapToDomainEntity(TestUtil.tNotebookModel) } returns TestUtil.tNotebookEntity
+        every { mapFromDomainEntity(TestUtil.tNotebookEntity) } returns TestUtil.tNotebookModel
+        every { toDomainList(TestUtil.tNotebookModelList) } returns TestUtil.tNotebookEntityList
+        every { fromDomainList(TestUtil.tNotebookEntityList) } returns TestUtil.tNotebookModelList
     }
 
     private val systemUnderTest = NoteRepositoryImpl(
@@ -81,16 +78,19 @@ class NoteRepositoryImplTest {
     @Test
     fun observeNotes() = runBlockingTest {
         // arrange
-        every { noteDaoMock.observeNotes() } returns flowOf(tModelList, tModelList)
+        every { noteDaoMock.observeNotes() } returns flowOf(
+            TestUtil.tNoteModelList,
+            TestUtil.tNoteModelList
+        )
 
         // act
         val r = systemUnderTest.observeNotes()
         val r2 = r.toList()
 
         // assert
-        verify { noteDomainMapperMock.toDomainList(tModelList) }
+        verify { noteDomainMapperMock.toDomainList(TestUtil.tNoteModelList) }
         verify { noteDaoMock.observeNotes() }
-        assertThat(r2).containsExactly(tEntityList, tEntityList).inOrder()
+        assertThat(r2).containsExactly(TestUtil.tNoteEntityList, TestUtil.tNoteEntityList).inOrder()
     }
 
     @Test
@@ -208,13 +208,13 @@ class NoteRepositoryImplTest {
     @Test
     fun getAllNotesWithAlarm_onDbSuccessful() = runBlockingTest {
         // arrange
-        coEvery { noteDaoMock.getAllNotesWithAlarm() } returns tModelList
+        coEvery { noteDaoMock.getAllNotesWithAlarm() } returns TestUtil.tNoteModelList
 
         // act
         val r = systemUnderTest.getAllNotesWithAlarm()
 
         // assert
-        coVerify { noteDomainMapperMock.toDomainList(tModelList) }
+        coVerify { noteDomainMapperMock.toDomainList(TestUtil.tNoteModelList) }
         coVerify { noteDaoMock.getAllNotesWithAlarm() }
         assertThat(r).containsExactly(TestUtil.tNoteEntity).inOrder()
     }

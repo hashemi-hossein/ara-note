@@ -12,6 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
+import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.test_util.TestUtil
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -31,15 +32,18 @@ class HomeScreenTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
     private lateinit var notes: MutableState<List<Note>>
+    private lateinit var notebooks: MutableState<List<Notebook>>
     private var idToNavigate: Int? = null
 
     @Before
     fun setUp() {
         notes = mutableStateOf(listOf(TestUtil.tNoteEntity))
+        notebooks = mutableStateOf(TestUtil.tNotebookEntityList)
         idToNavigate = null
         composeTestRule.setContent {
             HomeScreen(
                 notes = notes.value,
+                notebooks = notebooks.value,
                 navigateToNoteDetailScreen = { idToNavigate = it },
             )
         }
