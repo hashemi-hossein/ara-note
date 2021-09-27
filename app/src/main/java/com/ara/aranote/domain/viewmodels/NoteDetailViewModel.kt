@@ -21,8 +21,14 @@ constructor(
     private val repository: NoteRepository,
 ) : ViewModel() {
 
-    private val _note =
-        MutableStateFlow(Note(id = 0, notebookId = 0, text = "", addedDateTime = HDateTime.getCurrentDateTime()))
+    private val _note = MutableStateFlow(
+        Note(
+            id = 0,
+            notebookId = 0,
+            text = "",
+            addedDateTime = HDateTime.getCurrentDateTime()
+        )
+    )
     val note = _note.asStateFlow()
 
     init {

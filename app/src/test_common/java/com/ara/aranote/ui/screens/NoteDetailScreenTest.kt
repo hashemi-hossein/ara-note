@@ -40,7 +40,14 @@ class NoteDetailScreenTest {
 
     @Before
     fun setUp() {
-        note = mutableStateOf(Note(id = 1, notebookId = 1, text = "", addedDateTime = HDateTime.getCurrentDateTime()))
+        note = mutableStateOf(
+            Note(
+                id = 1,
+                notebookId = 1,
+                text = "",
+                addedDateTime = HDateTime.getCurrentDateTime()
+            )
+        )
         backPressResult = null
         composeTestRule.setContent {
             NoteDetailScreen(
