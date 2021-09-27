@@ -43,14 +43,22 @@ class NoteDaoTest {
     @Throws(Exception::class)
     fun insertSeveralNotes_then_observeAll() = runBlocking {
         // arrange
-        val note2 = NoteModel(2, "t2", TestUtil.tDateTime, null)
-        val note3 = NoteModel(5, "t5", TestUtil.tDateTime, TestUtil.tDateTime)
+        val note2 = TestUtil.tNoteModel.copy(
+            id = 2,
+            text = "t2",
+            alarmDateTime = null
+        )
+        val note3 = TestUtil.tNoteModel.copy(
+            id = 5,
+            text = "t5",
+        )
 
         // act
         val r = systemUnderTest.insertNote(TestUtil.tNoteModel)
         val r2 = systemUnderTest.insertNote(note2)
         val r3 = systemUnderTest.insertNote(note3)
-        val r4 = systemUnderTest.observeNotes().take(1).toList()[0]
+        val r4 = systemUnderTest.observeNotes(TestUtil.tNoteModel.notebookId)
+            .take(1).toList()[0]
 
         // assert
         assertThat(r).isEqualTo(TestUtil.tNoteModel.id)
@@ -121,8 +129,20 @@ class NoteDaoTest {
     @Throws(Exception::class)
     fun insertSeveralNotes_then_getLastId() = runBlocking {
         // arrange
-        val note2 = NoteModel(2, "t2", TestUtil.tDateTime, null)
-        val note3 = NoteModel(5, "t5", TestUtil.tDateTime, TestUtil.tDateTime)
+        val note2 = NoteModel(
+            id = 2,
+            notebookId = 1,
+            text = "t2",
+            addedDateTime = TestUtil.tDateTime,
+            alarmDateTime = null
+        )
+        val note3 = NoteModel(
+            id = 5,
+            notebookId = 1,
+            text = "t5",
+            addedDateTime = TestUtil.tDateTime,
+            alarmDateTime = TestUtil.tDateTime
+        )
 
         // act
         val r = systemUnderTest.insertNote(TestUtil.tNoteModel)
