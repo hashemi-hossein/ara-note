@@ -6,6 +6,7 @@ import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -26,15 +27,23 @@ constructor(
     private val _notebooks = MutableStateFlow(listOf<Notebook>())
     val notebooks = _notebooks.asStateFlow()
 
+    private val _currentNotebookId = MutableStateFlow(0)
+    val currentNotebookId = _currentNotebookId.asStateFlow()
+
     init {
-        viewModelScope.launch {
-            repository.observeNotes().collect { notes ->
-                _notes.update { notes }
-            }
-        }
+        observeNotes()
         viewModelScope.launch {
             repository.observeNotebooks().collect { notebooks ->
                 _notebooks.update { notebooks }
+            }
+        }
+    }
+
+    private var observeNotesJob: Job? = null
+    private fun observeNotes() {
+        observeNotesJob = viewModelScope.launch {
+            repository.observeNotes(_currentNotebookId.value).collect { notes ->
+                _notes.update { notes }
             }
         }
     }
@@ -43,5 +52,11 @@ constructor(
         viewModelScope.launch {
             repository.insertNotebook(Notebook(id = 0, name = name))
         }
+    }
+
+    fun setCurrentNotebookId(id: Int) {
+        println("setCurrentNotebookId id=$id")
+        _currentNotebookId.update { id }
+        observeNotes()
     }
 }
