@@ -9,6 +9,7 @@ class NoteDomainMapperImpl : DomainMapper<NoteModel, Note> {
     override fun mapToDomainEntity(model: NoteModel): Note {
         return Note(
             id = model.id,
+            notebookId = model.notebookId,
             text = model.text,
             addedDateTime = model.addedDateTime,
             alarmDateTime = model.alarmDateTime,
@@ -18,6 +19,7 @@ class NoteDomainMapperImpl : DomainMapper<NoteModel, Note> {
     override fun mapFromDomainEntity(domainEntity: Note): NoteModel {
         return NoteModel(
             id = domainEntity.id,
+            notebookId = domainEntity.notebookId,
             text = domainEntity.text,
             addedDateTime = domainEntity.addedDateTime,
             alarmDateTime = domainEntity.alarmDateTime,

@@ -449,7 +449,7 @@ private fun HBottomSheet(
 @Composable
 private fun HPreview() {
     NoteDetailScreen(
-        note = Note(0, "Hello!", HDateTime.getCurrentDateTime()),
+        note = Note(id = 1, notebookId = 1, text = "Hello!", addedDateTime = HDateTime.getCurrentDateTime()),
         onNoteChanged = {},
         onBackPressed = {},
         isNewNote = true,

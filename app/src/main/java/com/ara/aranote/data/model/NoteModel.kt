@@ -12,6 +12,9 @@ data class NoteModel(
     @ColumnInfo(name = "id")
     val id: Int,
 
+    @ColumnInfo(name = "notebook_id")
+    val notebookId: Int,
+
     @ColumnInfo(name = "text")
     val text: String,
 
