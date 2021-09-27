@@ -30,8 +30,8 @@ class NoteRepositoryImpl
         return result?.toInt() ?: INVALID_NOTE_ID
     }
 
-    override fun observeNotes(): Flow<List<Note>> {
-        return noteDao.observeNotes().map {
+    override fun observeNotes(notebookId: Int): Flow<List<Note>> {
+        return noteDao.observeNotes(notebookId).map {
             noteDomainMapper.toDomainList(it)
         }
     }
@@ -55,7 +55,7 @@ class NoteRepositoryImpl
     }
 
     override suspend fun getLastId(): Int {
-        return noteDao.getLastId() ?: INVALID_NOTE_ID
+        return noteDao.getLastId() ?: 0
     }
 
     override suspend fun getAllNotesWithAlarm(): List<Note> {
