@@ -70,7 +70,7 @@ fun HomeScreen(
         notes = notes,
         notebooks = notebooks,
         navigateToNoteDetailScreen = navigateToNoteDetailScreen,
-        addNotebook = viewModel::addNotebook,
+        addNotebook = { viewModel.addNotebook(name = it) },
         currentNotebookId = currentNotebookId,
         setCurrentNotebookId = viewModel::setCurrentNotebookId
     )

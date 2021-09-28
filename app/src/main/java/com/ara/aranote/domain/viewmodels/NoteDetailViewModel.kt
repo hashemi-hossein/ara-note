@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.repository.NoteRepository
+import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,7 @@ constructor(
     private val _note = MutableStateFlow(
         Note(
             id = 0,
-            notebookId = 0,
+            notebookId = DEFAULT_NOTEBOOK_ID,
             text = "",
             addedDateTime = HDateTime.getCurrentDateTime()
         )

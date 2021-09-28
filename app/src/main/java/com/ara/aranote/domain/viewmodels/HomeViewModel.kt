@@ -2,9 +2,12 @@ package com.ara.aranote.domain.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
+import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
+import com.ara.aranote.util.DEFAULT_NOTEBOOK_NAME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +22,7 @@ class HomeViewModel
 @Inject
 constructor(
     private val repository: NoteRepository,
+    private val appDataStore: AppDataStore,
 ) : ViewModel() {
 
     private val _notes = MutableStateFlow(listOf<Note>())
@@ -27,10 +31,11 @@ constructor(
     private val _notebooks = MutableStateFlow(listOf<Notebook>())
     val notebooks = _notebooks.asStateFlow()
 
-    private val _currentNotebookId = MutableStateFlow(0)
+    private val _currentNotebookId = MutableStateFlow(DEFAULT_NOTEBOOK_ID)
     val currentNotebookId = _currentNotebookId.asStateFlow()
 
     init {
+        createDefaultNotebook()
         observeNotes()
         viewModelScope.launch {
             repository.observeNotebooks().collect { notebooks ->
@@ -48,15 +53,20 @@ constructor(
         }
     }
 
-    fun addNotebook(name: String) {
-        viewModelScope.launch {
-            repository.insertNotebook(Notebook(id = 0, name = name))
-        }
+    fun addNotebook(id: Int = 0, name: String) = viewModelScope.launch {
+        repository.insertNotebook(Notebook(id = id, name = name))
     }
 
     fun setCurrentNotebookId(id: Int) {
         println("setCurrentNotebookId id=$id")
         _currentNotebookId.update { id }
         observeNotes()
+    }
+
+    private fun createDefaultNotebook() = viewModelScope.launch {
+        if (!appDataStore.readDefaultNotebookExistence()) {
+            appDataStore.writeDefaultNotebookExistence()
+            addNotebook(id = DEFAULT_NOTEBOOK_ID, name = DEFAULT_NOTEBOOK_NAME)
+        }
     }
 }
