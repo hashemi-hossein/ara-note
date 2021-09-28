@@ -34,13 +34,15 @@ class HomeScreenTest {
 
     private lateinit var notes: MutableState<List<Note>>
     private lateinit var notebooks: MutableState<List<Notebook>>
+    private lateinit var currentNotebookId: MutableState<Int>
     private var idToNavigate: Int? = null
     private var notebookNameToAdd: String? = null
 
     @Before
     fun setUp() {
-        notes = mutableStateOf(listOf(TestUtil.tNoteEntity))
+        notes = mutableStateOf(TestUtil.tNoteEntityList)
         notebooks = mutableStateOf(TestUtil.tNotebookEntityList)
+        currentNotebookId = mutableStateOf(TestUtil.tNotebookEntity.id)
         idToNavigate = null
         notebookNameToAdd = null
         composeTestRule.setContent {
@@ -48,7 +50,12 @@ class HomeScreenTest {
                 notes = notes.value,
                 notebooks = notebooks.value,
                 navigateToNoteDetailScreen = { idToNavigate = it },
-                addNotebook = { notebookNameToAdd = it }
+                addNotebook = { notebookNameToAdd = it },
+                currentNotebookId = currentNotebookId.value,
+                setCurrentNotebookId = { notebookId ->
+                    currentNotebookId.value = notebookId
+                    notes.value = notes.value.filter { it.notebookId == notebookId }
+                },
             )
         }
     }
@@ -91,5 +98,17 @@ class HomeScreenTest {
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_confirm_adding_notebook))
             .assertIsDisplayed()
         composeTestRule.onNodeWithText(context.getString(R.string.add_notebook)).assertIsDisplayed()
+    }
+
+    @Test
+    fun change_notebook_on_clicking() {
+        // act
+        composeTestRule.onNodeWithText(TestUtil.tNotebookEntity2.name)
+            .performClick()
+
+        // assert
+        assertThat(currentNotebookId.value).isEqualTo(TestUtil.tNotebookEntity2.id)
+        composeTestRule.onNodeWithText(TestUtil.tNoteEntityList.first { it.notebookId == currentNotebookId.value }.text)
+            .assertIsDisplayed()
     }
 }
