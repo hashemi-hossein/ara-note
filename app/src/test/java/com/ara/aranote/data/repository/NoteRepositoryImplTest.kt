@@ -79,18 +79,18 @@ class NoteRepositoryImplTest {
     @Test
     fun observeNotes() = runBlockingTest {
         // arrange
-        every { noteDaoMock.observeNotes() } returns flowOf(
+        every { noteDaoMock.observeNotes(any()) } returns flowOf(
             TestUtil.tNoteModelList,
             TestUtil.tNoteModelList
         )
 
         // act
-        val r = systemUnderTest.observeNotes()
+        val r = systemUnderTest.observeNotes(0)
         val r2 = r.toList()
 
         // assert
         verify { noteDomainMapperMock.toDomainList(TestUtil.tNoteModelList) }
-        verify { noteDaoMock.observeNotes() }
+        verify { noteDaoMock.observeNotes(any()) }
         assertThat(r2).containsExactly(TestUtil.tNoteEntityList, TestUtil.tNoteEntityList).inOrder()
     }
 

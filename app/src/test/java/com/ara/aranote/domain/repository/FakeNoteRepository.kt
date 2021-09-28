@@ -24,9 +24,9 @@ class FakeNoteRepository : NoteRepository {
         return r
     }
 
-    override fun observeNotes(): Flow<List<Note>> {
+    override fun observeNotes(notebookId: Int): Flow<List<Note>> {
         return flow {
-            notesFlow.collect { emit(it) }
+            notesFlow.collect { emit(it.filter { it.notebookId == notebookId }) }
         }
     }
 

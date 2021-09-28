@@ -9,6 +9,7 @@ import kotlinx.datetime.LocalDateTime
 object TestUtil {
 
     val tDateTime = LocalDateTime.parse("2021-01-01T00:00")
+    val tDateTime2 = LocalDateTime.parse("2022-01-01T00:00")
     val tNoteEntity = Note(
         id = 1,
         notebookId = 1,
@@ -20,8 +21,8 @@ object TestUtil {
         id = 2,
         notebookId = 2,
         text = "test2",
-        addedDateTime = tDateTime,
-        alarmDateTime = tDateTime,
+        addedDateTime = tDateTime2,
+        alarmDateTime = tDateTime2,
     )
     val tNoteModel = NoteModel(
         id = 1,
@@ -34,8 +35,8 @@ object TestUtil {
         id = 2,
         notebookId = 2,
         text = "test2",
-        addedDateTime = tDateTime,
-        alarmDateTime = tDateTime,
+        addedDateTime = tDateTime2,
+        alarmDateTime = tDateTime2,
     )
     val tNoteEntityList = listOf(tNoteEntity, tNoteEntity2)
     val tNoteModelList = listOf(tNoteModel, tNoteModel2)
