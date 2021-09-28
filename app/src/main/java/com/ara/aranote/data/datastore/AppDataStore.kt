@@ -8,21 +8,20 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AppDataStore
 @Inject constructor(@ApplicationContext private val context: Context) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
 
     suspend fun readDefaultNotebookExistence() =
-        context.dataStore.data.map { preferences ->
-            preferences[DEFAULT_NOTEBOOK_EXISTENCE_KEY] ?: false
-        }.first()
+        context.dataStore.data.first()[DEFAULT_NOTEBOOK_EXISTENCE_KEY] ?: false
 
-    suspend fun writeDefaultNotebookExistence() = context.dataStore.edit { settings ->
-        settings[DEFAULT_NOTEBOOK_EXISTENCE_KEY] = true
+    suspend fun writeDefaultNotebookExistence() = context.dataStore.edit { preferences ->
+        preferences[DEFAULT_NOTEBOOK_EXISTENCE_KEY] = true
     }
 
     companion object {
