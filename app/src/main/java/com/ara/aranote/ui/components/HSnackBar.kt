@@ -5,6 +5,7 @@ import androidx.compose.material.SnackbarResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 
 private var snackbarJob: Job = Job()
 
@@ -13,16 +14,19 @@ fun showSnackbar(
     snackbarHostState: SnackbarHostState,
     message: String = "Are you sure?",
     actionLabel: String = "Yes",
+    timeout: Long = 4000,
     onClick: () -> Unit = { snackbarJob.cancel() },
 ) {
     val snackbarFun = {
         snackbarJob = scope.launch {
-            val snackbarResult = snackbarHostState.showSnackbar(
-                message = message,
-                actionLabel = actionLabel,
-            )
-            if (snackbarResult == SnackbarResult.ActionPerformed) {
-                onClick()
+            withTimeout(timeout) {
+                val snackbarResult = snackbarHostState.showSnackbar(
+                    message = message,
+                    actionLabel = actionLabel,
+                )
+                if (snackbarResult == SnackbarResult.ActionPerformed) {
+                    onClick()
+                }
             }
         }
     }
