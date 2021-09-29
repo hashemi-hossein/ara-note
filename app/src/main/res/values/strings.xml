@@ -9,6 +9,7 @@
     <string name="notebooks">Notebooks</string>
     <string name="add_notebook">Add Notebook</string>
     <string name="name">name</string>
+    <string name="press_back_again_to_exit">Press back again to exit</string>
 
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>

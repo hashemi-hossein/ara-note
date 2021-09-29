@@ -1,6 +1,8 @@
 package com.ara.aranote.ui.screens
 
+import android.content.Context
 import androidx.activity.compose.BackHandler
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +41,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +53,7 @@ import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.viewmodels.HomeViewModel
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.NoteCard
+import com.ara.aranote.ui.components.showSnackbar
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.minus
@@ -87,15 +91,31 @@ internal fun HomeScreen(
     setCurrentNotebookId: (Int) -> Unit = {},
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
+    context: Context = LocalContext.current,
 ) {
     var isDialogVisible by remember { mutableStateOf(false) }
     val setDialogVisibility: (Boolean) -> Unit = { isDialogVisible = it }
+    var lastTimeMillis = 0L
 
     BackHandler(
-        enabled = scaffoldState.drawerState.isOpen,
         onBack = {
-            if (scaffoldState.drawerState.isOpen)
-                scope.launch { scaffoldState.drawerState.close() }
+            when {
+                scaffoldState.drawerState.isOpen && !scaffoldState.drawerState.isAnimationRunning ->
+                    scope.launch { scaffoldState.drawerState.close() }
+                System.currentTimeMillis() - lastTimeMillis < 2000 -> (context as AppCompatActivity).finish()
+                else -> {
+                    showSnackbar(
+                        scope = scope,
+                        snackbarHostState = scaffoldState.snackbarHostState,
+                        message = context.getString(R.string.press_back_again_to_exit),
+                        actionLabel = "Exit",
+                        timeout = 2000,
+                    ) {
+                        (context as AppCompatActivity).finish()
+                    }
+                    lastTimeMillis = System.currentTimeMillis()
+                }
+            }
         }
     )
     Scaffold(
