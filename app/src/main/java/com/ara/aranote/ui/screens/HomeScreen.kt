@@ -1,5 +1,6 @@
 package com.ara.aranote.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -90,10 +91,18 @@ internal fun HomeScreen(
     var isDialogVisible by remember { mutableStateOf(false) }
     val setDialogVisibility: (Boolean) -> Unit = { isDialogVisible = it }
 
+    BackHandler(
+        enabled = scaffoldState.drawerState.isOpen,
+        onBack = {
+            if (scaffoldState.drawerState.isOpen)
+                scope.launch { scaffoldState.drawerState.close() }
+        }
+    )
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             HAppBar {
+                scope.launch { scaffoldState.drawerState.open() }
             }
         },
         drawerContent = {
