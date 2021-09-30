@@ -54,6 +54,7 @@ import com.ara.aranote.domain.viewmodels.HomeViewModel
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.NoteCard
 import com.ara.aranote.ui.components.showSnackbar
+import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.minus
@@ -65,7 +66,7 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    navigateToNoteDetailScreen: (Int) -> Unit,
+    navigateToNoteDetailScreen: (Int, Int) -> Unit,
 ) {
     val notes: List<Note> by viewModel.notes.collectAsState()
     val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
@@ -85,9 +86,9 @@ fun HomeScreen(
 internal fun HomeScreen(
     notes: List<Note>,
     notebooks: List<Notebook>,
-    navigateToNoteDetailScreen: (Int) -> Unit,
+    navigateToNoteDetailScreen: (Int, Int) -> Unit,
     addNotebook: (String) -> Unit = {},
-    currentNotebookId: Int = 0,
+    currentNotebookId: Int = DEFAULT_NOTEBOOK_ID,
     setCurrentNotebookId: (Int) -> Unit = {},
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -139,7 +140,12 @@ internal fun HomeScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navigateToNoteDetailScreen(INVALID_NOTE_ID) }) {
+            FloatingActionButton(onClick = {
+                navigateToNoteDetailScreen(
+                    INVALID_NOTE_ID,
+                    currentNotebookId
+                )
+            }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(R.string.cd_add_note),
@@ -151,6 +157,7 @@ internal fun HomeScreen(
             innerPadding = innerPadding,
             notes = notes,
             navigateToNoteDetailScreen = navigateToNoteDetailScreen,
+            currentNotebookId = currentNotebookId,
         )
         HDialog(
             isDialogVisible = isDialogVisible,
@@ -165,7 +172,8 @@ internal fun HomeScreen(
 private fun HBody(
     innerPadding: PaddingValues,
     notes: List<Note>,
-    navigateToNoteDetailScreen: (Int) -> Unit,
+    navigateToNoteDetailScreen: (Int, Int) -> Unit,
+    currentNotebookId: Int,
 ) {
     Surface(
         modifier = Modifier
@@ -177,7 +185,7 @@ private fun HBody(
         ) {
             itemsIndexed(items = notes) { index: Int, item: Note ->
                 NoteCard(note = item) {
-                    navigateToNoteDetailScreen(item.id)
+                    navigateToNoteDetailScreen(item.id, currentNotebookId)
                 }
             }
         }
@@ -308,6 +316,6 @@ private fun HPreview() {
     HomeScreen(
         notes = lstNotes,
         notebooks = lstNotebooks,
-        navigateToNoteDetailScreen = {},
+        navigateToNoteDetailScreen = { _, _ -> },
     )
 }

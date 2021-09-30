@@ -45,13 +45,14 @@ constructor(
         }
     }
 
-    suspend fun prepareNote(id: Int) {
-        if (id >= 0) {
+    suspend fun prepareNote(noteId: Int, notebookId: Int) {
+        if (noteId >= 0) {
 //            Timber.tag(TAG).d("loading note - id=$id")
-            _note.value = repository.getNote(id) ?: _note.value.copy(text = "ERROR")
+            _note.value = repository.getNote(noteId) ?: _note.value.copy(text = "ERROR")
         } else {
             _note.value = _note.value.copy(id = repository.getLastId() + 1)
         }
+        _note.value = _note.value.copy(notebookId = notebookId)
     }
 
     fun modifyNote(note: Note) {

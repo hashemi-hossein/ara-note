@@ -18,6 +18,7 @@ import com.ara.aranote.domain.viewmodels.HomeViewModel
 import com.ara.aranote.domain.viewmodels.NoteDetailViewModel
 import com.ara.aranote.ui.screens.HomeScreen
 import com.ara.aranote.ui.screens.NoteDetailScreen
+import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -65,23 +66,34 @@ fun AppMain(
                 val viewModel = hiltViewModel<HomeViewModel>()
                 HomeScreen(
                     viewModel = viewModel,
-                ) {
-                    navController.navigate(NavScreen.NoteDetail.route + "/" + it)
+                ) { noteId, notebookId ->
+                    navController.navigate(NavScreen.NoteDetail.route + "?noteId=$noteId&notebookId=$notebookId")
                 }
             }
 
             composable(
-                NavScreen.NoteDetail.route + "/{id}",
-                arguments = listOf(navArgument("id") { type = NavType.IntType }),
+                NavScreen.NoteDetail.route + "?noteId={noteId}&notebookId={notebookId}",
+                arguments = listOf(
+                    navArgument("noteId") {
+                        type = NavType.IntType
+                        defaultValue = INVALID_NOTE_ID
+                    },
+                    navArgument("notebookId") {
+                        type = NavType.IntType
+                        defaultValue = DEFAULT_NOTEBOOK_ID
+                    },
+                ),
             ) { backStackEntry: NavBackStackEntry ->
-                val id = backStackEntry.arguments?.getInt("id") ?: INVALID_NOTE_ID
+                val noteId = backStackEntry.arguments?.getInt("noteId") ?: INVALID_NOTE_ID
+                val notebookId =
+                    backStackEntry.arguments?.getInt("notebookId") ?: DEFAULT_NOTEBOOK_ID
                 val viewModel = hiltViewModel<NoteDetailViewModel>()
                 LaunchedEffect(true) {
-                    viewModel.prepareNote(id)
+                    viewModel.prepareNote(noteId = noteId, notebookId = notebookId)
                 }
                 NoteDetailScreen(
                     viewModel = viewModel,
-                    id = id,
+                    noteId = noteId,
                 ) {
                     navController.navigateUp()
                 }
