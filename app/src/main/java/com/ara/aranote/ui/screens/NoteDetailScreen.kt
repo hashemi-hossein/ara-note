@@ -59,9 +59,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
+import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.viewmodels.NoteDetailViewModel
 import com.ara.aranote.ui.components.AppBarNavButtonType
 import com.ara.aranote.ui.components.HAppBar
+import com.ara.aranote.ui.components.HDropdown
 import com.ara.aranote.ui.components.showSnackbar
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.TAG
@@ -87,6 +89,7 @@ fun NoteDetailScreen(
 ) {
     val isNewNote = id < 0
     val note: Note by viewModel.note.collectAsState()
+    val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
     val context = LocalContext.current
 
     val onBackPressed: (Boolean) -> Unit = { doesDelete ->
@@ -117,6 +120,7 @@ fun NoteDetailScreen(
 
     NoteDetailScreen(
         note = note,
+        notebooks = notebooks,
         onNoteChanged = viewModel::modifyNote,
         onBackPressed = onBackPressed,
         isNewNote = isNewNote,
@@ -128,6 +132,7 @@ fun NoteDetailScreen(
 @Composable
 internal fun NoteDetailScreen(
     note: Note,
+    notebooks: List<Notebook>,
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (Boolean) -> Unit,
     isNewNote: Boolean,
@@ -167,6 +172,7 @@ internal fun NoteDetailScreen(
                     actions = {
                         HAppBarActions(
                             note = note,
+                            notebooks = notebooks,
                             onNoteChanged = onNoteChanged,
                             onBackPressed = onBackPressed,
                             isNewNote = isNewNote,
@@ -238,6 +244,7 @@ private fun HBody(
 @Composable
 private fun HAppBarActions(
     note: Note,
+    notebooks: List<Notebook>,
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (Boolean) -> Unit,
     isNewNote: Boolean,
@@ -285,6 +292,12 @@ private fun HAppBarActions(
                 contentDescription = stringResource(R.string.cd_delete_alarm)
             )
         }
+    if (notebooks.isNotEmpty())
+        HDropdown(
+            items = notebooks.map { it.name },
+            selectedIndex = note.notebookId - 1,
+            onItemClick = { onNoteChanged(note.copy(notebookId = it + 1)) },
+        )
 }
 
 @OptIn(ExperimentalTime::class, ExperimentalMaterialApi::class)
@@ -455,6 +468,7 @@ private fun HPreview() {
             text = "Hello!",
             addedDateTime = HDateTime.getCurrentDateTime()
         ),
+        notebooks = listOf(),
         onNoteChanged = {},
         onBackPressed = {},
         isNewNote = true,
