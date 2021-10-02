@@ -103,13 +103,14 @@ internal fun HomeScreen(
             when {
                 scaffoldState.drawerState.isOpen && !scaffoldState.drawerState.isAnimationRunning ->
                     scope.launch { scaffoldState.drawerState.close() }
+                currentNotebookId != DEFAULT_NOTEBOOK_ID -> setCurrentNotebookId(DEFAULT_NOTEBOOK_ID)
                 System.currentTimeMillis() - lastTimeMillis < 2000 -> (context as AppCompatActivity).finish()
                 else -> {
                     showSnackbar(
                         scope = scope,
                         snackbarHostState = scaffoldState.snackbarHostState,
                         message = context.getString(R.string.press_back_again_to_exit),
-                        actionLabel = "Exit",
+                        actionLabel = context.getString(R.string.exit),
                         timeout = 2000,
                     ) {
                         (context as AppCompatActivity).finish()
