@@ -13,7 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.compose.navArgument
+import androidx.navigation.navArgument
 import com.ara.aranote.domain.viewmodels.HomeViewModel
 import com.ara.aranote.domain.viewmodels.NoteDetailViewModel
 import com.ara.aranote.ui.screens.HomeScreen
