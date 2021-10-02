@@ -1,6 +1,7 @@
 package com.ara.aranote.ui.screens
 
 import android.content.Context
+import android.view.Gravity
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
@@ -29,8 +30,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.AlarmAdd
@@ -50,13 +49,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.get
+import androidx.core.widget.NestedScrollView
+import androidx.core.widget.doAfterTextChanged
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
@@ -73,6 +75,7 @@ import com.ara.aranote.util.millis
 import com.ara.aranote.util.minus
 import com.ara.aranote.util.plus
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -122,6 +125,7 @@ fun NoteDetailScreen(
         note = note,
         notebooks = notebooks,
         onNoteChanged = viewModel::modifyNote,
+        onNoteTextChanged = { viewModel.modifyNote(viewModel.note.value.copy(text = it)) },
         onBackPressed = onBackPressed,
         isNewNote = isNewNote,
         modalBottomSheetState = modalBottomSheetState,
@@ -134,6 +138,7 @@ internal fun NoteDetailScreen(
     note: Note,
     notebooks: List<Notebook>,
     onNoteChanged: (Note) -> Unit,
+    onNoteTextChanged: (String) -> Unit = {},
     onBackPressed: (Boolean) -> Unit,
     isNewNote: Boolean,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
@@ -210,7 +215,7 @@ internal fun NoteDetailScreen(
             HBody(
                 innerPadding = innerPadding,
                 note = note,
-                onNoteChanged = onNoteChanged,
+                onNoteTextChanged = onNoteTextChanged,
             )
         }
     }
@@ -220,23 +225,46 @@ internal fun NoteDetailScreen(
 private fun HBody(
     innerPadding: PaddingValues,
     note: Note,
-    onNoteChanged: (Note) -> Unit,
+    onNoteTextChanged: (String) -> Unit,
 ) {
     Surface(
         modifier = Modifier
             .padding(innerPadding)
+            .padding(horizontal = 10.dp)
     ) {
-        TextField(
+        AndroidView(
+            factory = { context ->
+                val editText = TextInputEditText(context).apply {
+                    background = null
+                    gravity = Gravity.TOP
+                    textSize = 17f
+                    setHorizontallyScrolling(false)
+//                    setTypeface(Typeface.createFromAsset(context.assets,""))
+                    doAfterTextChanged {
+                        onNoteTextChanged(it?.toString() ?: "")
+                    }
+                }
+                NestedScrollView(context).apply { addView(editText) }
+            },
+            update = { view ->
+                if (note.text.isNotEmpty() && (view[0] as TextInputEditText).text?.isEmpty() == true) {
+                    (view[0] as TextInputEditText).setText(note.text)
+//                    (view[0] as TextInputEditText).setSelection(note.text.length)
+//                    (view[0] as TextInputEditText).requestFocus()
+                }
+            },
+            modifier = Modifier.fillMaxSize()
+        )
+
+        /*TextField(
             value = note.text,
             onValueChange = { onNoteChanged(note.copy(text = it)) },
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             textStyle = MaterialTheme.typography.body1,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
             ),
-//            shape = MaterialTheme.shapes.medium.copy(ZeroCornerSize),
-        )
+        )*/
     }
 }
 
