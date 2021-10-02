@@ -244,7 +244,10 @@ private fun HBody(
                         onNoteTextChanged(it?.toString() ?: "")
                     }
                 }
-                NestedScrollView(context).apply { addView(editText) }
+                NestedScrollView(context).apply {
+                    isFillViewport = true
+                    addView(editText)
+                }
             },
             update = { view ->
                 if (note.text.isNotEmpty() && (view[0] as TextInputEditText).text?.isEmpty() == true) {
