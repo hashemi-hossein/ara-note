@@ -1,5 +1,6 @@
 package com.ara.aranote.ui.components
 
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.ui.theme.DeepOrange500
 import com.ara.aranote.util.HDateTime
@@ -34,7 +37,6 @@ fun NoteCard(
     onClick: () -> Unit,
 ) {
     Card(
-//        shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .padding(
                 bottom = 3.dp,
@@ -43,7 +45,6 @@ fun NoteCard(
                 end = 3.dp
             )
             .height(100.dp)
-//            .fillMaxHeight(0.2f)
             .fillMaxWidth()
             .clickable(onClick = onClick),
         elevation = 4.dp,
@@ -55,11 +56,19 @@ fun NoteCard(
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(
-                    text = note.text,
-                    modifier = Modifier.padding(7.dp),
-                    style = MaterialTheme.typography.body1,
-                    maxLines = 3,
+                AndroidView(
+                    factory = { context ->
+                        AppCompatTextView(context).apply {
+                            text = note.text
+                            textSize = 15f
+                            setTextColor(context.resources.getColor(R.color.white))
+                            maxLines = 3
+//                          setTypeface(Typeface.createFromAsset(context.assets,""))
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(7.dp)
                 )
                 CompositionLocalProvider(
                     LocalContentAlpha provides ContentAlpha.disabled,
