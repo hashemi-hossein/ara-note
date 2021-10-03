@@ -193,7 +193,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun getLastId_onDbError() = runBlockingTest {
+    fun getLastId_onEmptyDb_or_onDbError() = runBlockingTest {
         // arrange
         coEvery { noteDaoMock.getLastId() } returns null
 
@@ -203,7 +203,7 @@ class NoteRepositoryImplTest {
         // assert
         coVerify { noteDomainMapperMock wasNot Called }
         coVerify { noteDaoMock.getLastId() }
-        assertThat(r).isEqualTo(INVALID_NOTE_ID)
+        assertThat(r).isEqualTo(0)
     }
 
     @Test
