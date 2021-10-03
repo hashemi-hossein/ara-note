@@ -11,8 +11,7 @@ import com.ara.aranote.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -40,7 +39,7 @@ constructor(
 
     init {
         viewModelScope.launch {
-            _notebooks.update { repository.observeNotebooks().take(1).toList().first() }
+            _notebooks.update { repository.observeNotebooks().first() }
         }
     }
 

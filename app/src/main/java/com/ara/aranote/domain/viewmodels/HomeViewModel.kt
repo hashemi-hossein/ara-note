@@ -46,6 +46,7 @@ constructor(
 
     private var observeNotesJob: Job? = null
     private fun observeNotes() {
+        observeNotesJob?.cancel()
         observeNotesJob = viewModelScope.launch {
             repository.observeNotes(_currentNotebookId.value).collect { notes ->
                 _notes.update { notes }

@@ -8,8 +8,7 @@ import androidx.test.filters.SmallTest
 import com.ara.aranote.data.model.NoteModel
 import com.ara.aranote.test_util.TestUtil
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -57,8 +56,7 @@ class NoteDaoTest {
         val r = systemUnderTest.insertNote(TestUtil.tNoteModel)
         val r2 = systemUnderTest.insertNote(note2)
         val r3 = systemUnderTest.insertNote(note3)
-        val r4 = systemUnderTest.observeNotes(TestUtil.tNoteModel.notebookId)
-            .take(1).toList()[0]
+        val r4 = systemUnderTest.observeNotes(TestUtil.tNoteModel.notebookId).first()
 
         // assert
         assertThat(r).isEqualTo(TestUtil.tNoteModel.id)

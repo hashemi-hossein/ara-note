@@ -59,13 +59,15 @@ fun NoteCard(
                 AndroidView(
                     factory = { context ->
                         AppCompatTextView(context).apply {
-                            text = note.text
                             textSize = 15f
                             setTextColor(context.resources.getColor(R.color.white))
 //                            setTextColor(android.graphics.Color.WHITE)
                             maxLines = 3
 //                          setTypeface(Typeface.createFromAsset(context.assets,""))
                         }
+                    },
+                    update = { view ->
+                        view.text = note.text
                     },
                     modifier = Modifier
                         .fillMaxWidth()
