@@ -138,7 +138,7 @@ internal fun NoteDetailScreen(
     note: Note,
     notebooks: List<Notebook>,
     onNoteChanged: (Note) -> Unit,
-    onNoteTextChanged: (String) -> Unit = {},
+    onNoteTextChanged: (String) -> Unit,
     onBackPressed: (Boolean) -> Unit,
     isNewNote: Boolean,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
@@ -501,6 +501,7 @@ private fun HPreview() {
         ),
         notebooks = listOf(),
         onNoteChanged = {},
+        onNoteTextChanged = {},
         onBackPressed = {},
         isNewNote = true,
     )

@@ -3,19 +3,28 @@ package com.ara.aranote.ui.screens
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
+import com.ara.aranote.domain.entity.Notebook
+import com.ara.aranote.test_util.TestUtil
+import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.plus
 import com.google.common.truth.Truth.assertThat
@@ -36,6 +45,7 @@ class NoteDetailScreenTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
     private lateinit var note: MutableState<Note>
+    private lateinit var notebooks: MutableState<List<Notebook>>
     private var backPressResult: Boolean? = null
 
     @Before
@@ -43,16 +53,19 @@ class NoteDetailScreenTest {
         note = mutableStateOf(
             Note(
                 id = 1,
-                notebookId = 1,
+                notebookId = DEFAULT_NOTEBOOK_ID,
                 text = "",
                 addedDateTime = HDateTime.getCurrentDateTime()
             )
         )
+        notebooks = mutableStateOf(TestUtil.tNotebookEntityList)
         backPressResult = null
         composeTestRule.setContent {
             NoteDetailScreen(
                 note = note.value,
+                notebooks = notebooks.value,
                 onNoteChanged = { note.value = it },
+                onNoteTextChanged = { note.value = note.value.copy(text = it) },
                 onBackPressed = { backPressResult = it },
                 isNewNote = true,
             )
@@ -62,11 +75,46 @@ class NoteDetailScreenTest {
     @Test
     fun entering_text() {
         // act
-        composeTestRule.onNodeWithText(note.value.text).performTextInput("hello")
+//        composeTestRule.onNodeWithText(note.value.text).performTextInput("hello")
+        Espresso.onView(ViewMatchers.withText(note.value.text))
+            .perform(ViewActions.typeText("hello"))
 
         // assert
-        composeTestRule.onNodeWithText("hello").assertExists()
+//        composeTestRule.onNodeWithText("hello").assertIsDisplayed()
+        Espresso.onView(ViewMatchers.withText("hello"))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         assertThat(note.value.text).isEqualTo("hello")
+    }
+
+    @Test
+    fun notebooks_visibility() {
+        // act
+        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[note.value.notebookId - 1].name)
+            .assertIsDisplayed().performClick()
+
+        // assert
+        for (item in TestUtil.tNotebookEntityList)
+            composeTestRule.onNode(
+                !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button) and
+                    hasText(item.name)
+            ).assertIsDisplayed()
+    }
+
+    @Test
+    fun changing_notebook_of_note() {
+        // act
+        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[note.value.notebookId - 1].name)
+            .assertIsDisplayed().performClick()
+        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[1].name)
+            .assertIsDisplayed().performClick()
+
+        // assert
+        for (item in TestUtil.tNotebookEntityList)
+            composeTestRule.onNode(
+                !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button) and
+                    hasText(item.name)
+            ).assertDoesNotExist()
+        assertThat(note.value.notebookId).isEqualTo(TestUtil.tNotebookEntityList[1].id)
     }
 
     @Test
