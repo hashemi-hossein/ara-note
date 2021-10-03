@@ -75,7 +75,7 @@ fun HomeScreen(
     HomeScreen(
         notes = notes,
         notebooks = notebooks,
-        navigateToNoteDetailScreen = navigateToNoteDetailScreen,
+        navigateToNoteDetailScreen = { navigateToNoteDetailScreen(it, currentNotebookId) },
         addNotebook = { viewModel.addNotebook(name = it) },
         currentNotebookId = currentNotebookId,
         setCurrentNotebookId = viewModel::setCurrentNotebookId
@@ -86,7 +86,7 @@ fun HomeScreen(
 internal fun HomeScreen(
     notes: List<Note>,
     notebooks: List<Notebook>,
-    navigateToNoteDetailScreen: (Int, Int) -> Unit,
+    navigateToNoteDetailScreen: (Int) -> Unit,
     addNotebook: (String) -> Unit = {},
     currentNotebookId: Int = DEFAULT_NOTEBOOK_ID,
     setCurrentNotebookId: (Int) -> Unit = {},
@@ -142,10 +142,7 @@ internal fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navigateToNoteDetailScreen(
-                    INVALID_NOTE_ID,
-                    currentNotebookId
-                )
+                navigateToNoteDetailScreen(INVALID_NOTE_ID)
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -173,7 +170,7 @@ internal fun HomeScreen(
 private fun HBody(
     innerPadding: PaddingValues,
     notes: List<Note>,
-    navigateToNoteDetailScreen: (Int, Int) -> Unit,
+    navigateToNoteDetailScreen: (Int) -> Unit,
     currentNotebookId: Int,
 ) {
     Surface(
@@ -186,7 +183,7 @@ private fun HBody(
         ) {
             itemsIndexed(items = notes) { index: Int, item: Note ->
                 NoteCard(note = item) {
-                    navigateToNoteDetailScreen(item.id, currentNotebookId)
+                    navigateToNoteDetailScreen(item.id)
                 }
             }
         }
@@ -317,6 +314,6 @@ private fun HPreview() {
     HomeScreen(
         notes = lstNotes,
         notebooks = lstNotebooks,
-        navigateToNoteDetailScreen = { _, _ -> },
+        navigateToNoteDetailScreen = { },
     )
 }

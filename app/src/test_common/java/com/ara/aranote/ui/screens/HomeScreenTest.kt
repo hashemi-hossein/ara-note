@@ -9,6 +9,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.ara.aranote.R
@@ -35,7 +39,8 @@ class HomeScreenTest {
     private lateinit var notes: MutableState<List<Note>>
     private lateinit var notebooks: MutableState<List<Notebook>>
     private lateinit var currentNotebookId: MutableState<Int>
-    private var idToNavigate: Int? = null
+    private var noteIdToNavigate: Int? = null
+    private var notebookIdToNavigate: Int? = null
     private var notebookNameToAdd: String? = null
 
     @Before
@@ -43,13 +48,17 @@ class HomeScreenTest {
         notes = mutableStateOf(TestUtil.tNoteEntityList)
         notebooks = mutableStateOf(TestUtil.tNotebookEntityList)
         currentNotebookId = mutableStateOf(TestUtil.tNotebookEntity.id)
-        idToNavigate = null
+        noteIdToNavigate = null
+        notebookIdToNavigate = null
         notebookNameToAdd = null
         composeTestRule.setContent {
             HomeScreen(
                 notes = notes.value,
                 notebooks = notebooks.value,
-                navigateToNoteDetailScreen = { idToNavigate = it },
+                navigateToNoteDetailScreen = { noteId ->
+                    noteIdToNavigate = noteId
+                    notebookIdToNavigate = currentNotebookId.value
+                },
                 addNotebook = { notebookNameToAdd = it },
                 currentNotebookId = currentNotebookId.value,
                 setCurrentNotebookId = { notebookId ->
@@ -63,7 +72,9 @@ class HomeScreenTest {
     @Test
     fun note_visibility() {
         // assert
-        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).assertExists()
+//        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).assertExists()
+        Espresso.onView(ViewMatchers.withText(TestUtil.tNoteEntity.text))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         composeTestRule.onNodeWithText(TestUtil.tNotebookEntity.name).assertExists()
         composeTestRule.onNodeWithText(HDateTime.gerPrettyDateTime(TestUtil.tNoteEntity.addedDateTime))
             .assertExists()
@@ -76,16 +87,22 @@ class HomeScreenTest {
             .performClick()
 
         // assert
-        assertThat(idToNavigate).isEqualTo(INVALID_NOTE_ID)
+        assertThat(noteIdToNavigate).isEqualTo(INVALID_NOTE_ID)
     }
 
     @Test
     fun click_note() {
+        // arrange
+        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList.last().name).performClick()
+
         // act
-        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).performClick()
+//        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).performClick()
+        Espresso.onView(ViewMatchers.withText(TestUtil.tNoteEntity.text))
+            .perform(ViewActions.click())
 
         // assert
-        assertThat(idToNavigate).isEqualTo(TestUtil.tNoteEntity.id)
+        assertThat(noteIdToNavigate).isEqualTo(TestUtil.tNoteEntity.id)
+        assertThat(notebookIdToNavigate).isEqualTo(currentNotebookId.value)
     }
 
     @Test
@@ -108,7 +125,9 @@ class HomeScreenTest {
 
         // assert
         assertThat(currentNotebookId.value).isEqualTo(TestUtil.tNotebookEntity2.id)
-        composeTestRule.onNodeWithText(TestUtil.tNoteEntityList.first { it.notebookId == currentNotebookId.value }.text)
-            .assertIsDisplayed()
+//        composeTestRule.onNodeWithText(TestUtil.tNoteEntityList.first { it.notebookId == currentNotebookId.value }.text)
+//            .assertIsDisplayed()
+        Espresso.onView(ViewMatchers.withText(TestUtil.tNoteEntityList.first { it.notebookId == currentNotebookId.value }.text))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
