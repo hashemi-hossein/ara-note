@@ -11,7 +11,8 @@ import com.ara.aranote.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -39,9 +40,7 @@ constructor(
 
     init {
         viewModelScope.launch {
-            repository.observeNotebooks().collect { notebooks ->
-                _notebooks.update { notebooks }
-            }
+            _notebooks.update { repository.observeNotebooks().take(1).toList().first() }
         }
     }
 
@@ -50,8 +49,8 @@ constructor(
         _note.value = if (noteId >= 0) {
             repository.getNote(noteId) ?: _note.value.copy(text = "ERROR")
         } else {
-            _note.value.copy(id = repository.getLastId() + 1)
-        }.copy(notebookId = notebookId)
+            _note.value.copy(id = repository.getLastId() + 1, notebookId = notebookId)
+        }
     }
 
     fun modifyNote(note: Note) {
