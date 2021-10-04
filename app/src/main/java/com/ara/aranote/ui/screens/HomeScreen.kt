@@ -10,11 +10,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.AlertDialog
@@ -53,6 +50,7 @@ import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.viewmodels.HomeViewModel
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.NoteCard
+import com.ara.aranote.ui.components.StaggeredVerticalGrid
 import com.ara.aranote.ui.components.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
@@ -155,7 +153,6 @@ internal fun HomeScreen(
             innerPadding = innerPadding,
             notes = notes,
             navigateToNoteDetailScreen = navigateToNoteDetailScreen,
-            currentNotebookId = currentNotebookId,
         )
         HDialog(
             isDialogVisible = isDialogVisible,
@@ -171,17 +168,13 @@ private fun HBody(
     innerPadding: PaddingValues,
     notes: List<Note>,
     navigateToNoteDetailScreen: (Int) -> Unit,
-    currentNotebookId: Int,
 ) {
     Surface(
         modifier = Modifier
             .padding(innerPadding)
     ) {
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(count = 2),
-            modifier = Modifier
-        ) {
-            itemsIndexed(items = notes) { index: Int, item: Note ->
+        StaggeredVerticalGrid(maxColumnWidth = 220.dp) {
+            notes.forEach { item: Note ->
                 NoteCard(note = item) {
                     navigateToNoteDetailScreen(item.id)
                 }
