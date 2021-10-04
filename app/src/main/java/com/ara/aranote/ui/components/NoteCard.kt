@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Card
@@ -44,7 +43,6 @@ fun NoteCard(
                 start = 3.dp,
                 end = 3.dp
             )
-            .height(100.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick),
         elevation = 4.dp,
@@ -62,7 +60,7 @@ fun NoteCard(
                             textSize = 15f
                             setTextColor(context.resources.getColor(R.color.white))
 //                            setTextColor(android.graphics.Color.WHITE)
-                            maxLines = 3
+                            maxLines = 10
 //                          setTypeface(Typeface.createFromAsset(context.assets,""))
                         }
                     },

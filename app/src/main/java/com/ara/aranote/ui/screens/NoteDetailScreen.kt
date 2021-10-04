@@ -28,7 +28,6 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
@@ -49,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
@@ -172,7 +172,7 @@ internal fun NoteDetailScreen(
             scaffoldState = scaffoldState,
             topBar = {
                 HAppBar(
-                    title = if (isNewNote) stringResource(R.string.add_note) else "",
+                    title = /*if (isNewNote) stringResource(R.string.add_note) else*/ "",
                     appBarNavButtonType = AppBarNavButtonType.BACK,
                     actions = {
                         HAppBarActions(
@@ -227,11 +227,17 @@ private fun HBody(
     note: Note,
     onNoteTextChanged: (String) -> Unit,
 ) {
-    Surface(
+    Column(
         modifier = Modifier
             .padding(innerPadding)
             .padding(horizontal = 10.dp)
     ) {
+        if (note.alarmDateTime != null)
+            Text(
+                text = "Alarm has been set for " + HDateTime.gerPrettyDateTime(note.alarmDateTime),
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier.alpha(0.4f)
+            )
         AndroidView(
             factory = { context ->
                 val editText = TextInputEditText(context).apply {
