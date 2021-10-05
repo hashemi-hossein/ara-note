@@ -65,8 +65,8 @@ constructor(
     }
 
     private fun createDefaultNotebook() = viewModelScope.launch {
-        if (!appDataStore.readDefaultNotebookExistence()) {
-            appDataStore.writeDefaultNotebookExistence()
+        if (!appDataStore.readPref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, false)) {
+            appDataStore.writePref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, true)
             addNotebook(id = DEFAULT_NOTEBOOK_ID, name = DEFAULT_NOTEBOOK_NAME)
         }
     }

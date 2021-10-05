@@ -7,7 +7,12 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,15 +22,22 @@ class AppDataStore
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
 
-    suspend fun readDefaultNotebookExistence() =
-        context.dataStore.data.first()[DEFAULT_NOTEBOOK_EXISTENCE_KEY] ?: false
+    private val scope = CoroutineScope(IO)
 
-    suspend fun writeDefaultNotebookExistence() = context.dataStore.edit { preferences ->
-        preferences[DEFAULT_NOTEBOOK_EXISTENCE_KEY] = true
+    fun <T> writePref(key: Preferences.Key<T>, value: T) {
+        scope.launch {
+            context.dataStore.edit { preferences ->
+                preferences[key] = value
+            }
+        }
+    }
+
+    suspend fun <T> readPref(key: Preferences.Key<T>, defaultValue: T): T {
+        return context.dataStore.data.first()[key] ?: defaultValue
     }
 
     companion object {
-        private val DEFAULT_NOTEBOOK_EXISTENCE_KEY =
+        val DEFAULT_NOTEBOOK_EXISTENCE_KEY =
             booleanPreferencesKey("default_notebook_existence_key")
     }
 }
