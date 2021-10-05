@@ -39,5 +39,11 @@ class AppDataStore
     companion object {
         val DEFAULT_NOTEBOOK_EXISTENCE_KEY =
             booleanPreferencesKey("default_notebook_existence_key")
+        val DARK_THEME_KEY = booleanPreferencesKey("dark_theme_key")
     }
+
+    val isDark: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[DARK_THEME_KEY] ?: false
+        }
 }
