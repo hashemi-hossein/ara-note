@@ -63,7 +63,6 @@ import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.viewmodels.NoteDetailViewModel
-import com.ara.aranote.ui.components.AppBarNavButtonType
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.HDropdown
 import com.ara.aranote.ui.components.showSnackbar
@@ -173,7 +172,6 @@ internal fun NoteDetailScreen(
             topBar = {
                 HAppBar(
                     title = /*if (isNewNote) stringResource(R.string.add_note) else*/ "",
-                    appBarNavButtonType = AppBarNavButtonType.BACK,
                     actions = {
                         HAppBarActions(
                             note = note,

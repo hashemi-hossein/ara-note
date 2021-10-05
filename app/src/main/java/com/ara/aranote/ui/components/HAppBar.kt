@@ -22,8 +22,8 @@ enum class AppBarNavButtonType {
 
 @Composable
 fun HAppBar(
-    title: String = stringResource(id = R.string.app_name),
-    appBarNavButtonType: AppBarNavButtonType = AppBarNavButtonType.MENU,
+    title: String = "",
+    appBarNavButtonType: AppBarNavButtonType = AppBarNavButtonType.BACK,
     actions: @Composable RowScope.() -> Unit = {},
     onNavButtonClick: () -> Unit,
 ) {

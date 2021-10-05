@@ -18,6 +18,7 @@ import com.ara.aranote.domain.viewmodels.HomeViewModel
 import com.ara.aranote.domain.viewmodels.NoteDetailViewModel
 import com.ara.aranote.ui.screens.HomeScreen
 import com.ara.aranote.ui.screens.NoteDetailScreen
+import com.ara.aranote.util.ANIMATION_DURATION
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -39,26 +40,26 @@ fun AppMain(
             enterTransition = { _, _ ->
                 slideInHorizontally(
                     initialOffsetX = { boxWith },
-                    animationSpec = tween(300),
-                ).plus(fadeIn(animationSpec = tween(300)))
+                    animationSpec = tween(ANIMATION_DURATION),
+                ).plus(fadeIn(animationSpec = tween(ANIMATION_DURATION)))
             },
             popExitTransition = { _, _ ->
                 slideOutHorizontally(
                     targetOffsetX = { boxWith },
-                    animationSpec = tween(300),
-                ).plus(fadeOut(animationSpec = tween(300)))
+                    animationSpec = tween(ANIMATION_DURATION),
+                ).plus(fadeOut(animationSpec = tween(ANIMATION_DURATION)))
             },
             exitTransition = { _, _ ->
                 slideOutHorizontally(
                     targetOffsetX = { -boxWith },
-                    animationSpec = tween(300),
-                ).plus(fadeOut(animationSpec = tween(300)))
+                    animationSpec = tween(ANIMATION_DURATION),
+                ).plus(fadeOut(animationSpec = tween(ANIMATION_DURATION)))
             },
             popEnterTransition = { _, _ ->
                 slideInHorizontally(
                     initialOffsetX = { -boxWith },
-                    animationSpec = tween(300),
-                ).plus(fadeIn(animationSpec = tween(300)))
+                    animationSpec = tween(ANIMATION_DURATION),
+                ).plus(fadeIn(animationSpec = tween(ANIMATION_DURATION)))
             }
         ) {
 
