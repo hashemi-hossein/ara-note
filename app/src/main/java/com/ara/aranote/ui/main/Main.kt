@@ -16,8 +16,10 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.ara.aranote.domain.viewmodels.HomeViewModel
 import com.ara.aranote.domain.viewmodels.NoteDetailViewModel
+import com.ara.aranote.domain.viewmodels.SettingsViewModel
 import com.ara.aranote.ui.screens.HomeScreen
 import com.ara.aranote.ui.screens.NoteDetailScreen
+import com.ara.aranote.ui.screens.SettingsScreen
 import com.ara.aranote.util.ANIMATION_DURATION
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -67,6 +69,7 @@ fun AppMain(
                 val viewModel = hiltViewModel<HomeViewModel>()
                 HomeScreen(
                     viewModel = viewModel,
+                    navigateToSettingsScreen = { navController.navigate(NavScreen.Settings.route) }
                 ) { noteId, notebookId ->
                     navController.navigate(NavScreen.NoteDetail.route + "?noteId=$noteId&notebookId=$notebookId")
                 }
@@ -99,6 +102,13 @@ fun AppMain(
                     navController.navigateUp()
                 }
             }
+
+            composable(NavScreen.Settings.route) {
+                val viewModel = hiltViewModel<SettingsViewModel>()
+                SettingsScreen(viewModel = viewModel) {
+                    navController.navigateUp()
+                }
+            }
         }
     }
 }
@@ -106,6 +116,6 @@ fun AppMain(
 sealed class NavScreen(val route: String) {
 
     object Home : NavScreen("Home")
-
     object NoteDetail : NavScreen("NoteDetail")
+    object Settings : NavScreen("Settings")
 }

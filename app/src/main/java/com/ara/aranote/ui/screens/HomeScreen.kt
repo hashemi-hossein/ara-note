@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +17,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
@@ -27,6 +32,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -48,6 +54,7 @@ import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.viewmodels.HomeViewModel
+import com.ara.aranote.ui.components.AppBarNavButtonType
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.NoteCard
 import com.ara.aranote.ui.components.StaggeredVerticalGrid
@@ -64,6 +71,7 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
+    navigateToSettingsScreen: () -> Unit,
     navigateToNoteDetailScreen: (Int, Int) -> Unit,
 ) {
     val notes: List<Note> by viewModel.notes.collectAsState()
@@ -73,6 +81,7 @@ fun HomeScreen(
     HomeScreen(
         notes = notes,
         notebooks = notebooks,
+        navigateToSettingsScreen = navigateToSettingsScreen,
         navigateToNoteDetailScreen = { navigateToNoteDetailScreen(it, currentNotebookId) },
         addNotebook = { viewModel.addNotebook(name = it) },
         currentNotebookId = currentNotebookId,
@@ -84,6 +93,7 @@ fun HomeScreen(
 internal fun HomeScreen(
     notes: List<Note>,
     notebooks: List<Notebook>,
+    navigateToSettingsScreen: () -> Unit,
     navigateToNoteDetailScreen: (Int) -> Unit,
     addNotebook: (String) -> Unit = {},
     currentNotebookId: Int = DEFAULT_NOTEBOOK_ID,
@@ -121,7 +131,10 @@ internal fun HomeScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            HAppBar {
+            HAppBar(
+                title = stringResource(id = R.string.app_name),
+                appBarNavButtonType = AppBarNavButtonType.MENU,
+            ) {
                 scope.launch { scaffoldState.drawerState.open() }
             }
         },
@@ -135,6 +148,10 @@ internal fun HomeScreen(
                         setCurrentNotebookId(it)
                         scope.launch { scaffoldState.drawerState.close() }
                     }
+                },
+                navigateToSettingsScreen = {
+                    navigateToSettingsScreen()
+                    scope.launch { scaffoldState.drawerState.close() }
                 },
             )
         },
@@ -183,54 +200,72 @@ private fun HBody(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun HDrawer(
     notebooks: List<Notebook>,
     setDialogVisibility: (Boolean) -> Unit,
     currentNotebookId: Int,
     setCurrentNotebookId: (Int) -> Unit,
+    navigateToSettingsScreen: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxSize()
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 15.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.notebooks),
-                style = MaterialTheme.typography.h6
-            )
-            IconButton(onClick = { setDialogVisibility(true) }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.cd_add_notebook)
+        Column {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp, vertical = 15.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.notebooks),
+                    style = MaterialTheme.typography.h6
                 )
-            }
-        }
-        LazyColumn(modifier = Modifier.selectableGroup()) {
-            items(notebooks) { item: Notebook ->
-                Surface(
-                    color = if (item.id == currentNotebookId)
-                        MaterialTheme.colors.primary.copy(alpha = 0.15f) else MaterialTheme.colors.surface,
-                    modifier = Modifier
-                        .selectable(
-                            selected = item.id == currentNotebookId,
-                            role = Role.RadioButton
-                        ) { setCurrentNotebookId(item.id) },
-                ) {
-                    Text(
-                        text = item.name,
-                        style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.primary,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(15.dp)
+                IconButton(onClick = { setDialogVisibility(true) }) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.cd_add_notebook)
                     )
                 }
+            }
+            LazyColumn(modifier = Modifier.selectableGroup()) {
+                items(notebooks) { item: Notebook ->
+                    Surface(
+                        color = if (item.id == currentNotebookId)
+                            MaterialTheme.colors.primary.copy(alpha = 0.15f) else MaterialTheme.colors.surface,
+                        modifier = Modifier
+                            .selectable(
+                                selected = item.id == currentNotebookId,
+                                role = Role.RadioButton
+                            ) { setCurrentNotebookId(item.id) },
+                    ) {
+                        Text(
+                            text = item.name,
+                            style = MaterialTheme.typography.body1,
+                            color = MaterialTheme.colors.primary,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(15.dp)
+                        )
+                    }
+                }
+            }
+        }
+        Column {
+            Divider()
+            ListItem(
+                icon = { Icon(imageVector = Icons.Default.Settings, contentDescription = null) },
+                modifier = Modifier
+                    .clickable { navigateToSettingsScreen() }
+            ) {
+                Text(
+                    text = "Settings",
+                    style = MaterialTheme.typography.body1,
+                )
             }
         }
     }
@@ -308,5 +343,6 @@ private fun HPreview() {
         notes = lstNotes,
         notebooks = lstNotebooks,
         navigateToNoteDetailScreen = { },
+        navigateToSettingsScreen = {},
     )
 }
