@@ -40,10 +40,10 @@ class AppDataStore
         val DEFAULT_NOTEBOOK_EXISTENCE_KEY =
             booleanPreferencesKey("default_notebook_existence_key")
         val DARK_THEME_KEY = booleanPreferencesKey("dark_theme_key")
+        val AUTO_NOTE_SAVING = booleanPreferencesKey("auto_note_saving")
     }
 
-    val isDark: Flow<Boolean> = context.dataStore.data
-        .map { preferences ->
-            preferences[DARK_THEME_KEY] ?: false
-        }
+    val isDark: Flow<Boolean> = context.dataStore.data.map { it[DARK_THEME_KEY] ?: false }
+    val isAutoNoteSaving: Flow<Boolean> =
+        context.dataStore.data.map { it[AUTO_NOTE_SAVING] ?: true }
 }
