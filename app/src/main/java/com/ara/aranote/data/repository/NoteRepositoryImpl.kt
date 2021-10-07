@@ -32,7 +32,7 @@ class NoteRepositoryImpl
 
     override fun observeNotes(notebookId: Int): Flow<List<Note>> {
         return noteDao.observeNotes(notebookId).map {
-            noteDomainMapper.toDomainList(it.sortedByDescending { item -> item.addedDateTime })
+            noteDomainMapper.toDomainList(it).sortedByDescending { item -> item.addedDateTime }
         }
     }
 

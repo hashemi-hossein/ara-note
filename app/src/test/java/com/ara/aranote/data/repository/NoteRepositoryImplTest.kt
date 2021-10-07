@@ -83,6 +83,7 @@ class NoteRepositoryImplTest {
             TestUtil.tNoteModelList,
             TestUtil.tNoteModelList
         )
+        val reorderedList = TestUtil.tNoteEntityList.sortedByDescending { it.addedDateTime }
 
         // act
         val r = systemUnderTest.observeNotes(0)
@@ -91,7 +92,7 @@ class NoteRepositoryImplTest {
         // assert
         verify { noteDomainMapperMock.toDomainList(TestUtil.tNoteModelList) }
         verify { noteDaoMock.observeNotes(any()) }
-        assertThat(r2).containsExactly(TestUtil.tNoteEntityList, TestUtil.tNoteEntityList).inOrder()
+        assertThat(r2).containsExactly(reorderedList, reorderedList).inOrder()
     }
 
     @Test
