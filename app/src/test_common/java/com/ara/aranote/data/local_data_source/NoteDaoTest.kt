@@ -62,7 +62,7 @@ class NoteDaoTest {
         assertThat(r).isEqualTo(TestUtil.tNoteModel.id)
         assertThat(r2).isEqualTo(note2.id)
         assertThat(r3).isEqualTo(note3.id)
-        assertThat(r4).containsExactly(TestUtil.tNoteModel, note2, note3).inOrder()
+        assertThat(r4).containsExactly(note3, note2, TestUtil.tNoteModel).inOrder()
     }
 
     @Test

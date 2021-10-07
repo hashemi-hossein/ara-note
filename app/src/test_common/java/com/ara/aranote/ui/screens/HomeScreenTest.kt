@@ -59,6 +59,7 @@ class HomeScreenTest {
                     noteIdToNavigate = noteId
                     notebookIdToNavigate = currentNotebookId.value
                 },
+                navigateToSettingsScreen = {},
                 addNotebook = { notebookNameToAdd = it },
                 currentNotebookId = currentNotebookId.value,
                 setCurrentNotebookId = { notebookId ->
