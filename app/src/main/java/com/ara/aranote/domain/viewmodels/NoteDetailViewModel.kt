@@ -49,7 +49,7 @@ constructor(
         }
     }
 
-    suspend fun prepareNote(noteId: Int, notebookId: Int) {
+    suspend fun prepareNote(noteId: Int, notebookId: Int = DEFAULT_NOTEBOOK_ID) {
         Timber.tag(TAG).d("loading note - noteId=$noteId")
         _note.value = if (noteId >= 0) {
             repository.getNote(noteId) ?: _note.value.copy(text = "ERROR")

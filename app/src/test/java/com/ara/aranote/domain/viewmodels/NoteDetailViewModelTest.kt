@@ -96,6 +96,7 @@ class NoteDetailViewModelTest {
     @Test
     fun `backPressed-insert when isNewNote and doNotDelete`() = runBlockingTest {
         // arrange
+        systemUnderTest.prepareNote(noteId = INVALID_NOTE_ID)
         systemUnderTest.modifyNote(TestUtil.tNoteEntity)
 
         // act
@@ -114,6 +115,7 @@ class NoteDetailViewModelTest {
     @Test
     fun `backPressed-ignore when isNewNote and doDelete`() = runBlockingTest {
         // arrange
+        systemUnderTest.prepareNote(noteId = INVALID_NOTE_ID)
         systemUnderTest.modifyNote(TestUtil.tNoteEntity)
 
         // act

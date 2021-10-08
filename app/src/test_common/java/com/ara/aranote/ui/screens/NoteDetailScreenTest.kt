@@ -23,6 +23,7 @@ import androidx.test.filters.SmallTest
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
+import com.ara.aranote.domain.viewmodels.NoteDetailViewModel.TheOperation
 import com.ara.aranote.test_util.TestUtil
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
@@ -46,7 +47,7 @@ class NoteDetailScreenTest {
 
     private lateinit var note: MutableState<Note>
     private lateinit var notebooks: MutableState<List<Notebook>>
-    private var backPressResult: Boolean? = null
+    private var backPressResult: TheOperation? = null
 
     @Before
     fun setUp() {
@@ -216,7 +217,7 @@ class NoteDetailScreenTest {
             .assertIsDisplayed().performClick()
 
         // assert
-        assertThat(backPressResult).isFalse()
+        assertThat(backPressResult).isEqualTo(TheOperation.SAVE)
     }
 
     @Test
@@ -225,25 +226,25 @@ class NoteDetailScreenTest {
         Espresso.pressBack()
 
         // assert
-        assertThat(backPressResult).isFalse()
+        assertThat(backPressResult).isEqualTo(TheOperation.SAVE)
     }
 
     @Test
-    fun fab_click_when_no_text() {
+    fun clickDeleteIcon_when_no_text() {
         // act
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_discard))
             .performClick()
         // snackbar
         // this way can be used
         // https://github.com/android/compose-samples/blob/main/JetNews/app/src/sharedTest/java/com/example/jetnews/HomeScreenTests.kt
-        composeTestRule.onNodeWithText(context.getString(R.string.discard)).assertDoesNotExist()
+//        composeTestRule.onNodeWithText(context.getString(R.string.discard)).assertDoesNotExist()
 
         // assert
-        assertThat(backPressResult).isTrue()
+        assertThat(backPressResult).isEqualTo(TheOperation.DISCARD)
     }
 
     @Test
-    fun fab_click_when_text() {
+    fun clickDeleteIcon_when_text() {
         // arrange
         note.value = note.value.copy(text = "hello")
 
@@ -251,10 +252,10 @@ class NoteDetailScreenTest {
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_discard))
             .performClick()
         // snackbar
-        composeTestRule.onNodeWithText(context.getString(R.string.discard))
-            .assertIsDisplayed().performClick()
+//        composeTestRule.onNodeWithText(context.getString(R.string.discard))
+//            .assertIsDisplayed().performClick()
 
         // assert
-        assertThat(backPressResult).isTrue()
+        assertThat(backPressResult).isEqualTo(TheOperation.DISCARD)
     }
 }
