@@ -35,6 +35,7 @@ import androidx.compose.material.icons.filled.AlarmAdd
 import androidx.compose.material.icons.filled.AlarmOff
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
@@ -63,6 +64,7 @@ import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.viewmodels.NoteDetailViewModel
+import com.ara.aranote.domain.viewmodels.NoteDetailViewModel.TheOperation
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.HDropdown
 import com.ara.aranote.ui.components.showSnackbar
@@ -92,24 +94,55 @@ fun NoteDetailScreen(
     val isNewNote = noteId < 0
     val note: Note by viewModel.note.collectAsState()
     val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
+    val isAutoNoteSaving by viewModel.appDataStore.isAutoSaveMode.collectAsState(initial = true)
+
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
 
-    val onBackPressed: (Boolean) -> Unit = { doesDelete ->
-        viewModel.backPressed(
-            isNewNote = isNewNote,
-            doesDelete = doesDelete,
-            navigateUp = navigateUp,
-            disableAlarm = {
-                hManageAlarm(
-                    context = context,
-                    doesCreate = false,
-                    noteId = it,
+    val onBackPressed: (TheOperation) -> Unit = { theOperation ->
+        if (theOperation == TheOperation.DISCARD) {
+            if (viewModel.isModified.value)
+                showSnackbar(
+                    scope = scope,
+                    snackbarHostState = scaffoldState.snackbarHostState,
+                    actionLabel = context.getString(R.string.discard)
+                ) {
+                    navigateUp()
+                }
+            else
+                navigateUp()
+        } else {
+            val deleteOrSaveOperation = {
+                viewModel.backPressed(
+                    isNewNote = isNewNote,
+                    doesDelete = theOperation == TheOperation.DELETE,
+                    navigateUp = navigateUp,
+                    disableAlarm = {
+                        hManageAlarm(
+                            context = context,
+                            doesCreate = false,
+                            noteId = it,
+                        )
+                    },
+                    onOperationError = {
+                        Toast.makeText(context, "error in operation occurred", Toast.LENGTH_LONG)
+                            .show()
+                    },
                 )
-            },
-            onOperationError = {
-                Toast.makeText(context, "error in operation occurred", Toast.LENGTH_LONG).show()
-            },
-        )
+            }
+            if (theOperation == TheOperation.DELETE) {
+                showSnackbar(
+                    scope = scope,
+                    snackbarHostState = scaffoldState.snackbarHostState,
+                    actionLabel = context.getString(R.string.delete)
+                ) {
+                    deleteOrSaveOperation()
+                }
+            } else {
+                deleteOrSaveOperation()
+            }
+        }
     }
 
     val modalBottomSheetState = rememberModalBottomSheetState(
@@ -127,7 +160,10 @@ fun NoteDetailScreen(
         onNoteTextChanged = { viewModel.modifyNote(viewModel.note.value.copy(text = it)) },
         onBackPressed = onBackPressed,
         isNewNote = isNewNote,
+        isAutoNoteSaving = isAutoNoteSaving,
         modalBottomSheetState = modalBottomSheetState,
+        scaffoldState = scaffoldState,
+        scope = scope,
     )
 }
 
@@ -138,8 +174,9 @@ internal fun NoteDetailScreen(
     notebooks: List<Notebook>,
     onNoteChanged: (Note) -> Unit,
     onNoteTextChanged: (String) -> Unit,
-    onBackPressed: (Boolean) -> Unit,
+    onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
+    isAutoNoteSaving: Boolean = true,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
@@ -152,7 +189,7 @@ internal fun NoteDetailScreen(
         if (modalBottomSheetState.isVisible)
             scope.launch { modalBottomSheetState.hide() }
         else
-            onBackPressed(false)
+            onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD)
     })
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
@@ -186,26 +223,17 @@ internal fun NoteDetailScreen(
                             keyboardController = keyboardController,
                         )
                     },
-                    onNavButtonClick = { onBackPressed(false) },
+                    onNavButtonClick = { onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD) },
                 )
             },
             floatingActionButton = {
-                if (isNewNote)
+                if (!isAutoNoteSaving)
                     FloatingActionButton(onClick = {
-                        if (note.text.isNotEmpty()) {
-                            showSnackbar(
-                                scope = scope,
-                                snackbarHostState = scaffoldState.snackbarHostState,
-                                actionLabel = context.getString(R.string.discard)
-                            ) {
-                                onBackPressed(true)
-                            }
-                        } else
-                            onBackPressed(true)
+                        onBackPressed(TheOperation.SAVE)
                     }) {
                         Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.cd_discard)
+                            imageVector = Icons.Default.Save,
+                            contentDescription = stringResource(R.string.cd_save)
                         )
                     }
             },
@@ -281,7 +309,7 @@ private fun HAppBarActions(
     note: Note,
     notebooks: List<Notebook>,
     onNoteChanged: (Note) -> Unit,
-    onBackPressed: (Boolean) -> Unit,
+    onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
     scope: CoroutineScope,
     scaffoldState: ScaffoldState,
@@ -291,18 +319,15 @@ private fun HAppBarActions(
 ) {
     val doesHasAlarm = note.alarmDateTime != null
 
-    if (!isNewNote)
-        IconButton(onClick = {
-            showSnackbar(
-                scope = scope,
-                snackbarHostState = scaffoldState.snackbarHostState,
-                actionLabel = context.getString(R.string.delete)
-            ) {
-                onBackPressed(true)
-            }
-        }) {
-            Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-        }
+    IconButton(onClick = {
+        onBackPressed(if (!isNewNote) TheOperation.DELETE else TheOperation.DISCARD)
+    }) {
+        Icon(
+            imageVector = Icons.Default.Delete,
+            contentDescription = if (!isNewNote) stringResource(R.string.cd_delete)
+            else stringResource(R.string.cd_discard)
+        )
+    }
     IconButton(onClick = {
         keyboardController?.hide()
         scope.launch { modalBottomSheetState.show() }

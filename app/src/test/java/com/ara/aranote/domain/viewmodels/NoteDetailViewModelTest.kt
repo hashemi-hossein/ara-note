@@ -1,5 +1,6 @@
 package com.ara.aranote.domain.viewmodels
 
+import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.repository.FakeNoteRepository
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.test_util.TestCoroutineRule
@@ -7,6 +8,7 @@ import com.ara.aranote.test_util.TestUtil
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.google.common.truth.Truth.assertThat
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
@@ -25,13 +27,14 @@ class NoteDetailViewModelTest {
     private val disableAlarm: (Int) -> Unit = { println("disableAlarm id=$it") }
     private val onOperationError = { println("onOperationError") }
 
+    private val appDataStoreMock = mockk<AppDataStore>()
     private lateinit var repository: NoteRepository
     private lateinit var systemUnderTest: NoteDetailViewModel
 
     @Before
     fun setUp() {
         repository = FakeNoteRepository()
-        systemUnderTest = NoteDetailViewModel(repository)
+        systemUnderTest = NoteDetailViewModel(repository, appDataStoreMock)
     }
 
     @Test

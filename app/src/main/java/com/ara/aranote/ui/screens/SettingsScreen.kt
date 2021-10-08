@@ -24,15 +24,15 @@ fun SettingsScreen(
     navigateUp: () -> Unit,
 ) {
     val isDark by viewModel.appDataStore.isDark.collectAsState(initial = false)
-    val isAutoNoteSaving by viewModel.appDataStore.isAutoNoteSaving.collectAsState(initial = true)
+    val isAutoSaveMode by viewModel.appDataStore.isAutoSaveMode.collectAsState(initial = true)
 
     SettingsScreen(
         navigateUp = navigateUp,
         isDark = isDark,
         setIsDark = { viewModel.appDataStore.writePref(AppDataStore.DARK_THEME_KEY, it) },
-        isAutoNoteSaving = isAutoNoteSaving,
-        setIsAutoNoteSaving = {
-            viewModel.appDataStore.writePref(AppDataStore.AUTO_NOTE_SAVING, it)
+        isAutoSaveMode = isAutoSaveMode,
+        setIsAutoSaveMode = {
+            viewModel.appDataStore.writePref(AppDataStore.AUTO_SAVE_MODE, it)
         },
     )
 }
@@ -43,8 +43,8 @@ internal fun SettingsScreen(
     navigateUp: () -> Unit,
     isDark: Boolean,
     setIsDark: (Boolean) -> Unit,
-    isAutoNoteSaving: Boolean,
-    setIsAutoNoteSaving: (Boolean) -> Unit,
+    isAutoSaveMode: Boolean,
+    setIsAutoSaveMode: (Boolean) -> Unit,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
 ) {
     Scaffold(
@@ -64,9 +64,9 @@ internal fun SettingsScreen(
                 Text(text = "Dark Theme")
             }
             ListItem(trailing = {
-                Switch(checked = isAutoNoteSaving, onCheckedChange = setIsAutoNoteSaving)
+                Switch(checked = isAutoSaveMode, onCheckedChange = setIsAutoSaveMode)
             }) {
-                Text(text = "Auto Note Saving")
+                Text(text = "Auto Save Mode")
             }
         }
     }

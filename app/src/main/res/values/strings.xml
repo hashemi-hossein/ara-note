@@ -14,6 +14,7 @@
 
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>
+    <string name="cd_delete">Delete</string>
     <string name="cd_happbar_back">Back To Previous Screen</string>
     <string name="cd_happbar_menu">Open Menu</string>
     <string name="cd_edit_note_alarm">Edit Note Alarm</string>
@@ -24,5 +25,6 @@
     <string name="cd_reset_date_and_time">Reset Date and Time</string>
     <string name="cd_add_notebook">Add Notebook</string>
     <string name="cd_confirm_adding_notebook">confirm adding notebook</string>
+    <string name="cd_save">save</string>
 
 </resources>

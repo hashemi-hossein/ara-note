@@ -2,6 +2,7 @@ package com.ara.aranote.domain.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
@@ -22,6 +23,7 @@ class NoteDetailViewModel
 @Inject
 constructor(
     private val repository: NoteRepository,
+    val appDataStore: AppDataStore,
 ) : ViewModel() {
 
     private val _note = MutableStateFlow(
@@ -37,6 +39,10 @@ constructor(
     private val _notebooks = MutableStateFlow(listOf<Notebook>())
     val notebooks = _notebooks.asStateFlow()
 
+    private lateinit var originalNote: Note
+    private val _isModified = MutableStateFlow(false)
+    val isModified = _isModified.asStateFlow()
+
     init {
         viewModelScope.launch {
             _notebooks.update { repository.observeNotebooks().first() }
@@ -50,10 +56,12 @@ constructor(
         } else {
             _note.value.copy(id = repository.getLastId() + 1, notebookId = notebookId)
         }
+        originalNote = _note.value
     }
 
     fun modifyNote(note: Note) {
         _note.update { note }
+        _isModified.value = _note.value != originalNote
     }
 
     private suspend fun addNote(): Boolean {
@@ -75,6 +83,10 @@ constructor(
 
     private suspend fun deleteNote(): Boolean {
         return repository.deleteNote(_note.value)
+    }
+
+    enum class TheOperation {
+        SAVE, DISCARD, DELETE
     }
 
     fun backPressed(
