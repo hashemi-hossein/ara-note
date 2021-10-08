@@ -11,6 +11,8 @@
     <string name="name">name</string>
     <string name="press_back_again_to_exit">Press back again to exit</string>
     <string name="exit">Exit</string>
+    <string name="select">Select</string>
+    <string name="cancel">Cancel</string>
 
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>

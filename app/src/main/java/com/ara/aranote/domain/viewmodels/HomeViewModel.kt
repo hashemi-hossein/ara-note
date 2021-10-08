@@ -22,7 +22,7 @@ class HomeViewModel
 @Inject
 constructor(
     private val repository: NoteRepository,
-    private val appDataStore: AppDataStore,
+    val appDataStore: AppDataStore,
 ) : ViewModel() {
 
     private val _notes = MutableStateFlow(listOf<Note>())

@@ -191,4 +191,5 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "io.karn:notify:1.4.0"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "com.afollestad.material-dialogs:color:3.3.0"
 }

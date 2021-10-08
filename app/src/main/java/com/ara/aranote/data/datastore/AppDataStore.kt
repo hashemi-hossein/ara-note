@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -40,10 +41,13 @@ class AppDataStore
         val DEFAULT_NOTEBOOK_EXISTENCE_KEY =
             booleanPreferencesKey("default_notebook_existence_key")
         val DARK_THEME_KEY = booleanPreferencesKey("dark_theme_key")
+
         val AUTO_SAVE_MODE = booleanPreferencesKey("auto_save_mode")
+        val NOTE_COLOR = longPreferencesKey("note_color")
     }
 
     val isDark: Flow<Boolean> = context.dataStore.data.map { it[DARK_THEME_KEY] ?: false }
     val isAutoSaveMode: Flow<Boolean> =
         context.dataStore.data.map { it[AUTO_SAVE_MODE] ?: true }
+    val noteColor: Flow<Long> = context.dataStore.data.map { it[NOTE_COLOR] ?: -43230 }
 }

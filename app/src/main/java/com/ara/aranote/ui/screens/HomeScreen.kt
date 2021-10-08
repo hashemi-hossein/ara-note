@@ -77,6 +77,7 @@ fun HomeScreen(
     val notes: List<Note> by viewModel.notes.collectAsState()
     val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
     val currentNotebookId by viewModel.currentNotebookId.collectAsState()
+    val noteColor by viewModel.appDataStore.noteColor.collectAsState(initial = 0)
 
     HomeScreen(
         notes = notes,
@@ -85,7 +86,8 @@ fun HomeScreen(
         navigateToNoteDetailScreen = { navigateToNoteDetailScreen(it, currentNotebookId) },
         addNotebook = { viewModel.addNotebook(name = it) },
         currentNotebookId = currentNotebookId,
-        setCurrentNotebookId = viewModel::setCurrentNotebookId
+        setCurrentNotebookId = viewModel::setCurrentNotebookId,
+        noteColor = noteColor,
     )
 }
 
@@ -98,6 +100,7 @@ internal fun HomeScreen(
     addNotebook: (String) -> Unit = {},
     currentNotebookId: Int = DEFAULT_NOTEBOOK_ID,
     setCurrentNotebookId: (Int) -> Unit = {},
+    noteColor: Long = 0,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
@@ -170,6 +173,7 @@ internal fun HomeScreen(
             innerPadding = innerPadding,
             notes = notes,
             navigateToNoteDetailScreen = navigateToNoteDetailScreen,
+            noteColor = noteColor,
         )
         HDialog(
             isDialogVisible = isDialogVisible,
@@ -185,6 +189,7 @@ private fun HBody(
     innerPadding: PaddingValues,
     notes: List<Note>,
     navigateToNoteDetailScreen: (Int) -> Unit,
+    noteColor: Long,
 ) {
     Surface(
         modifier = Modifier
@@ -192,7 +197,7 @@ private fun HBody(
     ) {
         StaggeredVerticalGrid(maxColumnWidth = 220.dp) {
             notes.forEach { item: Note ->
-                NoteCard(note = item) {
+                NoteCard(note = item, noteColor = noteColor) {
                     navigateToNoteDetailScreen(item.id)
                 }
             }
