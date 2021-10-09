@@ -2,6 +2,7 @@ package com.ara.aranote.ui.screens
 
 import android.content.Context
 import android.view.Gravity
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Button
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -33,6 +35,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.AlarmAdd
 import androidx.compose.material.icons.filled.AlarmOff
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Save
@@ -209,6 +212,7 @@ internal fun NoteDetailScreen(
             topBar = {
                 HAppBar(
                     title = /*if (isNewNote) stringResource(R.string.add_note) else*/ "",
+                    icon = if (isAutoNoteSaving) Icons.Default.Done else Icons.Default.ArrowBack,
                     actions = {
                         HAppBarActions(
                             note = note,
@@ -217,13 +221,15 @@ internal fun NoteDetailScreen(
                             onBackPressed = onBackPressed,
                             isNewNote = isNewNote,
                             scope = scope,
-                            scaffoldState = scaffoldState,
                             context = context,
                             modalBottomSheetState = modalBottomSheetState,
                             keyboardController = keyboardController,
                         )
                     },
-                    onNavButtonClick = { onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD) },
+                    onNavButtonClick = {
+                        scope.launch { keyboardController?.hide() }
+                        onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD)
+                    },
                 )
             },
             floatingActionButton = {
@@ -258,19 +264,23 @@ private fun HBody(
             .padding(innerPadding)
             .padding(horizontal = 10.dp)
     ) {
+        Divider()
         if (note.alarmDateTime != null)
             Text(
                 text = "Alarm has been set for " + HDateTime.gerPrettyDateTime(note.alarmDateTime),
                 style = MaterialTheme.typography.body2,
                 modifier = Modifier.alpha(0.4f)
             )
+        var runOnce by remember { mutableStateOf(false) }
         AndroidView(
             factory = { context ->
                 val editText = TextInputEditText(context).apply {
                     background = null
                     gravity = Gravity.TOP
                     textSize = 17f
+                    hint = context.getString(R.string.type_here)
                     setHorizontallyScrolling(false)
+                    requestFocus()
 //                    setTypeface(Typeface.createFromAsset(context.assets,""))
                     doAfterTextChanged {
                         onNoteTextChanged(it?.toString() ?: "")
@@ -284,8 +294,13 @@ private fun HBody(
             update = { view ->
                 if (note.text.isNotEmpty() && (view[0] as TextInputEditText).text?.isEmpty() == true) {
                     (view[0] as TextInputEditText).setText(note.text)
-//                    (view[0] as TextInputEditText).setSelection(note.text.length)
-//                    (view[0] as TextInputEditText).requestFocus()
+                    (view[0] as TextInputEditText).setSelection(note.text.length)
+                }
+                if (!runOnce && note.id != 0) {
+                    runOnce = true
+                    val imm: InputMethodManager? =
+                        view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    imm?.showSoftInput(view[0], InputMethodManager.SHOW_FORCED)
                 }
             },
             modifier = Modifier.fillMaxSize()
@@ -312,7 +327,6 @@ private fun HAppBarActions(
     onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
     scope: CoroutineScope,
-    scaffoldState: ScaffoldState,
     context: Context,
     modalBottomSheetState: ModalBottomSheetState,
     keyboardController: SoftwareKeyboardController?

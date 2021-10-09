@@ -13,6 +13,7 @@
     <string name="exit">Exit</string>
     <string name="select">Select</string>
     <string name="cancel">Cancel</string>
+    <string name="type_here">Type here…</string>
 
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>

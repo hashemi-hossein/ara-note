@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,8 @@ enum class AppBarNavButtonType {
 fun HAppBar(
     title: String = "",
     appBarNavButtonType: AppBarNavButtonType = AppBarNavButtonType.BACK,
+    icon: ImageVector = if (appBarNavButtonType == AppBarNavButtonType.BACK) Icons.Filled.ArrowBack
+    else Icons.Filled.Menu,
     actions: @Composable RowScope.() -> Unit = {},
     onNavButtonClick: () -> Unit,
 ) {
@@ -41,9 +44,7 @@ fun HAppBar(
         navigationIcon = {
             IconButton(onClick = onNavButtonClick) {
                 Icon(
-                    imageVector =
-                    if (appBarNavButtonType == AppBarNavButtonType.BACK) Icons.Filled.ArrowBack
-                    else Icons.Filled.Menu,
+                    imageVector = icon,
                     contentDescription =
                     if (appBarNavButtonType == AppBarNavButtonType.BACK) stringResource(R.string.cd_happbar_back)
                     else stringResource(R.string.cd_happbar_menu),
