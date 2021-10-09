@@ -4,7 +4,7 @@ buildscript {
         kotlin_version = "1.5.31"
         compose_version = "1.1.0-alpha05"
         navigation_compose = "2.4.0-alpha10"
-        hilt_version = "2.39"
+        hilt_version = "2.39.1"
         hiltComposeNavigation = "1.0.0-alpha03"
         room_version = "2.3.0"
         timberVersion = "5.0.1"

@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -118,7 +118,7 @@ dependencies {
     implementation "androidx.compose.animation:animation-core:$compose_version"
 //    implementation "androidx.compose.animation:animation-graphics:compose_animation"
     // Other Compose Libs
-    implementation "com.google.android.material:compose-theme-adapter:1.0.2"
+    implementation "com.google.android.material:compose-theme-adapter:1.0.3"
 //    implementation "androidx.paging:paging-compose:1.0.0-alpha12"
 
     // Navigation Compose
@@ -144,7 +144,7 @@ dependencies {
 
     // DateTime
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
-    implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.3.0"
     implementation "org.ocpsoft.prettytime:prettytime:5.0.2.Final"
 
     // Kotlinx Coroutines
