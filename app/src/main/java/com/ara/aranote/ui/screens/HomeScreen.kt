@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -107,7 +110,7 @@ internal fun HomeScreen(
 ) {
     var isDialogVisible by remember { mutableStateOf(false) }
     val setDialogVisibility: (Boolean) -> Unit = { isDialogVisible = it }
-    var lastTimeMillis = 0L
+    var lastTimeMillis by remember { mutableStateOf(0L) }
 
     BackHandler(
         onBack = {
@@ -117,6 +120,7 @@ internal fun HomeScreen(
                 currentNotebookId != DEFAULT_NOTEBOOK_ID -> setCurrentNotebookId(DEFAULT_NOTEBOOK_ID)
                 System.currentTimeMillis() - lastTimeMillis < 2000 -> (context as AppCompatActivity).finish()
                 else -> {
+                    lastTimeMillis = System.currentTimeMillis()
                     showSnackbar(
                         scope = scope,
                         snackbarHostState = scaffoldState.snackbarHostState,
@@ -126,7 +130,6 @@ internal fun HomeScreen(
                     ) {
                         (context as AppCompatActivity).finish()
                     }
-                    lastTimeMillis = System.currentTimeMillis()
                 }
             }
         }
@@ -190,10 +193,12 @@ private fun HBody(
     notes: List<Note>,
     navigateToNoteDetailScreen: (Int) -> Unit,
     noteColor: Long,
+    scrollState: ScrollState = rememberScrollState(),
 ) {
     Surface(
         modifier = Modifier
             .padding(innerPadding)
+            .verticalScroll(scrollState)
     ) {
         StaggeredVerticalGrid(maxColumnWidth = 220.dp) {
             notes.forEach { item: Note ->
