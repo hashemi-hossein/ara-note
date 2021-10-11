@@ -2,6 +2,9 @@ package com.ara.aranote.ui.screens
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,16 +13,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.ListItem
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.OpenInNewOff
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -31,6 +41,8 @@ import com.ara.aranote.R
 import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.viewmodels.SettingsViewModel
 import com.ara.aranote.ui.components.HAppBar
+import com.ara.aranote.ui.components.showSnackbar
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun SettingsScreen(
@@ -50,7 +62,9 @@ fun SettingsScreen(
             viewModel.appDataStore.writePref(AppDataStore.AUTO_SAVE_MODE, it)
         },
         noteColor = noteColor,
-        setNoteColor = { viewModel.appDataStore.writePref(AppDataStore.NOTE_COLOR, it) }
+        setNoteColor = { viewModel.appDataStore.writePref(AppDataStore.NOTE_COLOR, it) },
+        exportData = viewModel::exportData,
+        importData = viewModel::importData,
     )
 }
 
@@ -65,7 +79,10 @@ internal fun SettingsScreen(
     setIsAutoSaveMode: (Boolean) -> Unit,
     noteColor: Long,
     setNoteColor: (Long) -> Unit,
+    exportData: (Uri, () -> Unit) -> Unit,
+    importData: (Uri, () -> Unit) -> Unit,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
+    scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
 ) {
     Scaffold(
@@ -128,6 +145,55 @@ internal fun SettingsScreen(
                 )
             }) {
                 Text(text = "Note Color")
+            }
+            Divider()
+            val activityResultLauncherCreateDocument =
+                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) {
+                    if (it != null)
+                        exportData(it) {
+                            showSnackbar(
+                                scope = scope,
+                                snackbarHostState = scaffoldState.snackbarHostState,
+                                message = "Operation was done",
+                                actionLabel = "OK"
+                            )
+                        }
+                }
+            ListItem(trailing = {
+                Button(onClick = {
+                    activityResultLauncherCreateDocument.launch("AraNote.txt")
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.OpenInNewOff,
+                        contentDescription = "Export Data"
+                    )
+                }
+            }) {
+                Text(text = "Export Data")
+            }
+            val activityResultLauncherOpenDocument =
+                rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
+                    if (it != null)
+                        importData(it) {
+                            showSnackbar(
+                                scope = scope,
+                                snackbarHostState = scaffoldState.snackbarHostState,
+                                message = "Operation was done",
+                                actionLabel = "OK"
+                            )
+                        }
+                }
+            ListItem(trailing = {
+                Button(onClick = {
+                    activityResultLauncherOpenDocument.launch(arrayOf("text/plain"))
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.ExitToApp,
+                        contentDescription = "Import Data"
+                    )
+                }
+            }) {
+                Text(text = "Import Data")
             }
         }
     }
