@@ -30,10 +30,11 @@ class NoteRepositoryImpl
         return result?.toInt() ?: INVALID_NOTE_ID
     }
 
-    override fun observeNotes(notebookId: Int): Flow<List<Note>> {
-        return noteDao.observeNotes(notebookId).map {
-            noteDomainMapper.toDomainList(it).sortedByDescending { item -> item.addedDateTime }
-        }
+    override fun observeNotes(notebookId: Int?): Flow<List<Note>> {
+        return (if (notebookId == null) noteDao.observeNotes() else noteDao.observeNotes(notebookId))
+            .map {
+                noteDomainMapper.toDomainList(it).sortedByDescending { item -> item.addedDateTime }
+            }
     }
 
     override suspend fun getNote(id: Int): Note? {

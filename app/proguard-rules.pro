@@ -22,6 +22,9 @@
 
 
 
+
+
+# https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:datastore/datastore-preferences/proguard-rules.pro
 -keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
     <fields>;
 }

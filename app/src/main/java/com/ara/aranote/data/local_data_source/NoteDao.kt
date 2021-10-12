@@ -14,7 +14,10 @@ interface NoteDao {
     @Insert
     suspend fun insertNote(noteModel: NoteModel): Long?
 
-    @Query("SELECT * FROM tblNotes t WHERE t.notebook_id=:notebookId ORDER BY id DESC")
+    @Query("SELECT * FROM tblNotes ORDER BY id DESC")
+    fun observeNotes(): Flow<List<NoteModel>>
+
+    @Query("SELECT * FROM tblNotes WHERE notebook_id=:notebookId ORDER BY id DESC")
     fun observeNotes(notebookId: Int): Flow<List<NoteModel>>
 
     @Query("SELECT * FROM tblNotes WHERE id = :id")
