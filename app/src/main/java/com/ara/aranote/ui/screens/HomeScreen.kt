@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,6 +46,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -138,7 +138,8 @@ internal fun HomeScreen(
         scaffoldState = scaffoldState,
         topBar = {
             HAppBar(
-                title = stringResource(id = R.string.app_name),
+                title = notebooks.find { it.id == currentNotebookId }?.name
+                    ?: stringResource(id = R.string.app_name),
                 appBarNavButtonType = AppBarNavButtonType.MENU,
             ) {
                 scope.launch { scaffoldState.drawerState.open() }
@@ -219,17 +220,15 @@ private fun HDrawer(
     setCurrentNotebookId: (Int) -> Unit,
     navigateToSettingsScreen: () -> Unit,
 ) {
-    Column(
-        verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxSize()
-    ) {
+    HDrawerColumn {
         Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 15.dp)
+                    .padding(horizontal = 10.dp)
+                    .padding(top = 15.dp)
             ) {
                 Text(
                     text = stringResource(R.string.notebooks),
@@ -276,6 +275,31 @@ private fun HDrawer(
                     text = "Settings",
                     style = MaterialTheme.typography.body1,
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun HDrawerColumn(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Layout(content = content, modifier = modifier) { measurables, constraints ->
+        check(measurables.size == 2) { "This component must have tow item" }
+        val secondItemPlaceable = measurables[1].measure(constraints)
+        val remainedSpace = constraints.maxHeight - secondItemPlaceable.height
+        val secondItemConstraints =
+            constraints.copy(minHeight = remainedSpace, maxHeight = remainedSpace)
+        val placeables = listOf(
+            measurables[0].measure(secondItemConstraints),
+            secondItemPlaceable,
+        )
+        var yPosition = 0
+        layout(width = constraints.maxWidth, height = constraints.maxHeight) {
+            placeables.forEach { placeable ->
+                placeable.placeRelative(x = 0, y = yPosition)
+                yPosition += placeable.height
             }
         }
     }

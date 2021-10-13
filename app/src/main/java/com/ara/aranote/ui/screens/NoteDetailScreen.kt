@@ -227,7 +227,7 @@ internal fun NoteDetailScreen(
                         )
                     },
                     onNavButtonClick = {
-                        scope.launch { keyboardController?.hide() }
+                        keyboardController?.hide()
                         onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD)
                     },
                 )
@@ -334,6 +334,7 @@ private fun HAppBarActions(
     val doesHasAlarm = note.alarmDateTime != null
 
     IconButton(onClick = {
+        keyboardController?.hide()
         onBackPressed(if (!isNewNote) TheOperation.DELETE else TheOperation.DISCARD)
     }) {
         Icon(
