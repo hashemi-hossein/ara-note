@@ -16,14 +16,14 @@ import androidx.compose.runtime.setValue
 
 @Composable
 fun HDropdown(
-    items: List<String>,
+    items: Map<Int, String>,
     selectedIndex: Int,
     onItemClick: (Int) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     Column {
         Button(onClick = { expanded = !expanded }) {
-            Text(items[selectedIndex])
+            Text(items[selectedIndex] ?: "")
             Icon(
                 imageVector = Icons.Filled.ArrowDropDown,
                 contentDescription = null,
@@ -33,7 +33,7 @@ fun HDropdown(
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            items.forEachIndexed { index, label ->
+            items.forEach { (index, label) ->
                 DropdownMenuItem(onClick = {
                     expanded = false
                     onItemClick(index)

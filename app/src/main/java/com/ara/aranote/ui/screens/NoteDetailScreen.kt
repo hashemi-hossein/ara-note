@@ -369,9 +369,9 @@ private fun HAppBarActions(
         }
     if (notebooks.isNotEmpty())
         HDropdown(
-            items = notebooks.map { it.name },
-            selectedIndex = note.notebookId - 1,
-            onItemClick = { onNoteChanged(note.copy(notebookId = it + 1)) },
+            items = notebooks.associate { it.id to it.name },
+            selectedIndex = note.notebookId,
+            onItemClick = { onNoteChanged(note.copy(notebookId = it)) },
         )
 }
 
