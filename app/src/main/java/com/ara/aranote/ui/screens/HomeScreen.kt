@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
@@ -30,10 +29,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -42,7 +40,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +47,6 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ara.aranote.R
@@ -75,6 +71,7 @@ import kotlin.time.ExperimentalTime
 fun HomeScreen(
     viewModel: HomeViewModel,
     navigateToSettingsScreen: () -> Unit,
+    navigateToNotebooksScreen: () -> Unit,
     navigateToNoteDetailScreen: (Int, Int) -> Unit,
 ) {
     val notes: List<Note> by viewModel.notes.collectAsState()
@@ -86,8 +83,8 @@ fun HomeScreen(
         notes = notes,
         notebooks = notebooks,
         navigateToSettingsScreen = navigateToSettingsScreen,
+        navigateToNotebooksScreen = navigateToNotebooksScreen,
         navigateToNoteDetailScreen = { navigateToNoteDetailScreen(it, currentNotebookId) },
-        addNotebook = { viewModel.addNotebook(name = it) },
         currentNotebookId = currentNotebookId,
         setCurrentNotebookId = viewModel::setCurrentNotebookId,
         noteColor = noteColor,
@@ -99,8 +96,8 @@ internal fun HomeScreen(
     notes: List<Note>,
     notebooks: List<Notebook>,
     navigateToSettingsScreen: () -> Unit,
+    navigateToNotebooksScreen: () -> Unit,
     navigateToNoteDetailScreen: (Int) -> Unit,
-    addNotebook: (String) -> Unit = {},
     currentNotebookId: Int = DEFAULT_NOTEBOOK_ID,
     setCurrentNotebookId: (Int) -> Unit = {},
     noteColor: Long = 0,
@@ -108,8 +105,6 @@ internal fun HomeScreen(
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
 ) {
-    var isDialogVisible by remember { mutableStateOf(false) }
-    val setDialogVisibility: (Boolean) -> Unit = { isDialogVisible = it }
     var lastTimeMillis by remember { mutableStateOf(0L) }
 
     BackHandler(
@@ -148,7 +143,6 @@ internal fun HomeScreen(
         drawerContent = {
             HDrawer(
                 notebooks = notebooks,
-                setDialogVisibility = setDialogVisibility,
                 currentNotebookId = currentNotebookId,
                 setCurrentNotebookId = {
                     if (it != currentNotebookId) {
@@ -160,6 +154,7 @@ internal fun HomeScreen(
                     navigateToSettingsScreen()
                     scope.launch { scaffoldState.drawerState.close() }
                 },
+                navigateToNotebooksScreen = navigateToNotebooksScreen,
             )
         },
         floatingActionButton = {
@@ -178,11 +173,6 @@ internal fun HomeScreen(
             notes = notes,
             navigateToNoteDetailScreen = navigateToNoteDetailScreen,
             noteColor = noteColor,
-        )
-        HDialog(
-            isDialogVisible = isDialogVisible,
-            setDialogVisibility = setDialogVisibility,
-            addNotebook = addNotebook,
         )
     }
 }
@@ -215,10 +205,10 @@ private fun HBody(
 @Composable
 private fun HDrawer(
     notebooks: List<Notebook>,
-    setDialogVisibility: (Boolean) -> Unit,
     currentNotebookId: Int,
     setCurrentNotebookId: (Int) -> Unit,
     navigateToSettingsScreen: () -> Unit,
+    navigateToNotebooksScreen: () -> Unit,
 ) {
     HDrawerColumn {
         Column {
@@ -234,10 +224,10 @@ private fun HDrawer(
                     text = stringResource(R.string.notebooks),
                     style = MaterialTheme.typography.h6
                 )
-                IconButton(onClick = { setDialogVisibility(true) }) {
+                IconButton(onClick = { navigateToNotebooksScreen() }) {
                     Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.cd_add_notebook)
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(R.string.cd_goto_notebooks_screen)
                     )
                 }
             }
@@ -305,45 +295,6 @@ private fun HDrawerColumn(
     }
 }
 
-@Composable
-fun HDialog(
-    isDialogVisible: Boolean,
-    setDialogVisibility: (Boolean) -> Unit,
-    addNotebook: (String) -> Unit,
-) {
-    if (isDialogVisible) {
-        var text by rememberSaveable { mutableStateOf("") }
-        AlertDialog(
-            onDismissRequest = { setDialogVisibility(false) },
-            confirmButton = {
-                IconButton(onClick = {
-                    setDialogVisibility(false)
-                    addNotebook(text)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Done,
-                        contentDescription = stringResource(R.string.cd_confirm_adding_notebook)
-                    )
-                }
-            },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(
-                        text = stringResource(R.string.add_notebook),
-                        style = MaterialTheme.typography.body1,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    TextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        singleLine = true,
-                    )
-                }
-            },
-        )
-    }
-}
-
 @OptIn(ExperimentalTime::class)
 @Preview(
 //    showBackground = true,
@@ -378,5 +329,6 @@ private fun HPreview() {
         notebooks = lstNotebooks,
         navigateToNoteDetailScreen = { },
         navigateToSettingsScreen = {},
+        navigateToNotebooksScreen = {},
     )
 }

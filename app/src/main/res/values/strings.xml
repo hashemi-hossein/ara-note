@@ -27,6 +27,7 @@
     <string name="cd_set_alarm">Set Alarm</string>
     <string name="cd_reset_date_and_time">Reset Date and Time</string>
     <string name="cd_add_notebook">Add Notebook</string>
+    <string name="cd_goto_notebooks_screen">Go to notebooks screen</string>
     <string name="cd_confirm_adding_notebook">confirm adding notebook</string>
     <string name="cd_save">save</string>
 

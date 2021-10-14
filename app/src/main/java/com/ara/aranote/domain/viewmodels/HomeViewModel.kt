@@ -54,10 +54,6 @@ constructor(
         }
     }
 
-    fun addNotebook(id: Int = 0, name: String) = viewModelScope.launch {
-        repository.insertNotebook(Notebook(id = id, name = name))
-    }
-
     fun setCurrentNotebookId(id: Int) {
         println("setCurrentNotebookId id=$id")
         _currentNotebookId.update { id }
@@ -67,7 +63,12 @@ constructor(
     private fun createDefaultNotebook() = viewModelScope.launch {
         if (!appDataStore.readPref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, false)) {
             appDataStore.writePref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, true)
-            addNotebook(id = DEFAULT_NOTEBOOK_ID, name = DEFAULT_NOTEBOOK_NAME)
+            repository.insertNotebook(
+                Notebook(
+                    id = DEFAULT_NOTEBOOK_ID,
+                    name = DEFAULT_NOTEBOOK_NAME
+                )
+            )
         }
     }
 }
