@@ -23,4 +23,8 @@ interface NoteRepository {
     fun observeNotebooks(): Flow<List<Notebook>>
 
     suspend fun insertNotebook(notebook: Notebook): Int
+
+    suspend fun deleteNotebook(notebook: Notebook): Boolean
+
+    suspend fun updateNotebook(notebook: Notebook): Boolean
 }

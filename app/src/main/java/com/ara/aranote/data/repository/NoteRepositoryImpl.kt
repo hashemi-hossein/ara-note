@@ -76,4 +76,16 @@ class NoteRepositoryImpl
         Timber.tag(TAG).d("insert notebook result = $result")
         return result?.toInt() ?: INVALID_NOTEBOOK_ID
     }
+
+    override suspend fun deleteNotebook(notebook: Notebook): Boolean {
+        val result = notebookDao.deleteNotebook(notebookDomainMapper.mapFromDomainEntity(notebook))
+        Timber.tag(TAG).d("delete notebook result = $result")
+        return result == 1
+    }
+
+    override suspend fun updateNotebook(notebook: Notebook): Boolean {
+        val result = notebookDao.updateNotebook(notebookDomainMapper.mapFromDomainEntity(notebook))
+        Timber.tag(TAG).d("update notebook result = $result")
+        return result == 1
+    }
 }
