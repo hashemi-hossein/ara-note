@@ -33,4 +33,12 @@ constructor(
     fun addNotebook(id: Int = 0, name: String) = viewModelScope.launch {
         repository.insertNotebook(Notebook(id = id, name = name))
     }
+
+    fun modifyNotebook(notebook: Notebook) = viewModelScope.launch {
+        repository.updateNotebook(notebook)
+    }
+
+    fun deleteNotebook(notebook: Notebook) = viewModelScope.launch {
+        repository.deleteNotebook(notebook)
+    }
 }

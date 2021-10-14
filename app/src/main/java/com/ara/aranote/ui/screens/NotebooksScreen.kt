@@ -55,6 +55,8 @@ fun NotebooksScreen(
         navigateUp = navigateUp,
         notebooks = notebooks,
         addNotebook = { viewModel.addNotebook(name = it) },
+        modifyNotebook = viewModel::modifyNotebook,
+        deleteNotebook = viewModel::deleteNotebook,
     )
 }
 
@@ -64,18 +66,21 @@ fun NotebooksScreen(
     navigateUp: () -> Unit,
     notebooks: List<Notebook>,
     addNotebook: (String) -> Unit = {},
+    modifyNotebook: (Notebook) -> Unit = {},
+    deleteNotebook: (Notebook) -> Unit,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
 ) {
-    var isDialogVisible by remember { mutableStateOf(false) }
-    val setDialogVisibility: (Boolean) -> Unit = { isDialogVisible = it }
+    var selectedNotebook by remember { mutableStateOf<Notebook?>(null) }
+    var dialogType by remember { mutableStateOf(DialogType.HIDE) }
+    val setDialogType: (DialogType) -> Unit = { dialogType = it }
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             HAppBar(title = "Notebooks", onNavButtonClick = navigateUp, actions = {
-                IconButton(onClick = { setDialogVisibility(true) }) {
+                IconButton(onClick = { setDialogType(DialogType.ADD_NOTEBOOK) }) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = stringResource(R.string.cd_add_notebook)
@@ -89,20 +94,23 @@ fun NotebooksScreen(
                 ListItem(trailing = {
                     Row {
                         IconButton(onClick = {
+                            selectedNotebook = notebook
+                            setDialogType(DialogType.EDIT_NOTEBOOK)
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
-                                contentDescription = null,
+                                contentDescription = stringResource(R.string.edit_notebook),
                                 modifier = Modifier.alpha(0.3f)
                             )
                         }
                         IconButton(onClick = {
                             showSnackbar(scope, scaffoldState.snackbarHostState) {
+                                deleteNotebook(notebook)
                             }
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = null,
+                                contentDescription = stringResource(R.string.cd_delete_notebook),
                                 modifier = Modifier.alpha(0.3f)
                             )
                         }
@@ -116,38 +124,53 @@ fun NotebooksScreen(
             }
         }
         HDialog(
-            isDialogVisible = isDialogVisible,
-            setDialogVisibility = setDialogVisibility,
+            dialogType = dialogType,
+            setDialogType = setDialogType,
             addNotebook = addNotebook,
+            selectedNotebook = selectedNotebook,
+            modifyNotebook = modifyNotebook,
         )
     }
 }
 
+private enum class DialogType {
+    HIDE, ADD_NOTEBOOK, EDIT_NOTEBOOK
+}
+
 @Composable
 private fun HDialog(
-    isDialogVisible: Boolean,
-    setDialogVisibility: (Boolean) -> Unit,
+    dialogType: DialogType,
+    setDialogType: (DialogType) -> Unit,
     addNotebook: (String) -> Unit,
+    selectedNotebook: Notebook?,
+    modifyNotebook: (Notebook) -> Unit,
 ) {
-    if (isDialogVisible) {
-        var text by rememberSaveable { mutableStateOf("") }
+    if (dialogType != DialogType.HIDE) {
+        var text by rememberSaveable {
+            mutableStateOf(
+                if (dialogType == DialogType.ADD_NOTEBOOK || selectedNotebook == null) ""
+                else selectedNotebook.name
+            )
+        }
         AlertDialog(
-            onDismissRequest = { setDialogVisibility(false) },
+            onDismissRequest = { setDialogType(DialogType.HIDE) },
             confirmButton = {
                 IconButton(onClick = {
-                    setDialogVisibility(false)
-                    addNotebook(text)
+                    setDialogType(DialogType.HIDE)
+                    if (dialogType == DialogType.ADD_NOTEBOOK) addNotebook(text)
+                    else if (selectedNotebook != null) modifyNotebook(selectedNotebook.copy(name = text))
                 }) {
                     Icon(
                         imageVector = Icons.Default.Done,
-                        contentDescription = stringResource(R.string.cd_confirm_adding_notebook)
+                        contentDescription = stringResource(R.string.cd_dialog_confirm)
                     )
                 }
             },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text(
-                        text = stringResource(R.string.add_notebook),
+                        text = if (dialogType == DialogType.ADD_NOTEBOOK) stringResource(R.string.add_notebook)
+                        else stringResource(R.string.edit_notebook),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.Bold,
                     )

@@ -14,6 +14,7 @@
     <string name="select">Select</string>
     <string name="cancel">Cancel</string>
     <string name="type_here">Type here…</string>
+    <string name="edit_notebook">Edit Notebook</string>
 
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>
@@ -28,7 +29,8 @@
     <string name="cd_reset_date_and_time">Reset Date and Time</string>
     <string name="cd_add_notebook">Add Notebook</string>
     <string name="cd_goto_notebooks_screen">Go to notebooks screen</string>
-    <string name="cd_confirm_adding_notebook">confirm adding notebook</string>
+    <string name="cd_dialog_confirm">dialog confirm</string>
     <string name="cd_save">save</string>
+    <string name="cd_delete_notebook">delete notebook</string>
 
 </resources>
