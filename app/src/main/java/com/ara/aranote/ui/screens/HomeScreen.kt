@@ -95,9 +95,9 @@ fun HomeScreen(
 internal fun HomeScreen(
     notes: List<Note>,
     notebooks: List<Notebook>,
+    navigateToNoteDetailScreen: (Int) -> Unit,
     navigateToSettingsScreen: () -> Unit,
     navigateToNotebooksScreen: () -> Unit,
-    navigateToNoteDetailScreen: (Int) -> Unit,
     currentNotebookId: Int = DEFAULT_NOTEBOOK_ID,
     setCurrentNotebookId: (Int) -> Unit = {},
     noteColor: Long = 0,
@@ -106,6 +106,7 @@ internal fun HomeScreen(
     context: Context = LocalContext.current,
 ) {
     var lastTimeMillis by remember { mutableStateOf(0L) }
+    val scrollState: ScrollState = rememberScrollState()
 
     BackHandler(
         onBack = {
@@ -147,7 +148,10 @@ internal fun HomeScreen(
                 setCurrentNotebookId = {
                     if (it != currentNotebookId) {
                         setCurrentNotebookId(it)
-                        scope.launch { scaffoldState.drawerState.close() }
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                            scrollState.animateScrollTo(0)
+                        }
                     }
                 },
                 navigateToSettingsScreen = {
@@ -173,6 +177,7 @@ internal fun HomeScreen(
             notes = notes,
             navigateToNoteDetailScreen = navigateToNoteDetailScreen,
             noteColor = noteColor,
+            scrollState = scrollState,
         )
     }
 }
@@ -184,7 +189,7 @@ private fun HBody(
     notes: List<Note>,
     navigateToNoteDetailScreen: (Int) -> Unit,
     noteColor: Long,
-    scrollState: ScrollState = rememberScrollState(),
+    scrollState: ScrollState,
 ) {
     Surface(
         modifier = Modifier
@@ -311,7 +316,7 @@ private fun HPreview() {
         lstNotes.add(
             Note(
                 id = i,
-                notebookId = 1,
+                notebookId = DEFAULT_NOTEBOOK_ID,
                 text = "item $i",
                 addedDateTime = currentDateTime.minus(Duration.seconds(i * i * i * i * i)),
                 alarmDateTime = if (i % 3 == 1) currentDateTime else null,
