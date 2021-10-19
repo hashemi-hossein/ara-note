@@ -69,6 +69,8 @@ class NoteDetailScreenTest {
                 onNoteTextChanged = { note.value = note.value.copy(text = it) },
                 onBackPressed = { backPressResult = it },
                 isNewNote = true,
+                isModified = false,
+                restoreNote = {},
             )
         }
     }

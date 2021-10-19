@@ -38,6 +38,7 @@ import androidx.compose.material.icons.filled.AlarmOff
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.RestorePage
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.rememberModalBottomSheetState
@@ -98,6 +99,7 @@ fun NoteDetailScreen(
     val note: Note by viewModel.note.collectAsState()
     val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
     val isAutoNoteSaving by viewModel.appDataStore.isAutoSaveMode.collectAsState(initial = true)
+    val isModified by viewModel.isModified.collectAsState()
 
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -163,6 +165,8 @@ fun NoteDetailScreen(
         onNoteTextChanged = { viewModel.modifyNote(viewModel.note.value.copy(text = it)) },
         onBackPressed = onBackPressed,
         isNewNote = isNewNote,
+        isModified = isModified,
+        restoreNote = viewModel::restoreNote,
         isAutoNoteSaving = isAutoNoteSaving,
         modalBottomSheetState = modalBottomSheetState,
         scaffoldState = scaffoldState,
@@ -179,6 +183,8 @@ internal fun NoteDetailScreen(
     onNoteTextChanged: (String) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
+    isModified: Boolean,
+    restoreNote: () -> Unit,
     isAutoNoteSaving: Boolean = true,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -220,6 +226,9 @@ internal fun NoteDetailScreen(
                             onNoteChanged = onNoteChanged,
                             onBackPressed = onBackPressed,
                             isNewNote = isNewNote,
+                            isModified = isModified,
+                            restoreNote = restoreNote,
+                            scaffoldState = scaffoldState,
                             scope = scope,
                             context = context,
                             modalBottomSheetState = modalBottomSheetState,
@@ -248,6 +257,7 @@ internal fun NoteDetailScreen(
                 innerPadding = innerPadding,
                 note = note,
                 onNoteTextChanged = onNoteTextChanged,
+                isModified = isModified,
             )
         }
     }
@@ -258,6 +268,7 @@ private fun HBody(
     innerPadding: PaddingValues,
     note: Note,
     onNoteTextChanged: (String) -> Unit,
+    isModified: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -296,6 +307,11 @@ private fun HBody(
                     (view[0] as TextInputEditText).setText(note.text)
                     (view[0] as TextInputEditText).setSelection(note.text.length)
                 }
+                if (!isModified) {
+                    (view[0] as TextInputEditText).setText(note.text)
+                    (view[0] as TextInputEditText).setSelection(note.text.length)
+                }
+
                 if (!runOnce && note.id != 0) {
                     runOnce = true
                     val imm: InputMethodManager? =
@@ -326,6 +342,9 @@ private fun HAppBarActions(
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
+    isModified: Boolean,
+    restoreNote: () -> Unit,
+    scaffoldState: ScaffoldState,
     scope: CoroutineScope,
     context: Context,
     modalBottomSheetState: ModalBottomSheetState,
@@ -333,6 +352,20 @@ private fun HAppBarActions(
 ) {
     val doesHasAlarm = note.alarmDateTime != null
 
+    if (isModified)
+        IconButton(onClick = {
+            showSnackbar(
+                scope,
+                scaffoldState.snackbarHostState,
+                actionLabel = "Restore Note",
+                onClick = restoreNote
+            )
+        }) {
+            Icon(
+                imageVector = Icons.Default.RestorePage,
+                contentDescription = "Restore Note"
+            )
+        }
     IconButton(onClick = {
         keyboardController?.hide()
         onBackPressed(if (!isNewNote) TheOperation.DELETE else TheOperation.DISCARD)
@@ -548,5 +581,7 @@ private fun HPreview() {
         onNoteTextChanged = {},
         onBackPressed = {},
         isNewNote = true,
+        isModified = false,
+        restoreNote = {},
     )
 }

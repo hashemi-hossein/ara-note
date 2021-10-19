@@ -61,7 +61,12 @@ constructor(
 
     fun modifyNote(note: Note) {
         _note.update { note }
-        _isModified.value = _note.value != originalNote
+        _isModified.value =
+            if (::originalNote.isInitialized) _note.value != originalNote else false
+    }
+
+    fun restoreNote() {
+        modifyNote(originalNote)
     }
 
     private suspend fun addNote(): Boolean {
