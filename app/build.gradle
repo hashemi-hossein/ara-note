@@ -134,7 +134,7 @@ dependencies {
     implementation "androidx.compose.animation:animation-core:$compose_version"
 //    implementation "androidx.compose.animation:animation-graphics:compose_animation"
     // Other Compose Libs
-    implementation "com.google.android.material:compose-theme-adapter:1.0.3"
+    implementation "com.google.android.material:compose-theme-adapter:1.0.4"
 //    implementation "androidx.paging:paging-compose:1.0.0-alpha12"
 
     // Navigation Compose
