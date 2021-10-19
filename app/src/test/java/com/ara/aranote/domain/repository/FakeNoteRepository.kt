@@ -24,7 +24,7 @@ class FakeNoteRepository : NoteRepository {
         return r
     }
 
-    override fun observeNotes(notebookId: Int): Flow<List<Note>> {
+    override fun observeNotes(notebookId: Int?): Flow<List<Note>> {
         return flow {
             notesFlow.collect { emit(it.filter { it.notebookId == notebookId }) }
         }
@@ -63,6 +63,18 @@ class FakeNoteRepository : NoteRepository {
     override suspend fun insertNotebook(notebook: Notebook): Int {
         val r =
             if (notebooks.put(notebook.id, notebook) == null) notebook.id else INVALID_NOTEBOOK_ID
+        notebooksFlow.update { notebooks.values.toList() }
+        return r
+    }
+
+    override suspend fun deleteNotebook(notebook: Notebook): Boolean {
+        val r = notebooks.remove(notebook.id) != null
+        notebooksFlow.update { notebooks.values.toList() }
+        return r
+    }
+
+    override suspend fun updateNotebook(notebook: Notebook): Boolean {
+        val r = notebooks.put(notebook.id, notebook) == null
         notebooksFlow.update { notebooks.values.toList() }
         return r
     }

@@ -3,7 +3,11 @@ package com.ara.aranote.ui.screens
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -39,9 +43,10 @@ class HomeScreenTest {
     private lateinit var notes: MutableState<List<Note>>
     private lateinit var notebooks: MutableState<List<Notebook>>
     private lateinit var currentNotebookId: MutableState<Int>
+
     private var noteIdToNavigate: Int? = null
     private var notebookIdToNavigate: Int? = null
-    private var notebookNameToAdd: String? = null
+//    private var notebookNameToAdd: String? = null
 
     @Before
     fun setUp() {
@@ -50,7 +55,7 @@ class HomeScreenTest {
         currentNotebookId = mutableStateOf(TestUtil.tNotebookEntity.id)
         noteIdToNavigate = null
         notebookIdToNavigate = null
-        notebookNameToAdd = null
+//        notebookNameToAdd = null
         composeTestRule.setContent {
             HomeScreen(
                 notes = notes.value,
@@ -60,7 +65,8 @@ class HomeScreenTest {
                     notebookIdToNavigate = currentNotebookId.value
                 },
                 navigateToSettingsScreen = {},
-                addNotebook = { notebookNameToAdd = it },
+//                addNotebook = { notebookNameToAdd = it },
+                navigateToNotebooksScreen = {},
                 currentNotebookId = currentNotebookId.value,
                 setCurrentNotebookId = { notebookId ->
                     currentNotebookId.value = notebookId
@@ -76,7 +82,16 @@ class HomeScreenTest {
 //        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).assertExists()
         Espresso.onView(ViewMatchers.withText(TestUtil.tNoteEntity.text))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntity.name).assertExists()
+        // notebook name in the Appbar
+        composeTestRule.onNode(
+            !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
+                hasText(TestUtil.tNotebookEntity.name)
+        ).assertIsDisplayed()
+        // notebook name in the drawer
+        composeTestRule.onNode(
+            SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
+                hasText(TestUtil.tNotebookEntity.name)
+        ).assertExists()
         composeTestRule.onNodeWithText(HDateTime.gerPrettyDateTime(TestUtil.tNoteEntity.addedDateTime))
             .assertExists()
     }
@@ -106,17 +121,17 @@ class HomeScreenTest {
         assertThat(notebookIdToNavigate).isEqualTo(currentNotebookId.value)
     }
 
-    @Test
-    fun click_addNotebookIcon() {
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_notebook))
-            .performClick()
-
-        // assert
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_confirm_adding_notebook))
-            .assertIsDisplayed()
-        composeTestRule.onNodeWithText(context.getString(R.string.add_notebook)).assertIsDisplayed()
-    }
+//    @Test
+//    fun click_addNotebookIcon() {
+//        // act
+//        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_notebook))
+//            .performClick()
+//
+//        // assert
+//        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_dialog_confirm))
+//            .assertIsDisplayed()
+//        composeTestRule.onNodeWithText(context.getString(R.string.add_notebook)).assertIsDisplayed()
+//    }
 
     @Test
     fun change_notebook_on_clicking() {
