@@ -42,6 +42,7 @@ import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.viewmodels.NotebooksViewModel
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.showSnackbar
+import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -103,17 +104,23 @@ fun NotebooksScreen(
                                 modifier = Modifier.alpha(0.3f)
                             )
                         }
-                        IconButton(onClick = {
-                            showSnackbar(scope, scaffoldState.snackbarHostState) {
-                                deleteNotebook(notebook)
+                        if (notebook.id != DEFAULT_NOTEBOOK_ID)
+                            IconButton(onClick = {
+                                showSnackbar(
+                                    scope,
+                                    scaffoldState.snackbarHostState,
+                                    message = "Do you confirm deleting ${notebook.name} notebook and all its notes?",
+                                    actionLabel = context.getString(R.string.delete)
+                                ) {
+                                    deleteNotebook(notebook)
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = stringResource(R.string.cd_delete_notebook),
+                                    modifier = Modifier.alpha(0.3f)
+                                )
                             }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.cd_delete_notebook),
-                                modifier = Modifier.alpha(0.3f)
-                            )
-                        }
                     }
                 }) {
                     Text(

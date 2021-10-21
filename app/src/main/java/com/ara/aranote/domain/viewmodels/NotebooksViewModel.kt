@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,6 +40,10 @@ constructor(
     }
 
     fun deleteNotebook(notebook: Notebook) = viewModelScope.launch {
+        val notesOfNotebook = repository.observeNotes(notebook.id).first()
+        for (note in notesOfNotebook) {
+            repository.deleteNote(note)
+        }
         repository.deleteNotebook(notebook)
     }
 }
