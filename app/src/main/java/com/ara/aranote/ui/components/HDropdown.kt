@@ -1,10 +1,10 @@
 package com.ara.aranote.ui.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Button
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -22,7 +22,7 @@ fun HDropdown(
 ) {
     var expanded by remember { mutableStateOf(false) }
     Column {
-        Button(onClick = { expanded = !expanded }) {
+        OutlinedButton(onClick = { expanded = !expanded }) {
             Text(items[selectedIndex] ?: "")
             Icon(
                 imageVector = Icons.Filled.ArrowDropDown,

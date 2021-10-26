@@ -258,6 +258,7 @@ internal fun NoteDetailScreen(
                 note = note,
                 onNoteTextChanged = onNoteTextChanged,
                 isModified = isModified,
+                isNewNote = isNewNote,
             )
         }
     }
@@ -269,6 +270,7 @@ private fun HBody(
     note: Note,
     onNoteTextChanged: (String) -> Unit,
     isModified: Boolean,
+    isNewNote: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -312,7 +314,7 @@ private fun HBody(
                     (view[0] as TextInputEditText).setSelection(note.text.length)
                 }
 
-                if (!runOnce && note.id != 0) {
+                if (!runOnce && note.id != 0 && isNewNote) {
                     runOnce = true
                     val imm: InputMethodManager? =
                         view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
