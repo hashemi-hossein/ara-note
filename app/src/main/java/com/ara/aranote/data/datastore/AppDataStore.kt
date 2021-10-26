@@ -33,9 +33,11 @@ class AppDataStore
         }
     }
 
-    suspend fun <T> readPref(key: Preferences.Key<T>, defaultValue: T): T {
-        return context.dataStore.data.first()[key] ?: defaultValue
-    }
+    suspend fun <T> readPref(key: Preferences.Key<T>, defaultValue: T): T =
+        context.dataStore.data.first()[key] ?: defaultValue
+
+    private fun <T> flowOfPref(key: Preferences.Key<T>, defaultValue: T): Flow<T> =
+        context.dataStore.data.map { it[key] ?: defaultValue }
 
     companion object {
         val DEFAULT_NOTEBOOK_EXISTENCE_KEY =
@@ -46,8 +48,7 @@ class AppDataStore
         val NOTE_COLOR = longPreferencesKey("note_color")
     }
 
-    val isDark: Flow<Boolean> = context.dataStore.data.map { it[DARK_THEME_KEY] ?: false }
-    val isAutoSaveMode: Flow<Boolean> =
-        context.dataStore.data.map { it[AUTO_SAVE_MODE] ?: true }
-    val noteColor: Flow<Long> = context.dataStore.data.map { it[NOTE_COLOR] ?: -43230 }
+    val isDark: Flow<Boolean> = flowOfPref(DARK_THEME_KEY, false)
+    val isAutoSaveMode: Flow<Boolean> = flowOfPref(AUTO_SAVE_MODE, true)
+    val noteColor: Flow<Long> = flowOfPref(NOTE_COLOR, -43230)
 }
