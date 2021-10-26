@@ -78,6 +78,9 @@ fun HomeScreen(
     val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
     val currentNotebookId by viewModel.currentNotebookId.collectAsState()
     val noteColor by viewModel.appDataStore.noteColor.collectAsState(initial = 0)
+    val isDoubleBackToExitMode by viewModel.appDataStore.isDoubleBackToExitMode.collectAsState(
+        initial = true
+    )
 
     HomeScreen(
         notes = notes,
@@ -88,6 +91,7 @@ fun HomeScreen(
         currentNotebookId = currentNotebookId,
         setCurrentNotebookId = viewModel::setCurrentNotebookId,
         noteColor = noteColor,
+        isDoubleBackToExitMode = isDoubleBackToExitMode,
     )
 }
 
@@ -101,6 +105,7 @@ internal fun HomeScreen(
     currentNotebookId: Int = DEFAULT_NOTEBOOK_ID,
     setCurrentNotebookId: (Int) -> Unit = {},
     noteColor: Long = 0,
+    isDoubleBackToExitMode: Boolean = true,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
@@ -114,7 +119,8 @@ internal fun HomeScreen(
                 scaffoldState.drawerState.isOpen && !scaffoldState.drawerState.isAnimationRunning ->
                     scope.launch { scaffoldState.drawerState.close() }
                 currentNotebookId != DEFAULT_NOTEBOOK_ID -> setCurrentNotebookId(DEFAULT_NOTEBOOK_ID)
-                System.currentTimeMillis() - lastTimeMillis < 2000 -> (context as AppCompatActivity).finish()
+                !isDoubleBackToExitMode || System.currentTimeMillis() - lastTimeMillis < 2000 ->
+                    (context as AppCompatActivity).finish()
                 else -> {
                     lastTimeMillis = System.currentTimeMillis()
                     showSnackbar(

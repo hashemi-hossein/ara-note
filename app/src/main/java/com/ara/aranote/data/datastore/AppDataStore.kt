@@ -43,12 +43,13 @@ class AppDataStore
         val DEFAULT_NOTEBOOK_EXISTENCE_KEY =
             booleanPreferencesKey("default_notebook_existence_key")
         val DARK_THEME_KEY = booleanPreferencesKey("dark_theme_key")
-
         val AUTO_SAVE_MODE = booleanPreferencesKey("auto_save_mode")
         val NOTE_COLOR = longPreferencesKey("note_color")
+        val DOUBLE_BACK_TO_EXIT_MODE = booleanPreferencesKey("double_back_to_exit_mode")
     }
 
     val isDark: Flow<Boolean> = flowOfPref(DARK_THEME_KEY, false)
     val isAutoSaveMode: Flow<Boolean> = flowOfPref(AUTO_SAVE_MODE, true)
     val noteColor: Flow<Long> = flowOfPref(NOTE_COLOR, -43230)
+    val isDoubleBackToExitMode = flowOfPref(DOUBLE_BACK_TO_EXIT_MODE, true)
 }

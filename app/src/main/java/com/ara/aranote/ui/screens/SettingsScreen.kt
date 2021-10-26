@@ -52,6 +52,9 @@ fun SettingsScreen(
     val isDark by viewModel.appDataStore.isDark.collectAsState(initial = false)
     val isAutoSaveMode by viewModel.appDataStore.isAutoSaveMode.collectAsState(initial = true)
     val noteColor by viewModel.appDataStore.noteColor.collectAsState(initial = -43230)
+    val isDoubleBackToExitMode by viewModel.appDataStore.isDoubleBackToExitMode.collectAsState(
+        initial = true
+    )
 
     SettingsScreen(
         navigateUp = navigateUp,
@@ -63,6 +66,10 @@ fun SettingsScreen(
         },
         noteColor = noteColor,
         setNoteColor = { viewModel.appDataStore.writePref(AppDataStore.NOTE_COLOR, it) },
+        isDoubleBackToExitMode = isDoubleBackToExitMode,
+        setIsDoubleBackToExitMode = {
+            viewModel.appDataStore.writePref(AppDataStore.DOUBLE_BACK_TO_EXIT_MODE, it)
+        },
         exportData = viewModel::exportData,
         importData = viewModel::importData,
     )
@@ -79,6 +86,8 @@ internal fun SettingsScreen(
     setIsAutoSaveMode: (Boolean) -> Unit,
     noteColor: Long,
     setNoteColor: (Long) -> Unit,
+    isDoubleBackToExitMode: Boolean,
+    setIsDoubleBackToExitMode: (Boolean) -> Unit,
     exportData: (Uri, () -> Unit) -> Unit,
     importData: (Uri, () -> Unit) -> Unit,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
@@ -104,7 +113,12 @@ internal fun SettingsScreen(
             ListItem(trailing = {
                 Switch(checked = isAutoSaveMode, onCheckedChange = setIsAutoSaveMode)
             }) {
-                Text(text = "Auto Save Mode")
+                Text(text = "Auto save Mode")
+            }
+            ListItem(trailing = {
+                Switch(checked = isDoubleBackToExitMode, onCheckedChange = setIsDoubleBackToExitMode)
+            }) {
+                Text(text = "Double back to exit Mode")
             }
             ListItem(trailing = {
                 Box(
