@@ -3,12 +3,7 @@ package com.ara.aranote.ui.screens
 import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.expandIn
-import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
@@ -214,22 +209,13 @@ private fun HBody(
             .padding(innerPadding)
             .verticalScroll(scrollState)
     ) {
-        AnimatedContent(
-            notes,
-            transitionSpec = { EnterTransition.None with ExitTransition.None }
-        ) { notes2 ->
-            StaggeredVerticalGrid(maxColumnWidth = 220.dp) {
-                notes2.forEach { item: Note ->
-                    NoteCard(
-                        modifier = Modifier.animateEnterExit(
-                            enter = expandIn(),
-                            exit = ExitTransition.None,
-                        ),
-                        note = item,
-                        noteColor = noteColor,
-                    ) {
-                        navigateToNoteDetailScreen(item.id)
-                    }
+        StaggeredVerticalGrid(maxColumnWidth = 220.dp) {
+            notes.forEach { item: Note ->
+                NoteCard(
+                    note = item,
+                    noteColor = noteColor,
+                ) {
+                    navigateToNoteDetailScreen(item.id)
                 }
             }
         }
