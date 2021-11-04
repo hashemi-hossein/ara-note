@@ -1,5 +1,6 @@
 package com.ara.aranote.ui.components
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -36,10 +37,12 @@ fun HAppBar(
         contentColor = MaterialTheme.colors.primary,
         actions = actions,
         title = {
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-            )
+            Crossfade(targetState = title) {
+                Text(
+                    text = it,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
         },
         navigationIcon = {
             IconButton(onClick = onNavButtonClick) {

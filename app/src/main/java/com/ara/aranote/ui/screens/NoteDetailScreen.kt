@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -278,12 +279,14 @@ private fun HBody(
             .padding(horizontal = 10.dp)
     ) {
         Divider()
-        if (note.alarmDateTime != null)
+        AnimatedVisibility(note.alarmDateTime != null) {
             Text(
-                text = "Alarm has been set for " + HDateTime.gerPrettyDateTime(note.alarmDateTime),
+                text = "Alarm has been set for " +
+                    if (note.alarmDateTime != null) HDateTime.gerPrettyDateTime(note.alarmDateTime) else "",
                 style = MaterialTheme.typography.body2,
                 modifier = Modifier.alpha(0.4f)
             )
+        }
         var runOnce by remember { mutableStateOf(false) }
         AndroidView(
             factory = { context ->
@@ -354,7 +357,7 @@ private fun HAppBarActions(
 ) {
     val doesHasAlarm = note.alarmDateTime != null
 
-    if (isModified)
+    AnimatedVisibility(isModified) {
         IconButton(onClick = {
             showSnackbar(
                 scope,
@@ -368,6 +371,7 @@ private fun HAppBarActions(
                 contentDescription = "Restore Note"
             )
         }
+    }
     IconButton(onClick = {
         keyboardController?.hide()
         onBackPressed(if (!isNewNote) TheOperation.DELETE else TheOperation.DISCARD)
@@ -388,7 +392,7 @@ private fun HAppBarActions(
             else stringResource(R.string.cd_add_alarm)
         )
     }
-    if (doesHasAlarm)
+    AnimatedVisibility(doesHasAlarm) {
         IconButton(onClick = {
             hManageAlarm(
                 context = context,
@@ -402,6 +406,7 @@ private fun HAppBarActions(
                 contentDescription = stringResource(R.string.cd_delete_alarm)
             )
         }
+    }
     if (notebooks.isNotEmpty())
         HDropdown(
             items = notebooks.associate { it.id to it.name },

@@ -31,12 +31,13 @@ import com.ara.aranote.util.HDateTime
 
 @Composable
 fun NoteCard(
+    modifier: Modifier = Modifier,
     note: Note,
     noteColor: Long,
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(
                 bottom = 3.dp,
                 top = 3.dp,
