@@ -41,25 +41,25 @@ fun AppMain(
         AnimatedNavHost(
             navController = navController,
             startDestination = startDestination,
-            enterTransition = { _, _ ->
+            enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { boxWith },
                     animationSpec = tween(ANIMATION_DURATION),
                 ).plus(fadeIn(animationSpec = tween(ANIMATION_DURATION)))
             },
-            popExitTransition = { _, _ ->
+            popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { boxWith },
                     animationSpec = tween(ANIMATION_DURATION),
                 ).plus(fadeOut(animationSpec = tween(ANIMATION_DURATION)))
             },
-            exitTransition = { _, _ ->
+            exitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { -boxWith },
                     animationSpec = tween(ANIMATION_DURATION),
                 ).plus(fadeOut(animationSpec = tween(ANIMATION_DURATION)))
             },
-            popEnterTransition = { _, _ ->
+            popEnterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { -boxWith },
                     animationSpec = tween(ANIMATION_DURATION),
