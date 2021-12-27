@@ -80,7 +80,9 @@ constructor(
             if (oldNote != _note.value) {
                 Timber.tag(TAG).d("updating note")
                 Timber.tag(TAG).d("note = %s", _note.value.toString())
-                repository.updateNote(_note.value.copy(addedDateTime = HDateTime.getCurrentDateTime()))
+                if (oldNote?.text != _note.value.text)
+                    _note.value = _note.value.copy(addedDateTime = HDateTime.getCurrentDateTime())
+                repository.updateNote(_note.value)
             } else
                 true
         return result
