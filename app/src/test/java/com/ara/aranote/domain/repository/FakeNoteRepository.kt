@@ -6,7 +6,6 @@ import com.ara.aranote.util.INVALID_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 

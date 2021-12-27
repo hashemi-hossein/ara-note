@@ -1,8 +1,10 @@
 package com.ara.aranote.ui.screens
 
 import android.content.Context
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -33,7 +35,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 @RunWith(AndroidJUnit4::class)
@@ -49,6 +51,7 @@ class NoteDetailScreenTest {
     private lateinit var notebooks: MutableState<List<Notebook>>
     private var backPressResult: TheOperation? = null
 
+    @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
     @Before
     fun setUp() {
         note = mutableStateOf(
@@ -157,7 +160,7 @@ class NoteDetailScreenTest {
     @Test
     fun set_and_reset_alarmDateTime() {
         // arrange
-        val newAlarmDateTime = HDateTime.getCurrentDateTime().plus(Duration.hours(25))
+        val newAlarmDateTime = HDateTime.getCurrentDateTime().plus(25.hours)
 
         // act
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))

@@ -86,7 +86,8 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
@@ -496,31 +497,31 @@ private fun HBottomSheet(
         ) {
             item {
                 Button(onClick = {
-                    dateTime = dateTime.plus(Duration.minutes(10))
+                    dateTime = dateTime.plus(10.minutes)
                 }) {
                     Text(text = "+10 mins")
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 Button(onClick = {
-                    dateTime = dateTime.plus(Duration.minutes(30))
+                    dateTime = dateTime.plus(30.minutes)
                 }) {
                     Text(text = "+30 mins")
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 Button(onClick = {
-                    dateTime = dateTime.plus(Duration.hours(1))
+                    dateTime = dateTime.plus(1.hours)
                 }) {
                     Text(text = "+1 hour")
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 Button(onClick = {
-                    dateTime = dateTime.plus(Duration.hours(3))
+                    dateTime = dateTime.plus(3.hours)
                 }) {
                     Text(text = "+3 hours")
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 Button(onClick = {
-                    dateTime = dateTime.plus(Duration.hours(24))
+                    dateTime = dateTime.plus(24.hours)
                 }) {
                     Text(text = "+1 day")
                 }
@@ -541,7 +542,7 @@ private fun HBottomSheet(
             }
             OutlinedButton(
                 onClick = {
-                    if (dateTime.minus(HDateTime.getCurrentDateTime()) > Duration.minutes(1)) {
+                    if (dateTime.minus(HDateTime.getCurrentDateTime()) > 1.minutes) {
                         hManageAlarm(
                             context = context,
                             doesCreate = true,
