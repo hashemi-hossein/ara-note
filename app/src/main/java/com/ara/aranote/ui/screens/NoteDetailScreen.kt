@@ -291,6 +291,7 @@ private fun HBody(
             )
         }
         var runOnce by remember { mutableStateOf(false) }
+        var runOnceOnModifying by remember(isModified) { mutableStateOf(false) }
         AndroidView(
             factory = { context ->
                 val editText = TextInputEditText(context).apply {
@@ -314,10 +315,13 @@ private fun HBody(
                 if (note.text.isNotEmpty() && (view[0] as TextInputEditText).text?.isEmpty() == true) {
                     (view[0] as TextInputEditText).setText(note.text)
                     (view[0] as TextInputEditText).setSelection(note.text.length)
+                    runOnceOnModifying = true
                 }
-                if (!isModified) {
+                if (!runOnceOnModifying && !isModified) {
+                    runOnceOnModifying = true
+                    val previousSelection = (view[0] as TextInputEditText).selectionStart
                     (view[0] as TextInputEditText).setText(note.text)
-                    (view[0] as TextInputEditText).setSelection(note.text.length)
+                    (view[0] as TextInputEditText).setSelection(previousSelection)
                 }
 
                 if (!runOnce && note.id != 0 && isNewNote) {
