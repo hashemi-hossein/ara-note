@@ -120,7 +120,12 @@ internal fun HomeScreen(
             when {
                 scaffoldState.drawerState.isOpen && !scaffoldState.drawerState.isAnimationRunning ->
                     scope.launch { scaffoldState.drawerState.close() }
-                currentNotebookId != DEFAULT_NOTEBOOK_ID -> setCurrentNotebookId(DEFAULT_NOTEBOOK_ID)
+                currentNotebookId != DEFAULT_NOTEBOOK_ID -> {
+                    setCurrentNotebookId(DEFAULT_NOTEBOOK_ID)
+                    scope.launch {
+                        scrollState.animateScrollTo(0)
+                    }
+                }
                 !isDoubleBackToExitMode || System.currentTimeMillis() - lastTimeMillis < 2000 ->
                     (context as AppCompatActivity).finish()
                 else -> {
