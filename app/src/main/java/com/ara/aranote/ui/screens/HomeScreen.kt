@@ -66,7 +66,7 @@ import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.minus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 @Composable
@@ -334,7 +334,7 @@ private fun HPreview() {
                 id = i,
                 notebookId = DEFAULT_NOTEBOOK_ID,
                 text = "item $i",
-                addedDateTime = currentDateTime.minus(Duration.seconds(i * i * i * i * i)),
+                addedDateTime = currentDateTime.minus((i * i * i * i * i).seconds),
                 alarmDateTime = if (i % 3 == 1) currentDateTime else null,
             )
         )

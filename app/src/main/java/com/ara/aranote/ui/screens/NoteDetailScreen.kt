@@ -89,7 +89,7 @@ import timber.log.Timber
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun NoteDetailScreen(
     viewModel: NoteDetailViewModel,
@@ -282,7 +282,9 @@ private fun HBody(
         AnimatedVisibility(note.alarmDateTime != null) {
             Text(
                 text = "Alarm has been set for " +
-                    if (note.alarmDateTime != null) HDateTime.gerPrettyDateTime(note.alarmDateTime) else "",
+                    if (note.alarmDateTime != null)
+                        HDateTime.gerPrettyDateTime(note.alarmDateTime)
+                    else "",
                 style = MaterialTheme.typography.body2,
                 modifier = Modifier.alpha(0.4f)
             )
@@ -567,6 +569,7 @@ private fun HBottomSheet(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Preview(
 //    showBackground = true,
 //    backgroundColor = 0xff2ff2f2,
