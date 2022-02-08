@@ -1,6 +1,5 @@
 package com.ara.aranote.ui.components
 
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,9 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.util.HDateTime
 
@@ -56,18 +54,12 @@ fun NoteCard(
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                AndroidView(
-                    factory = { context ->
-                        AppCompatTextView(context).apply {
-                            textSize = 15f
-                            maxLines = 10
-//                          setTypeface(Typeface.createFromAsset(context.assets,""))
-                        }
-                    },
-                    update = { view ->
-                        view.text = note.text
-                        view.setTextColor(contentColor.toArgb())
-                    },
+                Text(
+                    text = note.text,
+                    style = MaterialTheme.typography.body2.copy(
+                        textDirection = TextDirection.Content,
+                    ),
+                    maxLines = 10,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(7.dp)

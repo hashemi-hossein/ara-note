@@ -46,8 +46,11 @@ constructor(
     private val _isModified = MutableStateFlow(false)
     val isModified = _isModified.asStateFlow()
 
+    val isNewNote: Boolean
+
     init {
         val noteId = savedStateHandle.get<Int>("noteId") ?: INVALID_NOTE_ID
+        isNewNote = noteId < 0
         val notebookId = savedStateHandle.get<Int>("notebookId") ?: DEFAULT_NOTEBOOK_ID
 
         viewModelScope.launch {

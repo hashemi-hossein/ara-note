@@ -97,7 +97,7 @@ fun NoteDetailScreen(
     navigateUp: () -> Unit,
 ) {
     val note: Note by viewModel.note.collectAsState()
-    val isNewNote = note.id < 0
+    val isNewNote = viewModel.isNewNote
     val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
     val isAutoNoteSaving by viewModel.appDataStore.isAutoSaveMode.collectAsState(initial = true)
     val isModified by viewModel.isModified.collectAsState()
