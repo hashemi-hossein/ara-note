@@ -94,11 +94,10 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun NoteDetailScreen(
     viewModel: NoteDetailViewModel,
-    noteId: Int,
     navigateUp: () -> Unit,
 ) {
-    val isNewNote = noteId < 0
     val note: Note by viewModel.note.collectAsState()
+    val isNewNote = note.id < 0
     val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
     val isAutoNoteSaving by viewModel.appDataStore.isAutoSaveMode.collectAsState(initial = true)
     val isModified by viewModel.isModified.collectAsState()

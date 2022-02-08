@@ -8,9 +8,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -91,18 +89,9 @@ fun AppMain(
                         defaultValue = DEFAULT_NOTEBOOK_ID
                     },
                 ),
-            ) { backStackEntry: NavBackStackEntry ->
-                val noteId = backStackEntry.arguments?.getInt("noteId") ?: INVALID_NOTE_ID
-                val notebookId =
-                    backStackEntry.arguments?.getInt("notebookId") ?: DEFAULT_NOTEBOOK_ID
+            ) {
                 val viewModel = hiltViewModel<NoteDetailViewModel>()
-                LaunchedEffect(true) {
-                    viewModel.prepareNote(noteId = noteId, notebookId = notebookId)
-                }
-                NoteDetailScreen(
-                    viewModel = viewModel,
-                    noteId = noteId,
-                ) {
+                NoteDetailScreen(viewModel = viewModel) {
                     navController.navigateUp()
                 }
             }

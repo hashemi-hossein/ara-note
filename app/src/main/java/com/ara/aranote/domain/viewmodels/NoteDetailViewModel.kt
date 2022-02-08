@@ -1,5 +1,6 @@
 package com.ara.aranote.domain.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ara.aranote.data.datastore.AppDataStore
@@ -8,6 +9,7 @@ import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
+import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +26,7 @@ class NoteDetailViewModel
 constructor(
     private val repository: NoteRepository,
     val appDataStore: AppDataStore,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _note = MutableStateFlow(
@@ -44,7 +47,11 @@ constructor(
     val isModified = _isModified.asStateFlow()
 
     init {
+        val noteId = savedStateHandle.get<Int>("noteId") ?: INVALID_NOTE_ID
+        val notebookId = savedStateHandle.get<Int>("notebookId") ?: DEFAULT_NOTEBOOK_ID
+
         viewModelScope.launch {
+            prepareNote(noteId = noteId, notebookId = notebookId)
             _notebooks.update { repository.observeNotebooks().first() }
         }
     }
