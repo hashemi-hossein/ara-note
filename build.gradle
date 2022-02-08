@@ -20,6 +20,18 @@ buildscript {
         google_truth_version = "1.1.3"
         kotest_version = "4.6.2"
         robolectric_version = "4.5.1"
+        appcompat_version = "1.4.1"
+        material_version = "1.5.0"
+        androidx_core_version = "1.7.0"
+        activity_compose_version = "1.4.0"
+        compose_theme_adapter_version = "1.1.3"
+        desugar_jdk_libs_version = "1.1.5"
+        kotlinx_datetime_version = "0.3.2"
+        prettytime_version = "5.0.2.Final"
+        notify_version = "1.4.0"
+        datastore_preferences_version = "1.0.0"
+        material_dialogs_version = "3.3.0"
+        kotlinx_serialization_json_version = "1.3.2"
     }
     repositories {
         google()
