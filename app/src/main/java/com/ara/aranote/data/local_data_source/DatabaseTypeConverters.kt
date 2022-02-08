@@ -5,7 +5,7 @@ import com.ara.aranote.util.TAG
 import kotlinx.datetime.LocalDateTime
 import timber.log.Timber
 
-class Converters {
+class DatabaseTypeConverters {
     @TypeConverter
     fun stringToLocalDateTime(value: String?): LocalDateTime? {
         return try {

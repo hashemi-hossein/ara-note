@@ -4,12 +4,12 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.datetime.LocalDateTime
 import org.junit.Test
 
-class ConvertersTest {
+class DatabaseTypeConvertersTest {
 
     private val tString = "2021-01-01T00:00"
     private val tDateTime = LocalDateTime.parse(tString)
 
-    private val systemUnderTest = Converters()
+    private val systemUnderTest = DatabaseTypeConverters()
 
     @Test
     fun timestampToDate_whenCorrect() {

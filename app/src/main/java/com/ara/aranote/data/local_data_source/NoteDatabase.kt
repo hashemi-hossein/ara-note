@@ -11,7 +11,7 @@ import com.ara.aranote.data.model.NotebookModel
     version = 1,
     exportSchema = false,
 )
-@TypeConverters(Converters::class)
+@TypeConverters(DatabaseTypeConverters::class)
 abstract class NoteDatabase : RoomDatabase() {
 
     abstract fun getNoteDao(): NoteDao
