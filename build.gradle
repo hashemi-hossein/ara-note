@@ -2,16 +2,16 @@
 buildscript {
     ext {
         kotlin_version = '1.6.10'
-        compose_version = '1.2.0-alpha02'
-        navigation_compose = '2.5.0-alpha01'
-        hilt_version = '2.40.5'
+        compose_version = '1.2.0-alpha03'
+        navigation_compose = '2.5.0-alpha02'
+        hilt_version = '2.41'
         hiltComposeNavigation = '1.0.0'
         room_version = '2.4.1'
         timberVersion = "5.0.1"
-        accompanist_version = '0.24.1-alpha'
+        accompanist_version = '0.24.2-alpha'
         junit_version = "4.13.2"
         mockk_version = '1.12.2'
-        androidx_lifecycle = "2.4.0"
+        androidx_lifecycle = '2.4.1'
         androidx_test = "1.4.0"
         androidx_test_junit = "1.1.3"
         androidx_test_truth = "1.4.0"
@@ -24,7 +24,7 @@ buildscript {
         material_version = "1.5.0"
         androidx_core_version = "1.7.0"
         activity_compose_version = "1.4.0"
-        compose_theme_adapter_version = "1.1.3"
+        compose_theme_adapter_version = '1.1.4'
         desugar_jdk_libs_version = "1.1.5"
         kotlinx_datetime_version = "0.3.2"
         prettytime_version = "5.0.2.Final"
