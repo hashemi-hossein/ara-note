@@ -20,7 +20,7 @@ import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -49,7 +49,7 @@ class NoteRepositoryImplTest {
     )
 
     @Test
-    fun insertNote_onDbSuccessful() = runBlockingTest {
+    fun insertNote_onDbSuccessful() = runTest {
         // arrange
         coEvery { noteDaoMock.insertNote(TestUtil.tNoteModel) } returns 1
 
@@ -63,7 +63,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun insertNote_onDbError() = runBlockingTest {
+    fun insertNote_onDbError() = runTest {
         // arrange
         coEvery { noteDaoMock.insertNote(TestUtil.tNoteModel) } returns null
 
@@ -77,7 +77,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun observeNotes() = runBlockingTest {
+    fun observeNotes() = runTest {
         // arrange
         every { noteDaoMock.observeNotes(any()) } returns flowOf(
             TestUtil.tNoteModelList,
@@ -96,7 +96,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun getNote_onDbSuccessful() = runBlockingTest {
+    fun getNote_onDbSuccessful() = runTest {
         // arrange
         coEvery { noteDaoMock.getNote(1) } returns TestUtil.tNoteModel
 
@@ -110,7 +110,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun getNote_onDbError() = runBlockingTest {
+    fun getNote_onDbError() = runTest {
         // arrange
         coEvery { noteDaoMock.getNote(1) } returns null
 
@@ -124,7 +124,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun updateNote_onDbSuccessful() = runBlockingTest {
+    fun updateNote_onDbSuccessful() = runTest {
         // arrange
         coEvery { noteDaoMock.updateNote(TestUtil.tNoteModel) } returns 1
 
@@ -138,7 +138,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun updateNote_onDbError() = runBlockingTest {
+    fun updateNote_onDbError() = runTest {
         // arrange
         coEvery { noteDaoMock.updateNote(TestUtil.tNoteModel) } returns null
 
@@ -152,7 +152,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun deleteNote_onDbSuccessful() = runBlockingTest {
+    fun deleteNote_onDbSuccessful() = runTest {
         // arrange
         coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) } returns 1
 
@@ -166,7 +166,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun deleteNote_onDbError() = runBlockingTest {
+    fun deleteNote_onDbError() = runTest {
         // arrange
         coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) } returns null
 
@@ -180,7 +180,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun getLastId_onDbSuccessful() = runBlockingTest {
+    fun getLastId_onDbSuccessful() = runTest {
         // arrange
         coEvery { noteDaoMock.getLastId() } returns 1
 
@@ -194,7 +194,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun getLastId_onEmptyDb_or_onDbError() = runBlockingTest {
+    fun getLastId_onEmptyDb_or_onDbError() = runTest {
         // arrange
         coEvery { noteDaoMock.getLastId() } returns null
 
@@ -208,7 +208,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun getAllNotesWithAlarm_onDbSuccessful() = runBlockingTest {
+    fun getAllNotesWithAlarm_onDbSuccessful() = runTest {
         // arrange
         coEvery { noteDaoMock.getAllNotesWithAlarm() } returns TestUtil.tNoteModelList
 
@@ -222,7 +222,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun getAllNotesWithAlarm_onDbError() = runBlockingTest {
+    fun getAllNotesWithAlarm_onDbError() = runTest {
         // arrange
         coEvery { noteDaoMock.getAllNotesWithAlarm() } returns null
 
@@ -236,7 +236,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun observeNotebooks() = runBlockingTest {
+    fun observeNotebooks() = runTest {
         // arrange
         every { notebookDaoMock.observeNotebooks() } returns flowOf(
             TestUtil.tNotebookModelList,
@@ -255,7 +255,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun insertNotebook_onDbSuccessful() = runBlockingTest {
+    fun insertNotebook_onDbSuccessful() = runTest {
         // arrange
         coEvery { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) } returns 1
 
@@ -269,7 +269,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun insertNotebook_onDbError() = runBlockingTest {
+    fun insertNotebook_onDbError() = runTest {
         // arrange
         coEvery { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) } returns null
 
