@@ -10,6 +10,8 @@ import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
+import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
+import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID
 import com.ara.aranote.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,9 +51,9 @@ constructor(
     val isNewNote: Boolean
 
     init {
-        val noteId = savedStateHandle.get<Int>("noteId") ?: INVALID_NOTE_ID
+        val noteId = savedStateHandle.get<Int>(NAV_ARGUMENT_NOTE_ID) ?: INVALID_NOTE_ID
         isNewNote = noteId < 0
-        val notebookId = savedStateHandle.get<Int>("notebookId") ?: DEFAULT_NOTEBOOK_ID
+        val notebookId = savedStateHandle.get<Int>(NAV_ARGUMENT_NOTEBOOK_ID) ?: DEFAULT_NOTEBOOK_ID
 
         viewModelScope.launch {
             prepareNote(noteId = noteId, notebookId = notebookId)

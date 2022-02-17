@@ -6,3 +6,5 @@ const val INVALID_NOTEBOOK_ID = -101
 const val DEFAULT_NOTEBOOK_ID = 1
 const val DEFAULT_NOTEBOOK_NAME = "Ara Notebook"
 const val ANIMATION_DURATION = 500
+const val NAV_ARGUMENT_NOTE_ID = "noteId"
+const val NAV_ARGUMENT_NOTEBOOK_ID = "notebookId"

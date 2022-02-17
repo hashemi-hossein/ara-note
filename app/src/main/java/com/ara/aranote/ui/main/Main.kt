@@ -23,6 +23,8 @@ import com.ara.aranote.ui.screens.SettingsScreen
 import com.ara.aranote.util.ANIMATION_DURATION
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
+import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
+import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -80,11 +82,11 @@ fun AppMain(
             composable(
                 NavScreen.NoteDetail.route + "?noteId={noteId}&notebookId={notebookId}",
                 arguments = listOf(
-                    navArgument("noteId") {
+                    navArgument(NAV_ARGUMENT_NOTE_ID) {
                         type = NavType.IntType
                         defaultValue = INVALID_NOTE_ID
                     },
-                    navArgument("notebookId") {
+                    navArgument(NAV_ARGUMENT_NOTEBOOK_ID) {
                         type = NavType.IntType
                         defaultValue = DEFAULT_NOTEBOOK_ID
                     },
