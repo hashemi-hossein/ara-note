@@ -13,10 +13,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.ara.aranote.R
@@ -53,6 +49,11 @@ class HomeScreenTest {
         notes = mutableStateOf(TestUtil.tNoteEntityList)
         notebooks = mutableStateOf(TestUtil.tNotebookEntityList)
         currentNotebookId = mutableStateOf(TestUtil.tNotebookEntity.id)
+        val filterNotes = {
+            notes.value =
+                TestUtil.tNoteEntityList.filter { it.notebookId == currentNotebookId.value }
+        }
+        filterNotes()
         noteIdToNavigate = null
         notebookIdToNavigate = null
 //        notebookNameToAdd = null
@@ -70,7 +71,7 @@ class HomeScreenTest {
                 currentNotebookId = currentNotebookId.value,
                 setCurrentNotebookId = { notebookId ->
                     currentNotebookId.value = notebookId
-                    notes.value = notes.value.filter { it.notebookId == notebookId }
+                    filterNotes()
                 },
             )
         }
@@ -79,9 +80,7 @@ class HomeScreenTest {
     @Test
     fun note_visibility() {
         // assert
-//        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).assertExists()
-        Espresso.onView(ViewMatchers.withText(TestUtil.tNoteEntity.text))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).assertExists()
         // notebook name in the Appbar
         composeTestRule.onNode(
             !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
@@ -108,13 +107,8 @@ class HomeScreenTest {
 
     @Test
     fun click_note() {
-        // arrange
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList.last().name).performClick()
-
         // act
-//        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).performClick()
-        Espresso.onView(ViewMatchers.withText(TestUtil.tNoteEntity.text))
-            .perform(ViewActions.click())
+        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text, substring = true).performClick()
 
         // assert
         assertThat(noteIdToNavigate).isEqualTo(TestUtil.tNoteEntity.id)
@@ -136,14 +130,13 @@ class HomeScreenTest {
     @Test
     fun change_notebook_on_clicking() {
         // act
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntity2.name)
-            .performClick()
+        composeTestRule.onNodeWithText(TestUtil.tNotebookEntity2.name).performClick()
 
         // assert
         assertThat(currentNotebookId.value).isEqualTo(TestUtil.tNotebookEntity2.id)
-//        composeTestRule.onNodeWithText(TestUtil.tNoteEntityList.first { it.notebookId == currentNotebookId.value }.text)
-//            .assertIsDisplayed()
-        Espresso.onView(ViewMatchers.withText(TestUtil.tNoteEntityList.first { it.notebookId == currentNotebookId.value }.text))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        composeTestRule.onNodeWithText(
+            TestUtil.tNoteEntityList.first { it.notebookId == currentNotebookId.value }.text,
+            substring = true,
+        ).assertIsDisplayed()
     }
 }

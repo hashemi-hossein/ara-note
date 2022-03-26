@@ -332,16 +332,6 @@ private fun HBody(
             },
             modifier = Modifier.fillMaxSize()
         )
-
-        /*TextField(
-            value = note.text,
-            onValueChange = { onNoteChanged(note.copy(text = it)) },
-            modifier = Modifier.fillMaxSize(),
-            textStyle = MaterialTheme.typography.body1,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-            ),
-        )*/
     }
 }
 

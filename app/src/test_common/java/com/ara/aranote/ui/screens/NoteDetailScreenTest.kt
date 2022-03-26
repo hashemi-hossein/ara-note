@@ -83,13 +83,13 @@ class NoteDetailScreenTest {
         // act
 //        composeTestRule.onNodeWithText(note.value.text).performTextInput("hello")
         Espresso.onView(ViewMatchers.withText(note.value.text))
-            .perform(ViewActions.typeText("hello"))
+            .perform(ViewActions.typeText("Hello"))
 
         // assert
-//        composeTestRule.onNodeWithText("hello").assertIsDisplayed()
-        Espresso.onView(ViewMatchers.withText("hello"))
+//        composeTestRule.onNodeWithText("Hello").assertIsDisplayed()
+        Espresso.onView(ViewMatchers.withText("Hello"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        assertThat(note.value.text).isEqualTo("hello")
+        assertThat(note.value.text).isEqualTo("Hello")
     }
 
     @Test
