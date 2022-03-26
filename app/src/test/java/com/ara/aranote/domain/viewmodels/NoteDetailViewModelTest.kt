@@ -1,5 +1,6 @@
 package com.ara.aranote.domain.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.repository.FakeNoteRepository
 import com.ara.aranote.domain.repository.NoteRepository
@@ -7,10 +8,13 @@ import com.ara.aranote.test_util.TestCoroutineRule
 import com.ara.aranote.test_util.TestUtil
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
+import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
+import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID
 import com.google.common.truth.Truth.assertThat
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,19 +32,23 @@ class NoteDetailViewModelTest {
     private val onOperationError = { println("onOperationError") }
 
     private val appDataStoreMock = mockk<AppDataStore>()
+    private val savedStateHandleMock = mockk<SavedStateHandle>() {
+        every { get<Int>(NAV_ARGUMENT_NOTE_ID) } returns INVALID_NOTE_ID
+        every { get<Int>(NAV_ARGUMENT_NOTEBOOK_ID) } returns DEFAULT_NOTEBOOK_ID
+    }
     private lateinit var repository: NoteRepository
     private lateinit var systemUnderTest: NoteDetailViewModel
 
     @Before
     fun setUp() {
         repository = FakeNoteRepository()
-        systemUnderTest = NoteDetailViewModel(repository, appDataStoreMock)
+        systemUnderTest = NoteDetailViewModel(repository, appDataStoreMock, savedStateHandleMock)
     }
 
     @Test
-    fun `prepareNote-invalidId and fresh`() = runBlockingTest {
+    fun `prepareNote-invalidId and fresh`() = runTest {
         // act
-        systemUnderTest.prepareNote(noteId = INVALID_NOTE_ID, notebookId = DEFAULT_NOTEBOOK_ID)
+        systemUnderTest.prepareNote(noteId = INVALID_NOTE_ID)
 
         // assert
         assertThat(systemUnderTest.note.value.id).isEqualTo(1)
@@ -48,15 +56,12 @@ class NoteDetailViewModelTest {
     }
 
     @Test
-    fun `prepareNote-invalidId and notFresh`() = runBlockingTest {
+    fun `prepareNote-invalidId and notFresh`() = runTest {
         // arrange
         repository.insertNote(TestUtil.tNoteEntity)
 
         // act
-        systemUnderTest.prepareNote(
-            noteId = TestUtil.tNoteEntity.id,
-            notebookId = TestUtil.tNoteEntity.notebookId + 1
-        )
+        systemUnderTest.prepareNote(noteId = TestUtil.tNoteEntity.id)
 
         // assert
         assertThat(systemUnderTest.note.value.id).isEqualTo(1)
@@ -64,27 +69,24 @@ class NoteDetailViewModelTest {
     }
 
     @Test
-    fun `prepareNote-invalidId and notFresh and idNotFound`() = runBlockingTest {
+    fun `prepareNote-invalidId and notFresh and idNotFound`() = runTest {
         // arrange
         repository.insertNote(TestUtil.tNoteEntity)
 
         // act
-        systemUnderTest.prepareNote(noteId = 100, notebookId = DEFAULT_NOTEBOOK_ID)
+        systemUnderTest.prepareNote(noteId = 100)
 
         // assert
-        assertThat(systemUnderTest.note.value.id).isEqualTo(0)
+        assertThat(systemUnderTest.note.value.id).isEqualTo(1)
         assertThat(systemUnderTest.note.value.text).isEqualTo("ERROR")
         assertThat(systemUnderTest.note.value.notebookId).isEqualTo(DEFAULT_NOTEBOOK_ID)
     }
 
     @Test
-    fun modifyNote() = runBlockingTest {
+    fun modifyNote() = runTest {
         // arrange
         repository.insertNote(TestUtil.tNoteEntity)
-        systemUnderTest.prepareNote(
-            noteId = TestUtil.tNoteEntity.id,
-            notebookId = DEFAULT_NOTEBOOK_ID
-        )
+        systemUnderTest.prepareNote(noteId = TestUtil.tNoteEntity.id)
 
         // act
         systemUnderTest.modifyNote(textModifiedNote)
@@ -94,7 +96,7 @@ class NoteDetailViewModelTest {
     }
 
     @Test
-    fun `backPressed-insert when isNewNote and doNotDelete`() = runBlockingTest {
+    fun `backPressed-insert when isNewNote and doNotDelete`() = runTest {
         // arrange
         systemUnderTest.prepareNote(noteId = INVALID_NOTE_ID)
         systemUnderTest.modifyNote(TestUtil.tNoteEntity)
@@ -113,7 +115,7 @@ class NoteDetailViewModelTest {
     }
 
     @Test
-    fun `backPressed-ignore when isNewNote and doDelete`() = runBlockingTest {
+    fun `backPressed-ignore when isNewNote and doDelete`() = runTest {
         // arrange
         systemUnderTest.prepareNote(noteId = INVALID_NOTE_ID)
         systemUnderTest.modifyNote(TestUtil.tNoteEntity)
@@ -132,13 +134,10 @@ class NoteDetailViewModelTest {
     }
 
     @Test
-    fun `backPressed-delete when isNotNewNote and doDelete`() = runBlockingTest {
+    fun `backPressed-delete when isNotNewNote and doDelete`() = runTest {
         // arrange
         repository.insertNote(TestUtil.tNoteEntity)
-        systemUnderTest.prepareNote(
-            noteId = TestUtil.tNoteEntity.id,
-            notebookId = DEFAULT_NOTEBOOK_ID
-        )
+        systemUnderTest.prepareNote(noteId = TestUtil.tNoteEntity.id)
 
         // act
         systemUnderTest.backPressed(
@@ -154,13 +153,10 @@ class NoteDetailViewModelTest {
     }
 
     @Test
-    fun `backPressed-update when isNotNewNote and doNotDelete`() = runBlockingTest {
+    fun `backPressed-update when isNotNewNote and doNotDelete`() = runTest {
         // arrange
         repository.insertNote(TestUtil.tNoteEntity)
-        systemUnderTest.prepareNote(
-            noteId = TestUtil.tNoteEntity.id,
-            notebookId = DEFAULT_NOTEBOOK_ID
-        )
+        systemUnderTest.prepareNote(noteId = TestUtil.tNoteEntity.id)
         systemUnderTest.modifyNote(textModifiedNote)
 
         // act

@@ -6,9 +6,10 @@ import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.test_util.TestCoroutineRule
 import com.ara.aranote.test_util.TestUtil
 import com.google.common.truth.Truth.assertThat
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,7 +20,9 @@ class HomeViewModelTest {
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
-    private val appDataStoreMock = mockk<AppDataStore>()
+    private val appDataStoreMock = mockk<AppDataStore>() {
+        coEvery { readPref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, any()) } returns true
+    }
     private lateinit var repository: NoteRepository
     private lateinit var systemUnderTest: HomeViewModel
 
@@ -30,7 +33,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun observeNotes() = runBlockingTest {
+    fun observeNotes() = runTest {
         // arrange
         repository.insertNote(TestUtil.tNoteEntity)
 
@@ -42,7 +45,7 @@ class HomeViewModelTest {
     }
 
 //    @Test
-//    fun addNotebook() = runBlockingTest {
+//    fun addNotebook() = runTest {
 //        // act
 //        systemUnderTest.addNotebook(
 //            id = TestUtil.tNotebookEntity.id,
@@ -55,7 +58,7 @@ class HomeViewModelTest {
 //    }
 
     @Test
-    fun setCurrentNotebookId() = runBlockingTest {
+    fun setCurrentNotebookId() = runTest {
         // arrange
         repository.insertNote(TestUtil.tNoteEntity)
         repository.insertNote(TestUtil.tNoteEntity2)
