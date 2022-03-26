@@ -2,29 +2,30 @@
 buildscript {
     ext {
         kotlin_version = '1.6.10'
-        compose_version = '1.2.0-alpha03'
-        navigation_compose = '2.5.0-alpha02'
+        compose_version = '1.2.0-alpha06'
+        navigation_compose = '2.5.0-alpha03'
         hilt_version = '2.41'
         hiltComposeNavigation = '1.0.0'
-        room_version = '2.4.1'
+        room_version = '2.4.2'
         timberVersion = "5.0.1"
-        accompanist_version = '0.24.2-alpha'
+        accompanist_version = '0.24.5-alpha'
         junit_version = "4.13.2"
-        mockk_version = '1.12.2'
-        androidx_lifecycle = '2.4.1'
+        mockk_version = '1.12.3'
+        androidx_lifecycle = '2.5.0-alpha05'
         androidx_test = "1.4.0"
         androidx_test_junit = "1.1.3"
         androidx_test_truth = "1.4.0"
         androidx_test_espresso = "3.4.0"
         kotlinx_coroutines_version = '1.6.0-native-mt'
+        kotlinx_coroutines_version_android = '1.6.0'
         google_truth_version = "1.1.3"
         kotest_version = "4.6.2"
         robolectric_version = "4.5.1"
         appcompat_version = "1.4.1"
         material_version = "1.5.0"
         androidx_core_version = "1.7.0"
-        activity_compose_version = "1.4.0"
-        compose_theme_adapter_version = '1.1.4'
+        activity_compose_version = "1.6.0-alpha01"
+        compose_theme_adapter_version = '1.1.6'
         desugar_jdk_libs_version = "1.1.5"
         kotlinx_datetime_version = "0.3.2"
         prettytime_version = "5.0.2.Final"
@@ -38,7 +39,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.1'
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
@@ -49,7 +50,7 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.spotless" version "5.15.0"
+    id "com.diffplug.spotless" version "6.3.0"
 }
 
 subprojects {
