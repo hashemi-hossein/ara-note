@@ -7,9 +7,9 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.ara.aranote.util.CoroutineDispatcherProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -19,11 +19,14 @@ import javax.inject.Singleton
 
 @Singleton
 class AppDataStore
-@Inject constructor(@ApplicationContext private val context: Context) {
+@Inject constructor(
+    @ApplicationContext private val context: Context,
+    coroutineDispatcherProvider: CoroutineDispatcherProvider,
+) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
 
-    private val scope = CoroutineScope(IO)
+    private val scope = CoroutineScope(coroutineDispatcherProvider.io)
 
     fun <T> writePref(key: Preferences.Key<T>, value: T) {
         scope.launch {

@@ -6,7 +6,6 @@ import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -24,13 +23,14 @@ class HDataBackup
 @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: NoteRepository,
+    private val coroutineDispatcherProvider: CoroutineDispatcherProvider,
 ) {
 
     @Serializable
     data class HBackup(val notebooks: List<Notebook>, val notes: List<Note>)
 
-    suspend fun exportData(uri: Uri, onComplete: () -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun exportData(uri: Uri, onComplete: () -> Unit) =
+        withContext(coroutineDispatcherProvider.io) {
             try {
                 val notebooks = repository.observeNotebooks().first()
                 val notes = repository.observeNotes().first()
@@ -47,10 +47,9 @@ class HDataBackup
             }
             onComplete()
         }
-    }
 
-    suspend fun importData(uri: Uri, onComplete: () -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun importData(uri: Uri, onComplete: () -> Unit) =
+        withContext(coroutineDispatcherProvider.io) {
             try {
                 var string = ""
                 context.contentResolver.openInputStream(uri)?.use { inputStream ->
@@ -84,5 +83,4 @@ class HDataBackup
             }
             onComplete()
         }
-    }
 }

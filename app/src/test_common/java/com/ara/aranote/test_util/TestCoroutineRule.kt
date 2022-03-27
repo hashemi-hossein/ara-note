@@ -1,5 +1,6 @@
 package com.ara.aranote.test_util
 
+import com.ara.aranote.util.CoroutineDispatcherProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
@@ -11,8 +12,19 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 @ExperimentalCoroutinesApi
+class TestDispatcherProvider(
+    testDispatcher: TestDispatcher
+) : CoroutineDispatcherProvider() {
+    override val main = testDispatcher
+    override val default = testDispatcher
+    override val io = testDispatcher
+    override val unconfined = testDispatcher
+}
+
+@ExperimentalCoroutinesApi
 class TestCoroutineRule(
-    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher(),
+    val testDispatcherProvider: TestDispatcherProvider = TestDispatcherProvider(testDispatcher)
 ) : TestWatcher() {
 
     override fun starting(description: Description?) {

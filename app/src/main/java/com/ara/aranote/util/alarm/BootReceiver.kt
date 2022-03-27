@@ -4,11 +4,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.ara.aranote.domain.repository.NoteRepository
+import com.ara.aranote.util.CoroutineDispatcherProvider
 import com.ara.aranote.util.TAG
 import com.ara.aranote.util.millis
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -20,8 +20,11 @@ class BootReceiver : BroadcastReceiver() {
     @Inject
     lateinit var repository: NoteRepository
 
+    @Inject
+    lateinit var coroutineDispatcherProvider: CoroutineDispatcherProvider
+
     private val job: Job = Job()
-    private val coroutineScope = CoroutineScope(job + Dispatchers.IO)
+    private val coroutineScope = CoroutineScope(job + coroutineDispatcherProvider.io)
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Timber.tag(TAG).d("BootReceiver -- onReceive -- intent?.action=${intent?.action}")

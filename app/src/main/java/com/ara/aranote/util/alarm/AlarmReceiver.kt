@@ -8,11 +8,11 @@ import android.os.Build
 import com.ara.aranote.R
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.ui.main.MainActivity
+import com.ara.aranote.util.CoroutineDispatcherProvider
 import com.ara.aranote.util.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import io.karn.notify.Notify
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -24,8 +24,11 @@ class AlarmReceiver : BroadcastReceiver() {
     @Inject
     lateinit var repository: NoteRepository
 
+    @Inject
+    lateinit var coroutineDispatcherProvider: CoroutineDispatcherProvider
+
     private val job: Job = Job()
-    private val coroutineScope = CoroutineScope(job + Dispatchers.IO)
+    private val coroutineScope = CoroutineScope(job + coroutineDispatcherProvider.io)
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val requestCode = intent?.extras?.getInt("requestCode")
