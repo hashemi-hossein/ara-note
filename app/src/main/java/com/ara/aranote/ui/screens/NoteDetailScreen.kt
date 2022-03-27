@@ -73,6 +73,7 @@ import com.ara.aranote.domain.viewmodels.NoteDetailViewModel.TheOperation
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.HDropdown
 import com.ara.aranote.ui.components.showSnackbar
+import com.ara.aranote.util.DateTimeFormatPattern
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.TAG
 import com.ara.aranote.util.alarm.hManageAlarm
@@ -278,7 +279,18 @@ private fun HBody(
             .padding(innerPadding)
             .padding(horizontal = 10.dp)
     ) {
-        Divider()
+        Divider(Modifier.padding(vertical = 3.dp))
+        if (!isNewNote) {
+            Text(
+                text = "Created at " +
+                    HDateTime.formatDateAndTime(
+                        dateTime = note.addedDateTime,
+                        dateTimeFormatPattern = DateTimeFormatPattern.DATE_TIME
+                    ),
+                modifier = Modifier.alpha(0.7f)
+            )
+            Spacer(Modifier.padding(vertical = 3.dp))
+        }
         AnimatedVisibility(note.alarmDateTime != null) {
             Text(
                 text = "Alarm has been set for " +
@@ -452,7 +464,10 @@ private fun HBottomSheet(
                         }.show((context as AppCompatActivity).supportFragmentManager, "date_picker")
                 }) {
                     Text(
-                        text = HDateTime.formatDateAndTime(dateTime = dateTime, isDate = true),
+                        text = HDateTime.formatDateAndTime(
+                            dateTime = dateTime,
+                            dateTimeFormatPattern = DateTimeFormatPattern.DATE
+                        ),
                         style = MaterialTheme.typography.body1,
                     )
                 }
@@ -477,7 +492,10 @@ private fun HBottomSheet(
                         }.show((context as AppCompatActivity).supportFragmentManager, "time_picker")
                 }) {
                     Text(
-                        text = HDateTime.formatDateAndTime(dateTime = dateTime, isDate = false),
+                        text = HDateTime.formatDateAndTime(
+                            dateTime = dateTime,
+                            dateTimeFormatPattern = DateTimeFormatPattern.TIME
+                        ),
                         style = MaterialTheme.typography.body1,
                     )
                 }

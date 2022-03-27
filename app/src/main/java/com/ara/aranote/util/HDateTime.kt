@@ -12,8 +12,11 @@ import java.time.format.DateTimeFormatter
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-private const val DATE_PATTERN = "yyyy/MM/dd"
-private const val TIME_PATTERN = "hh:mm a"
+enum class DateTimeFormatPattern(val pattern: String) {
+    DATE("yyyy/MM/dd"),
+    TIME("hh:mm a"),
+    DATE_TIME("yyyy/MM/dd hh:mm a"),
+}
 
 val TIME_ZONE = TimeZone.currentSystemDefault()
 
@@ -27,9 +30,9 @@ object HDateTime {
     fun gerPrettyDateTime(dateTime: LocalDateTime): String =
         prettyTime.format(dateTime.toJavaLocalDateTime())
 
-    fun formatDateAndTime(dateTime: LocalDateTime, isDate: Boolean): String =
+    fun formatDateAndTime(dateTime: LocalDateTime, dateTimeFormatPattern: DateTimeFormatPattern): String =
         dateTime.toJavaLocalDateTime().format(
-            DateTimeFormatter.ofPattern(if (isDate) DATE_PATTERN else TIME_PATTERN)
+            DateTimeFormatter.ofPattern(dateTimeFormatPattern.pattern)
         )
 }
 
