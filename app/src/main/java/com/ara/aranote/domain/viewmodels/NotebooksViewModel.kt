@@ -14,8 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotebooksViewModel
-@Inject
-constructor(
+@Inject constructor(
     private val repository: NoteRepository,
 ) : ViewModel() {
 

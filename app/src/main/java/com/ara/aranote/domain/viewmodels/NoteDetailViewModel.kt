@@ -24,8 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailViewModel
-@Inject
-constructor(
+@Inject constructor(
     private val repository: NoteRepository,
     val appDataStore: AppDataStore,
     savedStateHandle: SavedStateHandle,

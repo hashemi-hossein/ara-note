@@ -14,10 +14,8 @@ import com.ara.aranote.util.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
-import javax.inject.Inject
 
-class NoteRepositoryImpl
-@Inject constructor(
+class NoteRepositoryImpl(
     private val noteDao: NoteDao,
     private val noteDomainMapper: DomainMapper<NoteModel, Note>,
     private val notebookDao: NotebookDao,

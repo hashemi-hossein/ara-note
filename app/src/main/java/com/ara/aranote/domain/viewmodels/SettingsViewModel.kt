@@ -11,8 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel
-@Inject
-constructor(
+@Inject constructor(
     val appDataStore: AppDataStore,
     private val hDataBackup: HDataBackup,
 ) : ViewModel() {
