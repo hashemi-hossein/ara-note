@@ -1,8 +1,6 @@
 package com.ara.aranote.ui.screens
 
 import android.content.Context
-import android.view.Gravity
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +30,8 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.AlarmAdd
@@ -45,6 +45,7 @@ import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,16 +56,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.view.get
-import androidx.core.widget.NestedScrollView
-import androidx.core.widget.doAfterTextChanged
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
@@ -82,14 +83,12 @@ import com.ara.aranote.util.millis
 import com.ara.aranote.util.minus
 import com.ara.aranote.util.plus
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
-import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -164,7 +163,6 @@ fun NoteDetailScreen(
         note = note,
         notebooks = notebooks,
         onNoteChanged = viewModel::modifyNote,
-        onNoteTextChanged = { viewModel.modifyNote(viewModel.note.value.copy(text = it)) },
         onBackPressed = onBackPressed,
         isNewNote = isNewNote,
         isModified = isModified,
@@ -182,7 +180,6 @@ internal fun NoteDetailScreen(
     note: Note,
     notebooks: List<Notebook>,
     onNoteChanged: (Note) -> Unit,
-    onNoteTextChanged: (String) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
     isModified: Boolean,
@@ -258,8 +255,7 @@ internal fun NoteDetailScreen(
             HBody(
                 innerPadding = innerPadding,
                 note = note,
-                onNoteTextChanged = onNoteTextChanged,
-                isModified = isModified,
+                onNoteChanged = onNoteChanged,
                 isNewNote = isNewNote,
             )
         }
@@ -270,8 +266,7 @@ internal fun NoteDetailScreen(
 private fun HBody(
     innerPadding: PaddingValues,
     note: Note,
-    onNoteTextChanged: (String) -> Unit,
-    isModified: Boolean,
+    onNoteChanged: (Note) -> Unit,
     isNewNote: Boolean,
 ) {
     Column(
@@ -301,49 +296,27 @@ private fun HBody(
                 modifier = Modifier.alpha(0.4f)
             )
         }
-        var runOnce by remember { mutableStateOf(false) }
-        var runOnceOnModifying by remember(isModified) { mutableStateOf(false) }
-        AndroidView(
-            factory = { context ->
-                val editText = TextInputEditText(context).apply {
-                    background = null
-                    gravity = Gravity.TOP
-                    textSize = 17f
-                    hint = context.getString(R.string.type_here)
-                    setHorizontallyScrolling(false)
-                    requestFocus()
-//                    setTypeface(Typeface.createFromAsset(context.assets,""))
-                    doAfterTextChanged {
-                        onNoteTextChanged(it?.toString() ?: "")
-                    }
-                }
-                NestedScrollView(context).apply {
-                    isFillViewport = true
-                    addView(editText)
-                }
-            },
-            update = { view ->
-                if (note.text.isNotEmpty() && (view[0] as TextInputEditText).text?.isEmpty() == true) {
-                    (view[0] as TextInputEditText).setText(note.text)
-                    (view[0] as TextInputEditText).setSelection(note.text.length)
-                    runOnceOnModifying = true
-                }
-                if (!runOnceOnModifying && !isModified) {
-                    runOnceOnModifying = true
-                    val previousSelection = (view[0] as TextInputEditText).selectionStart
-                    (view[0] as TextInputEditText).setText(note.text)
-                    (view[0] as TextInputEditText).setSelection(previousSelection)
-                }
 
-                if (!runOnce && note.id != 0 && isNewNote) {
-                    runOnce = true
-                    val imm: InputMethodManager? =
-                        view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                    imm?.showSoftInput(view[0], InputMethodManager.SHOW_FORCED)
-                }
-            },
-            modifier = Modifier.fillMaxSize()
+        val focusRequester = remember { FocusRequester() }
+        TextField(
+            value = note.text,
+            onValueChange = { onNoteChanged(note.copy(text = it)) },
+            modifier = Modifier
+                .fillMaxSize()
+                .focusRequester(focusRequester),
+            textStyle = MaterialTheme.typography.body1.copy(
+                textDirection = TextDirection.Content,
+            ),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+            ),
+            placeholder = { Text(text = stringResource(id = R.string.type_here)) },
         )
+
+        LaunchedEffect(true) {
+            if (isNewNote)
+                focusRequester.requestFocus()
+        }
     }
 }
 
@@ -423,7 +396,7 @@ private fun HAppBarActions(
         )
 }
 
-@OptIn(ExperimentalTime::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun HBottomSheet(
     note: Note,
@@ -600,7 +573,6 @@ private fun HPreview() {
         ),
         notebooks = listOf(),
         onNoteChanged = {},
-        onNoteTextChanged = {},
         onBackPressed = {},
         isNewNote = true,
         isModified = false,
