@@ -5,7 +5,6 @@ import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,11 +13,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
@@ -58,7 +57,6 @@ import com.ara.aranote.domain.viewmodels.HomeViewModel
 import com.ara.aranote.ui.components.AppBarNavButtonType
 import com.ara.aranote.ui.components.HAppBar
 import com.ara.aranote.ui.components.NoteCard
-import com.ara.aranote.ui.components.StaggeredVerticalGrid
 import com.ara.aranote.ui.components.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
@@ -113,7 +111,7 @@ internal fun HomeScreen(
     context: Context = LocalContext.current,
 ) {
     var lastTimeMillis by remember { mutableStateOf(0L) }
-    val scrollState: ScrollState = rememberScrollState()
+    val listState: LazyListState = rememberLazyListState()
 
     BackHandler(
         onBack = {
@@ -123,7 +121,7 @@ internal fun HomeScreen(
                 currentNotebookId != DEFAULT_NOTEBOOK_ID -> {
                     setCurrentNotebookId(DEFAULT_NOTEBOOK_ID)
                     scope.launch {
-                        scrollState.animateScrollTo(0)
+                        listState.animateScrollToItem(0)
                     }
                 }
                 !isDoubleBackToExitMode || System.currentTimeMillis() - lastTimeMillis < 2000 ->
@@ -168,7 +166,7 @@ internal fun HomeScreen(
                         setCurrentNotebookId(it)
                         scope.launch {
                             scaffoldState.drawerState.close()
-                            scrollState.animateScrollTo(0)
+                            listState.animateScrollToItem(0)
                         }
                     }
                 },
@@ -195,7 +193,7 @@ internal fun HomeScreen(
             notes = notes,
             navigateToNoteDetailScreen = navigateToNoteDetailScreen,
             noteColor = noteColor,
-            scrollState = scrollState,
+            listState = listState,
         )
     }
 }
@@ -207,15 +205,14 @@ private fun HBody(
     notes: List<Note>,
     navigateToNoteDetailScreen: (Int) -> Unit,
     noteColor: Long,
-    scrollState: ScrollState,
+    listState: LazyListState,
 ) {
     Surface(
         modifier = Modifier
             .padding(innerPadding)
-            .verticalScroll(scrollState)
     ) {
-        StaggeredVerticalGrid(maxColumnWidth = 220.dp) {
-            notes.forEach { item: Note ->
+        LazyColumn(state = listState) {
+            items(notes) { item: Note ->
                 NoteCard(
                     note = item,
                     noteColor = noteColor,
