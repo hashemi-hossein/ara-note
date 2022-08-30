@@ -24,8 +24,8 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
             debuggable true
             minifyEnabled false
         }
@@ -69,14 +69,21 @@ android {
         checkDependencies true
     }
     sourceSets {
-        androidTest.java.srcDirs += "src/test_common/java"
+//        androidTest.java.srcDirs += "src/test_common/java"
         test.java.srcDirs += "src/test_common/java"
+//        main.java.srcDirs = ["src/main/kotlin"]
     }
     testOptions {
         unitTests {
             includeAndroidResources = true
         }
         animationsDisabled true
+    }
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
     }
 }
 
