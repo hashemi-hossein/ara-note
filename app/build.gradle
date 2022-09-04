@@ -8,15 +8,18 @@ plugins {
 
 android {
     compileSdk 33
+    ndkVersion "23.0.7599858"
 
     defaultConfig {
         applicationId "com.ara.aranote"
         minSdk 21
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "220.904"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments disableAnalytics: 'true'
+        testInstrumentationRunner "com.hnote.HTestRunner"
+
         vectorDrawables {
             useSupportLibrary true
         }
@@ -48,6 +51,7 @@ android {
         compose true
 
         // Disable unused AGP features
+//        buildConfig false
         aidl false
         renderScript false
         resValues false
@@ -96,6 +100,12 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         allWarningsAsErrors = project.hasProperty("warningsAsErrors") ? project.warningsAsErrors : false
 
         freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
+
+        // Enable experimental coroutines APIs, including Flow
+//        freeCompilerArgs += '-Xopt-in=kotlin.Experimental'
+
+        // Set JVM target to 1.8
+//        jvmTarget = "1.8"
     }
 }
 
