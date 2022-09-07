@@ -5,11 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotebookRepository {
 
-    fun observeNotebooks(): Flow<List<Notebook>>
+    fun observe(): Flow<List<Notebook>>
 
-    suspend fun insertNotebook(notebook: Notebook): Int
+    suspend fun insert(notebook: Notebook): Int
 
-    suspend fun deleteNotebook(notebook: Notebook): Boolean
+    suspend fun delete(notebook: Notebook): Boolean
 
-    suspend fun updateNotebook(notebook: Notebook): Boolean
+    suspend fun update(notebook: Notebook): Boolean
 }

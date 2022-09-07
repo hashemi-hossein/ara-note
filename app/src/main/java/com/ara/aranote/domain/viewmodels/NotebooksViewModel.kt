@@ -25,25 +25,25 @@ class NotebooksViewModel
 
     init {
         viewModelScope.launch {
-            notebookRepository.observeNotebooks().collect { notebooks ->
+            notebookRepository.observe().collect { notebooks ->
                 _notebooks.update { notebooks }
             }
         }
     }
 
     fun addNotebook(id: Int = 0, name: String) = viewModelScope.launch {
-        notebookRepository.insertNotebook(Notebook(id = id, name = name))
+        notebookRepository.insert(Notebook(id = id, name = name))
     }
 
     fun modifyNotebook(notebook: Notebook) = viewModelScope.launch {
-        notebookRepository.updateNotebook(notebook)
+        notebookRepository.update(notebook)
     }
 
     fun deleteNotebook(notebook: Notebook) = viewModelScope.launch {
-        val notesOfNotebook = noteRepository.observeNotes(notebook.id).first()
+        val notesOfNotebook = noteRepository.observe(notebook.id).first()
         for (note in notesOfNotebook) {
-            noteRepository.deleteNote(note)
+            noteRepository.delete(note)
         }
-        notebookRepository.deleteNotebook(notebook)
+        notebookRepository.delete(notebook)
     }
 }

@@ -34,8 +34,8 @@ class HDataBackup
     suspend fun exportData(uri: Uri, onComplete: () -> Unit) =
         withContext(coroutineDispatcherProvider.io) {
             try {
-                val notebooks = notebookRepository.observeNotebooks().first()
-                val notes = noteRepository.observeNotes().first()
+                val notebooks = notebookRepository.observe().first()
+                val notes = noteRepository.observe().first()
                 val hBackup = HBackup(notebooks, notes)
                 val exportedData = Json.encodeToString(hBackup)
 
@@ -60,19 +60,19 @@ class HDataBackup
                     }
                 }
                 val backup = Json.decodeFromString<HBackup>(string)
-                val notebooks = notebookRepository.observeNotebooks().first()
+                val notebooks = notebookRepository.observe().first()
                 for (notebook in backup.notebooks) {
                     if (!notebooks.contains(notebook)) {
-                        val r = notebookRepository.insertNotebook(notebook)
+                        val r = notebookRepository.insert(notebook)
                         if (r == INVALID_NOTEBOOK_ID) {
                             throw Throwable("INVALID_NOTEBOOK_ID")
                         }
                     }
                 }
-                val notes = noteRepository.observeNotes().first()
+                val notes = noteRepository.observe().first()
                 for (note in backup.notes) {
                     if (!notes.contains(note)) {
-                        val r = noteRepository.insertNote(note)
+                        val r = noteRepository.insert(note)
                         if (r == INVALID_NOTE_ID) {
                             throw Throwable("INVALID_NOTE_ID")
                         }

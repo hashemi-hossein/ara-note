@@ -17,32 +17,32 @@ class FakeNoteRepository : NoteRepository {
     private val notebooks = mutableMapOf<Int, Notebook>()
     private val notebooksFlow = MutableStateFlow(notebooks.values.toList())
 
-    override suspend fun insertNote(note: Note): Int {
-        val r = if (notes.put(note.id, note) == null) note.id else INVALID_NOTE_ID
-        notesFlow.update { notes.values.toList() }
-        return r
-    }
-
-    override fun observeNotes(notebookId: Int?): Flow<List<Note>> {
+    override fun observe(notebookId: Int?): Flow<List<Note>> {
         return flow {
             notesFlow.collect { emit(it.filter { it.notebookId == notebookId }) }
         }
     }
 
-    override suspend fun getNote(id: Int): Note? {
-        return notes[id]
+    override suspend fun insert(note: Note): Int {
+        val r = if (notes.put(note.id, note) == null) note.id else INVALID_NOTE_ID
+        notesFlow.update { notes.values.toList() }
+        return r
     }
 
-    override suspend fun updateNote(note: Note): Boolean {
+    override suspend fun delete(note: Note): Boolean {
+        val r = notes.remove(note.id) != null
+        notesFlow.update { notes.values.toList() }
+        return r
+    }
+
+    override suspend fun update(note: Note): Boolean {
         val r = notes.put(note.id, note) == null
         notesFlow.update { notes.values.toList() }
         return r
     }
 
-    override suspend fun deleteNote(note: Note): Boolean {
-        val r = notes.remove(note.id) != null
-        notesFlow.update { notes.values.toList() }
-        return r
+    override suspend fun getById(id: Int): Note? {
+        return notes[id]
     }
 
     override suspend fun getLastId(): Int {

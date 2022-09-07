@@ -22,7 +22,7 @@ import javax.inject.Inject
 class AlarmReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var repository: NoteRepository
+    lateinit var noteRepository: NoteRepository
 
     @Inject
     lateinit var coroutineDispatcherProvider: CoroutineDispatcherProvider
@@ -36,7 +36,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         if (context != null && requestCode != null) {
             coroutineScope.launch {
-                val note = repository.getNote(requestCode)
+                val note = noteRepository.getById(requestCode)
                 println(note)
 
                 if (note != null) {
@@ -60,7 +60,7 @@ class AlarmReceiver : BroadcastReceiver() {
                             )
                         }
                         .show()
-                    repository.updateNote(note.copy(alarmDateTime = null))
+                    noteRepository.update(note.copy(alarmDateTime = null))
                 }
             }
         }

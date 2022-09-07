@@ -58,14 +58,14 @@ class NoteDetailViewModel
 
         viewModelScope.launch {
             prepareNote(noteId = noteId, notebookId = notebookId)
-            _notebooks.update { notebookRepository.observeNotebooks().first() }
+            _notebooks.update { notebookRepository.observe().first() }
         }
     }
 
     suspend fun prepareNote(noteId: Int, notebookId: Int = DEFAULT_NOTEBOOK_ID) {
         Timber.tag(TAG).d("loading note - noteId=$noteId")
         _note.value = if (noteId >= 0) {
-            noteRepository.getNote(noteId) ?: _note.value.copy(text = "ERROR")
+            noteRepository.getById(noteId) ?: _note.value.copy(text = "ERROR")
         } else {
             _note.value.copy(id = noteRepository.getLastId() + 1, notebookId = notebookId)
         }
@@ -83,26 +83,26 @@ class NoteDetailViewModel
     }
 
     private suspend fun addNote(): Boolean {
-        val result = noteRepository.insertNote(_note.value)
+        val result = noteRepository.insert(_note.value)
         return result >= 0
     }
 
     private suspend fun updateNote(): Boolean {
-        val oldNote = noteRepository.getNote(_note.value.id)
+        val oldNote = noteRepository.getById(_note.value.id)
         val result =
             if (oldNote != _note.value) {
                 Timber.tag(TAG).d("updating note")
                 Timber.tag(TAG).d("note = %s", _note.value.toString())
                 if (oldNote?.text != _note.value.text)
                     _note.value = _note.value.copy(addedDateTime = HDateTime.getCurrentDateTime())
-                noteRepository.updateNote(_note.value)
+                noteRepository.update(_note.value)
             } else
                 true
         return result
     }
 
     private suspend fun deleteNote(): Boolean {
-        return noteRepository.deleteNote(_note.value)
+        return noteRepository.delete(_note.value)
     }
 
     enum class TheOperation {

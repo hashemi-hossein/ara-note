@@ -26,35 +26,35 @@ class NoteRepositoryImpl(
     private val noteDomainMapper: Mapper<NoteModel, Note>,
 ) : NoteRepository {
 
-    override suspend fun insertNote(note: Note): Int {
-        val result = noteDao.insertNote(noteDomainMapper.mapReverse(note))
-        Timber.tag(TAG).d("insert note result = $result")
-        return result?.toInt() ?: INVALID_NOTE_ID
-    }
-
-    override fun observeNotes(notebookId: Int?): Flow<List<Note>> {
+    override fun observe(notebookId: Int?): Flow<List<Note>> {
         return (if (notebookId == null) noteDao.observeNotes() else noteDao.observeNotes(notebookId))
             .map {
                 noteDomainMapper.mapList(it).sortedByDescending { item -> item.addedDateTime }
             }
     }
 
-    override suspend fun getNote(id: Int): Note? {
-        return noteDao.getNote(id)?.let {
-            noteDomainMapper.map(it)
-        }
+    override suspend fun insert(note: Note): Int {
+        val result = noteDao.insertNote(noteDomainMapper.mapReverse(note))
+        Timber.tag(TAG).d("insert note result = $result")
+        return result?.toInt() ?: INVALID_NOTE_ID
     }
 
-    override suspend fun updateNote(note: Note): Boolean {
+    override suspend fun delete(note: Note): Boolean {
+        val result = noteDao.deleteNote(noteDomainMapper.mapReverse(note))
+        Timber.tag(TAG).d("delete note result = $result")
+        return result == 1
+    }
+
+    override suspend fun update(note: Note): Boolean {
         val result = noteDao.updateNote(noteDomainMapper.mapReverse(note))
         Timber.tag(TAG).d("update note result = $result")
         return result == 1
     }
 
-    override suspend fun deleteNote(note: Note): Boolean {
-        val result = noteDao.deleteNote(noteDomainMapper.mapReverse(note))
-        Timber.tag(TAG).d("delete note result = $result")
-        return result == 1
+    override suspend fun getById(id: Int): Note? {
+        return noteDao.getNote(id)?.let {
+            noteDomainMapper.map(it)
+        }
     }
 
     override suspend fun getLastId(): Int {

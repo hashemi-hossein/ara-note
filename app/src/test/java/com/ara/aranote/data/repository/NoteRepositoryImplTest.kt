@@ -54,7 +54,7 @@ class NoteRepositoryImplTest {
         coEvery { noteDaoMock.insertNote(TestUtil.tNoteModel) } returns 1
 
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tNoteEntity)
+        val r = systemUnderTest.insert(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
@@ -68,7 +68,7 @@ class NoteRepositoryImplTest {
         coEvery { noteDaoMock.insertNote(TestUtil.tNoteModel) } returns null
 
         // act
-        val r = systemUnderTest.insertNote(TestUtil.tNoteEntity)
+        val r = systemUnderTest.insert(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
@@ -86,7 +86,7 @@ class NoteRepositoryImplTest {
         val reorderedList = TestUtil.tNoteEntityList.sortedByDescending { it.addedDateTime }
 
         // act
-        val r = systemUnderTest.observeNotes(0)
+        val r = systemUnderTest.observe(0)
         val r2 = r.toList()
 
         // assert
@@ -101,7 +101,7 @@ class NoteRepositoryImplTest {
         coEvery { noteDaoMock.getNote(1) } returns TestUtil.tNoteModel
 
         // act
-        val r = systemUnderTest.getNote(1)
+        val r = systemUnderTest.getById(1)
 
         // assert
         coVerify { noteDomainMapperMock.mapToDomainEntity(TestUtil.tNoteModel) }
@@ -115,7 +115,7 @@ class NoteRepositoryImplTest {
         coEvery { noteDaoMock.getNote(1) } returns null
 
         // act
-        val r = systemUnderTest.getNote(1)
+        val r = systemUnderTest.getById(1)
 
         // assert
         coVerify { noteDomainMapperMock wasNot Called }
@@ -129,7 +129,7 @@ class NoteRepositoryImplTest {
         coEvery { noteDaoMock.updateNote(TestUtil.tNoteModel) } returns 1
 
         // act
-        val r = systemUnderTest.updateNote(TestUtil.tNoteEntity)
+        val r = systemUnderTest.update(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
@@ -143,7 +143,7 @@ class NoteRepositoryImplTest {
         coEvery { noteDaoMock.updateNote(TestUtil.tNoteModel) } returns null
 
         // act
-        val r = systemUnderTest.updateNote(TestUtil.tNoteEntity)
+        val r = systemUnderTest.update(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
@@ -157,7 +157,7 @@ class NoteRepositoryImplTest {
         coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) } returns 1
 
         // act
-        val r = systemUnderTest.deleteNote(TestUtil.tNoteEntity)
+        val r = systemUnderTest.delete(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
@@ -171,7 +171,7 @@ class NoteRepositoryImplTest {
         coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) } returns null
 
         // act
-        val r = systemUnderTest.deleteNote(TestUtil.tNoteEntity)
+        val r = systemUnderTest.delete(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }

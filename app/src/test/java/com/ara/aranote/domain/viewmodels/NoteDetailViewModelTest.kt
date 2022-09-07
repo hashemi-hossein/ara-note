@@ -58,7 +58,7 @@ class NoteDetailViewModelTest {
     @Test
     fun `prepareNote-invalidId and notFresh`() = runTest {
         // arrange
-        repository.insertNote(TestUtil.tNoteEntity)
+        repository.insert(TestUtil.tNoteEntity)
 
         // act
         systemUnderTest.prepareNote(noteId = TestUtil.tNoteEntity.id)
@@ -71,7 +71,7 @@ class NoteDetailViewModelTest {
     @Test
     fun `prepareNote-invalidId and notFresh and idNotFound`() = runTest {
         // arrange
-        repository.insertNote(TestUtil.tNoteEntity)
+        repository.insert(TestUtil.tNoteEntity)
 
         // act
         systemUnderTest.prepareNote(noteId = 100)
@@ -85,7 +85,7 @@ class NoteDetailViewModelTest {
     @Test
     fun modifyNote() = runTest {
         // arrange
-        repository.insertNote(TestUtil.tNoteEntity)
+        repository.insert(TestUtil.tNoteEntity)
         systemUnderTest.prepareNote(noteId = TestUtil.tNoteEntity.id)
 
         // act
@@ -136,7 +136,7 @@ class NoteDetailViewModelTest {
     @Test
     fun `backPressed-delete when isNotNewNote and doDelete`() = runTest {
         // arrange
-        repository.insertNote(TestUtil.tNoteEntity)
+        repository.insert(TestUtil.tNoteEntity)
         systemUnderTest.prepareNote(noteId = TestUtil.tNoteEntity.id)
 
         // act
@@ -155,7 +155,7 @@ class NoteDetailViewModelTest {
     @Test
     fun `backPressed-update when isNotNewNote and doNotDelete`() = runTest {
         // arrange
-        repository.insertNote(TestUtil.tNoteEntity)
+        repository.insert(TestUtil.tNoteEntity)
         systemUnderTest.prepareNote(noteId = TestUtil.tNoteEntity.id)
         systemUnderTest.modifyNote(textModifiedNote)
 
@@ -170,6 +170,6 @@ class NoteDetailViewModelTest {
 
         // assert
         assertThat(repository.getLastId()).isEqualTo(textModifiedNote.id)
-        assertThat(repository.getNote(TestUtil.tNoteEntity.id)?.text).isEqualTo(textModifiedNote.text)
+        assertThat(repository.getById(TestUtil.tNoteEntity.id)?.text).isEqualTo(textModifiedNote.text)
     }
 }

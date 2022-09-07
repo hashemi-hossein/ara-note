@@ -38,7 +38,7 @@ class HomeViewModel
         createDefaultNotebook()
         observeNotes()
         viewModelScope.launch {
-            notebookRepository.observeNotebooks().collect { notebooks ->
+            notebookRepository.observe().collect { notebooks ->
                 _notebooks.update { notebooks }
             }
         }
@@ -48,7 +48,7 @@ class HomeViewModel
     private fun observeNotes() {
         observeNotesJob?.cancel()
         observeNotesJob = viewModelScope.launch {
-            noteRepository.observeNotes(_currentNotebookId.value).collect { notes ->
+            noteRepository.observe(_currentNotebookId.value).collect { notes ->
                 _notes.update { notes }
             }
         }
@@ -63,7 +63,7 @@ class HomeViewModel
     private fun createDefaultNotebook() = viewModelScope.launch {
         if (!appDataStore.readPref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, false)) {
             appDataStore.writePref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, true)
-            notebookRepository.insertNotebook(
+            notebookRepository.insert(
                 Notebook(
                     id = DEFAULT_NOTEBOOK_ID,
                     name = DEFAULT_NOTEBOOK_NAME

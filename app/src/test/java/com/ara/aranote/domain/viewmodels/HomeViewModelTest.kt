@@ -23,19 +23,19 @@ class HomeViewModelTest {
     private val appDataStoreMock = mockk<AppDataStore>() {
         coEvery { readPref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, any()) } returns true
     }
-    private lateinit var repository: NoteRepository
+    private lateinit var noteRepository: NoteRepository
     private lateinit var systemUnderTest: HomeViewModel
 
     @Before
     fun setUp() {
-        repository = FakeNoteRepository()
-        systemUnderTest = HomeViewModel(repository, appDataStoreMock)
+        noteRepository = FakeNoteRepository()
+        systemUnderTest = HomeViewModel(noteRepository, appDataStoreMock)
     }
 
     @Test
     fun observeNotes() = runTest {
         // arrange
-        repository.insertNote(TestUtil.tNoteEntity)
+        noteRepository.insert(TestUtil.tNoteEntity)
 
         // act
         val r = systemUnderTest.notes.value
@@ -60,8 +60,8 @@ class HomeViewModelTest {
     @Test
     fun setCurrentNotebookId() = runTest {
         // arrange
-        repository.insertNote(TestUtil.tNoteEntity)
-        repository.insertNote(TestUtil.tNoteEntity2)
+        noteRepository.insert(TestUtil.tNoteEntity)
+        noteRepository.insert(TestUtil.tNoteEntity2)
 
         // act
         systemUnderTest.setCurrentNotebookId(TestUtil.tNoteEntity2.notebookId)
