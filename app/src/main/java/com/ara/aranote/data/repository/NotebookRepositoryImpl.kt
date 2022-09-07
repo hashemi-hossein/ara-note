@@ -11,6 +11,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
+/**
+ * Based on SINGLE-SOURCE-OF-TRUTH strategy:
+ *
+ * Every operations on tblNoteBook such as CRUD or observation on the table's data
+ * will be done via this repository
+ *
+ * Every function notify the caller about the result of the operation
+ * by returning true or positive value in case of successful operation
+ * and false or negative value in case of error
+ */
 class NotebookRepositoryImpl(
     private val notebookDao: NotebookDao,
     private val notebookDomainMapper: Mapper<NotebookModel, Notebook>,

@@ -6,7 +6,10 @@ import com.ara.aranote.domain.util.Mapper
 
 /**
  * Based on CLEAN Architecture:
- * This class is using for mapping Database Model into Domain Entity
+ *
+ * This class is using for mapping [NotebookModel] (Database Model) into [Notebook] (Domain Entity)
+ *
+ * [map], [mapList] and their reversed version functions are ready to use
  */
 class NotebookDomainMapper : Mapper<NotebookModel, Notebook> {
 
