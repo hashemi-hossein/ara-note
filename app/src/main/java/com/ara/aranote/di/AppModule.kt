@@ -7,13 +7,13 @@ import com.ara.aranote.data.model.NoteModel
 import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.data.repository.NoteRepositoryImpl
 import com.ara.aranote.data.repository.NotebookRepositoryImpl
-import com.ara.aranote.data.util.NoteDomainMapperImpl
-import com.ara.aranote.data.util.NotebookDomainMapperImpl
+import com.ara.aranote.data.util.NoteDomainMapper
+import com.ara.aranote.data.util.NotebookDomainMapper
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.repository.NotebookRepository
-import com.ara.aranote.domain.util.DomainMapper
+import com.ara.aranote.domain.util.Mapper
 import com.ara.aranote.ui.BaseApplication
 import dagger.Module
 import dagger.Provides
@@ -36,7 +36,7 @@ object AppModule {
     @Provides
     fun provideNoteRepository(
         noteDao: NoteDao,
-        noteDomainMapper: DomainMapper<NoteModel, Note>,
+        noteDomainMapper: Mapper<NoteModel, Note>,
     ): NoteRepository = NoteRepositoryImpl(
         noteDao = noteDao,
         noteDomainMapper = noteDomainMapper,
@@ -46,7 +46,7 @@ object AppModule {
     @Provides
     fun provideNotebookRepository(
         notebookDao: NotebookDao,
-        notebookDomainMapper: DomainMapper<NotebookModel, Notebook>
+        notebookDomainMapper: Mapper<NotebookModel, Notebook>
     ): NotebookRepository = NotebookRepositoryImpl(
         notebookDao = notebookDao,
         notebookDomainMapper = notebookDomainMapper,
@@ -54,10 +54,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideNoteDomainMapper(): DomainMapper<NoteModel, Note> = NoteDomainMapperImpl()
+    fun provideNoteDomainMapper(): Mapper<NoteModel, Note> = NoteDomainMapper()
 
     @Singleton
     @Provides
-    fun provideNotebookDomainMapper(): DomainMapper<NotebookModel, Notebook> =
-        NotebookDomainMapperImpl()
+    fun provideNotebookDomainMapper(): Mapper<NotebookModel, Notebook> = NotebookDomainMapper()
 }
