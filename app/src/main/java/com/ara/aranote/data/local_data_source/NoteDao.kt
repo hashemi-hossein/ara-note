@@ -21,7 +21,7 @@ interface NoteDao {
     fun observeNotes(notebookId: Int): Flow<List<NoteModel>>
 
     @Query("SELECT * FROM tblNotes WHERE id = :id")
-    suspend fun getNote(id: Int): NoteModel?
+    suspend fun getById(id: Int): NoteModel?
 
     @Update
     suspend fun updateNote(noteModel: NoteModel): Int?

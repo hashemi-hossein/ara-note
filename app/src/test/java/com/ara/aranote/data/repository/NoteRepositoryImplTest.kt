@@ -98,28 +98,28 @@ class NoteRepositoryImplTest {
     @Test
     fun getNote_onDbSuccessful() = runTest {
         // arrange
-        coEvery { noteDaoMock.getNote(1) } returns TestUtil.tNoteModel
+        coEvery { noteDaoMock.getById(1) } returns TestUtil.tNoteModel
 
         // act
         val r = systemUnderTest.getById(1)
 
         // assert
         coVerify { noteDomainMapperMock.mapToDomainEntity(TestUtil.tNoteModel) }
-        coVerify { noteDaoMock.getNote(1) }
+        coVerify { noteDaoMock.getById(1) }
         assertThat(r).isEqualTo(TestUtil.tNoteEntity)
     }
 
     @Test
     fun getNote_onDbError() = runTest {
         // arrange
-        coEvery { noteDaoMock.getNote(1) } returns null
+        coEvery { noteDaoMock.getById(1) } returns null
 
         // act
         val r = systemUnderTest.getById(1)
 
         // assert
         coVerify { noteDomainMapperMock wasNot Called }
-        coVerify { noteDaoMock.getNote(1) }
+        coVerify { noteDaoMock.getById(1) }
         assertThat(r).isEqualTo(null)
     }
 

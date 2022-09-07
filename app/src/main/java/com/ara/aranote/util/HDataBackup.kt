@@ -63,18 +63,22 @@ class HDataBackup
                 val notebooks = notebookRepository.observe().first()
                 for (notebook in backup.notebooks) {
                     if (!notebooks.contains(notebook)) {
-                        val r = notebookRepository.insert(notebook)
-                        if (r == INVALID_NOTEBOOK_ID) {
-                            throw Throwable("INVALID_NOTEBOOK_ID")
+                        notebookRepository.insert(notebook).let {
+                            when(it){
+                                is Result.Success -> it.data
+                                is Result.Error -> error("INVALID_NOTEBOOK_ID")
+                            }
                         }
                     }
                 }
                 val notes = noteRepository.observe().first()
                 for (note in backup.notes) {
                     if (!notes.contains(note)) {
-                        val r = noteRepository.insert(note)
-                        if (r == INVALID_NOTE_ID) {
-                            throw Throwable("INVALID_NOTE_ID")
+                        noteRepository.insert(note).let {
+                            when(it){
+                                is Result.Success -> it.data
+                                is Result.Error -> error("INVALID_NOTE_ID")
+                            }
                         }
                     }
                 }

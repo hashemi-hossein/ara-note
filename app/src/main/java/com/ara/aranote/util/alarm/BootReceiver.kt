@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.util.CoroutineDispatcherProvider
+import com.ara.aranote.util.Result
 import com.ara.aranote.util.TAG
 import com.ara.aranote.util.millis
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class BootReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var repository: NoteRepository
+    lateinit var noteRepository: NoteRepository
 
     @Inject
     lateinit var coroutineDispatcherProvider: CoroutineDispatcherProvider
@@ -31,15 +32,22 @@ class BootReceiver : BroadcastReceiver() {
 
         if (context != null && intent?.action == "android.intent.action.BOOT_COMPLETED") {
             coroutineScope.launch {
-                val notes = repository.getAllNotesWithAlarm()
-                println(notes.toString())
-                for (note in notes) {
-                    hManageAlarm(
-                        context = context,
-                        doesCreate = true,
-                        noteId = note.id,
-                        triggerAtMillis = note.alarmDateTime?.millis() ?: System.currentTimeMillis()
-                    )
+                when (val result = noteRepository.getAllNotesWithAlarm()) {
+                    is Result.Success -> {
+                        val notes = result.data
+                        println(notes.toString())
+
+                        for (note in notes) {
+                            hManageAlarm(
+                                context = context,
+                                doesCreate = true,
+                                noteId = note.id,
+                                triggerAtMillis = note.alarmDateTime?.millis()
+                                    ?: System.currentTimeMillis()
+                            )
+                        }
+                    }
+                    is Result.Error -> println(result)
                 }
             }
         }

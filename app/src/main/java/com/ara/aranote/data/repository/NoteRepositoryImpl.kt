@@ -5,7 +5,7 @@ import com.ara.aranote.data.model.NoteModel
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.util.Mapper
-import com.ara.aranote.util.INVALID_NOTE_ID
+import com.ara.aranote.util.Result
 import com.ara.aranote.util.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -33,37 +33,48 @@ class NoteRepositoryImpl(
             }
     }
 
-    override suspend fun insert(note: Note): Int {
+    override suspend fun insert(note: Note): Result<Int> {
         val result = noteDao.insertNote(noteDomainMapper.mapReverse(note))
         Timber.tag(TAG).d("insert note result = $result")
-        return result?.toInt() ?: INVALID_NOTE_ID
+        return if (result != null) Result.Success(result.toInt()) else Result.Error()
     }
 
-    override suspend fun delete(note: Note): Boolean {
+    override suspend fun delete(note: Note): Result<Boolean> {
         val result = noteDao.deleteNote(noteDomainMapper.mapReverse(note))
         Timber.tag(TAG).d("delete note result = $result")
-        return result == 1
+        return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
-    override suspend fun update(note: Note): Boolean {
+    override suspend fun update(note: Note): Result<Boolean> {
         val result = noteDao.updateNote(noteDomainMapper.mapReverse(note))
         Timber.tag(TAG).d("update note result = $result")
-        return result == 1
+        return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
-    override suspend fun getById(id: Int): Note? {
-        return noteDao.getNote(id)?.let {
-            noteDomainMapper.map(it)
+    override suspend fun getById(id: Int): Result<Note> {
+        return noteDao.getById(id).let {
+            if (it != null)
+                Result.Success(noteDomainMapper.map(it))
+            else
+                Result.Error()
         }
     }
 
-    override suspend fun getLastId(): Int {
-        return noteDao.getLastId() ?: 0
+    override suspend fun getLastId(): Result<Int> {
+        return noteDao.getLastId().let {
+            if (it != null)
+                Result.Success(it)
+            else
+                Result.Error()
+        }
     }
 
-    override suspend fun getAllNotesWithAlarm(): List<Note> {
-        return noteDao.getAllNotesWithAlarm()?.let {
-            noteDomainMapper.mapList(it)
-        } ?: listOf()
+    override suspend fun getAllNotesWithAlarm(): Result<List<Note>> {
+        return noteDao.getAllNotesWithAlarm().let {
+            if (it != null)
+                Result.Success(noteDomainMapper.mapList(it))
+            else
+                Result.Error()
+        }
     }
 }

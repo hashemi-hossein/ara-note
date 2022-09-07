@@ -5,7 +5,7 @@ import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NotebookRepository
 import com.ara.aranote.domain.util.Mapper
-import com.ara.aranote.util.INVALID_NOTEBOOK_ID
+import com.ara.aranote.util.Result
 import com.ara.aranote.util.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -32,21 +32,21 @@ class NotebookRepositoryImpl(
         }
     }
 
-    override suspend fun insert(notebook: Notebook): Int {
+    override suspend fun insert(notebook: Notebook): Result<Int> {
         val result = notebookDao.insertNotebook(notebookDomainMapper.mapReverse(notebook))
         Timber.tag(TAG).d("insert notebook result = $result")
-        return result?.toInt() ?: INVALID_NOTEBOOK_ID
+        return if (result != null) Result.Success(result.toInt()) else Result.Error()
     }
 
-    override suspend fun delete(notebook: Notebook): Boolean {
+    override suspend fun delete(notebook: Notebook): Result<Boolean> {
         val result = notebookDao.deleteNotebook(notebookDomainMapper.mapReverse(notebook))
         Timber.tag(TAG).d("delete notebook result = $result")
-        return result == 1
+        return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
-    override suspend fun update(notebook: Notebook): Boolean {
+    override suspend fun update(notebook: Notebook): Result<Boolean> {
         val result = notebookDao.updateNotebook(notebookDomainMapper.mapReverse(notebook))
         Timber.tag(TAG).d("update notebook result = $result")
-        return result == 1
+        return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 }
