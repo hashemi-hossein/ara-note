@@ -1,4 +1,3 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
         google()
@@ -12,15 +11,16 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "6.4.2"
+    id("com.diffplug.spotless") version "6.9.1"
 }
 
 subprojects {
-    apply plugin: "com.diffplug.spotless"
-    spotless {
+    pluginManager.apply("com.diffplug.spotless")
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         kotlin {
-            target "**/*.kt"
+            target("**/*.kt")
             targetExclude("$buildDir/**/*.kt")
+            targetExclude("bin/**/*.kt")
             ktlint("0.45.2")
         }
     }
