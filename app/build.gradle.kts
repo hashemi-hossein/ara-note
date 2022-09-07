@@ -1,87 +1,100 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
-    id "org.jetbrains.kotlin.plugin.serialization" version "1.7.10"
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
 }
 
 android {
-    compileSdk 33
-    ndkVersion "23.0.7599858"
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId "com.ara.aranote"
-        minSdk 21
-        targetSdk 33
-        versionCode 1
-        versionName "220.904"
+        applicationId = "com.ara.aranote"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = 1
+        versionName = "220.904"
 
-        testInstrumentationRunnerArguments disableAnalytics: 'true'
-        testInstrumentationRunner "com.hnote.HTestRunner"
+        testInstrumentationRunnerArguments["disableAnalytics"] = "true"
+        testInstrumentationRunner = "com.ara.aranote.HTestRunner"
 
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
-        debug {
-            applicationIdSuffix ".dev"
-            versionNameSuffix "-dev"
-            debuggable true
-            minifyEnabled false
+        getByName("debug") {
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            isDebuggable = true
+            isMinifyEnabled = false
         }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
+
     compileOptions {
         // Flag to enable support for the new language APIs
-        coreLibraryDesugaringEnabled true
+        isCoreLibraryDesugaringEnabled = true
 
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+
     buildFeatures {
-        compose true
+        compose = true
 
         // Disable unused AGP features
-//        buildConfig false
-        aidl false
-        renderScript false
-        resValues false
-        shaders false
+        aidl = false
+        renderScript = false
+        resValues = false
+        shaders = false
+//        buildConfig = false
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
+
     packagingOptions {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            // Multiple dependency bring these files in. Exclude them to enable
+            // our test APK to build (has no effect on our AARs)
+            excludes += "/META-INF/AL2.0"
+            excludes += "/META-INF/LGPL2.1"
 
             // https://github.com/Kotlin/kotlinx.coroutines#avoiding-including-the-debug-infrastructure-in-the-resulting-apk
             excludes += "DebugProbesKt.bin"
         }
     }
+
     lint {
-        checkDependencies true
+        checkDependencies = true
     }
+
+    // Tests can be Robolectric or instrumented tests
     sourceSets {
-//        androidTest.java.srcDirs += "src/test_common/java"
-        test.java.srcDirs += "src/test_common/java"
-//        main.java.srcDirs = ["src/main/kotlin"]
+        val sharedTestDir = "src/test_common/java"
+        getByName("test") {
+            java.srcDir(sharedTestDir)
+        }
+//        getByName("androidTest") {
+//            java.srcDir(sharedTestDir)
+//        }
     }
+
     testOptions {
         unitTests {
-            includeAndroidResources = true
+            isIncludeAndroidResources = true
         }
-        animationsDisabled true
+        animationsDisabled = true
     }
+
     dependenciesInfo {
         // Disables dependency metadata when building APKs.
         includeInApk = false
@@ -90,22 +103,21 @@ android {
     }
 }
 
-tasks.withType(Test) {
-    systemProperty "robolectric.logging", "stdout"
+tasks.withType<Test>().configureEach {
+    systemProperties.put("robolectric.logging", "stdout")
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
         // Treat all Kotlin warnings as errors (disabled by default)
-        allWarningsAsErrors = project.hasProperty("warningsAsErrors") ? project.warningsAsErrors : false
+        allWarningsAsErrors = if (project.hasProperty("warningsAsErrors"))
+            project.findProperty("warningsAsErrors")!! as Boolean
+        else false
 
-        freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
-
-        // Enable experimental coroutines APIs, including Flow
-//        freeCompilerArgs += '-Xopt-in=kotlin.Experimental'
+        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
 
         // Set JVM target to 1.8
-//        jvmTarget = "1.8"
+        jvmTarget = "1.8"
     }
 }
 
