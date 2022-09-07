@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
+import com.ara.aranote.domain.repository.NotebookRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NotebooksViewModel
 @Inject constructor(
-    private val repository: NoteRepository,
+    private val noteRepository: NoteRepository,
+    private val notebookRepository: NotebookRepository,
 ) : ViewModel() {
 
     private val _notebooks = MutableStateFlow(listOf<Notebook>())
@@ -23,25 +25,25 @@ class NotebooksViewModel
 
     init {
         viewModelScope.launch {
-            repository.observeNotebooks().collect { notebooks ->
+            notebookRepository.observeNotebooks().collect { notebooks ->
                 _notebooks.update { notebooks }
             }
         }
     }
 
     fun addNotebook(id: Int = 0, name: String) = viewModelScope.launch {
-        repository.insertNotebook(Notebook(id = id, name = name))
+        notebookRepository.insertNotebook(Notebook(id = id, name = name))
     }
 
     fun modifyNotebook(notebook: Notebook) = viewModelScope.launch {
-        repository.updateNotebook(notebook)
+        notebookRepository.updateNotebook(notebook)
     }
 
     fun deleteNotebook(notebook: Notebook) = viewModelScope.launch {
-        val notesOfNotebook = repository.observeNotes(notebook.id).first()
+        val notesOfNotebook = noteRepository.observeNotes(notebook.id).first()
         for (note in notesOfNotebook) {
-            repository.deleteNote(note)
+            noteRepository.deleteNote(note)
         }
-        repository.deleteNotebook(notebook)
+        notebookRepository.deleteNotebook(notebook)
     }
 }

@@ -6,6 +6,7 @@ import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
+import com.ara.aranote.domain.repository.NotebookRepository
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_NAME
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel
 @Inject constructor(
-    private val repository: NoteRepository,
+    private val noteRepository: NoteRepository,
+    private val notebookRepository: NotebookRepository,
     val appDataStore: AppDataStore,
 ) : ViewModel() {
 
@@ -36,7 +38,7 @@ class HomeViewModel
         createDefaultNotebook()
         observeNotes()
         viewModelScope.launch {
-            repository.observeNotebooks().collect { notebooks ->
+            notebookRepository.observeNotebooks().collect { notebooks ->
                 _notebooks.update { notebooks }
             }
         }
@@ -46,7 +48,7 @@ class HomeViewModel
     private fun observeNotes() {
         observeNotesJob?.cancel()
         observeNotesJob = viewModelScope.launch {
-            repository.observeNotes(_currentNotebookId.value).collect { notes ->
+            noteRepository.observeNotes(_currentNotebookId.value).collect { notes ->
                 _notes.update { notes }
             }
         }
@@ -61,7 +63,7 @@ class HomeViewModel
     private fun createDefaultNotebook() = viewModelScope.launch {
         if (!appDataStore.readPref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, false)) {
             appDataStore.writePref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, true)
-            repository.insertNotebook(
+            notebookRepository.insertNotebook(
                 Notebook(
                     id = DEFAULT_NOTEBOOK_ID,
                     name = DEFAULT_NOTEBOOK_NAME

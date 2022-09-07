@@ -7,6 +7,7 @@ import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
+import com.ara.aranote.domain.repository.NotebookRepository
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -25,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteDetailViewModel
 @Inject constructor(
-    private val repository: NoteRepository,
+    private val noteRepository: NoteRepository,
+    private val notebookRepository: NotebookRepository,
     val appDataStore: AppDataStore,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -56,16 +58,16 @@ class NoteDetailViewModel
 
         viewModelScope.launch {
             prepareNote(noteId = noteId, notebookId = notebookId)
-            _notebooks.update { repository.observeNotebooks().first() }
+            _notebooks.update { notebookRepository.observeNotebooks().first() }
         }
     }
 
     suspend fun prepareNote(noteId: Int, notebookId: Int = DEFAULT_NOTEBOOK_ID) {
         Timber.tag(TAG).d("loading note - noteId=$noteId")
         _note.value = if (noteId >= 0) {
-            repository.getNote(noteId) ?: _note.value.copy(text = "ERROR")
+            noteRepository.getNote(noteId) ?: _note.value.copy(text = "ERROR")
         } else {
-            _note.value.copy(id = repository.getLastId() + 1, notebookId = notebookId)
+            _note.value.copy(id = noteRepository.getLastId() + 1, notebookId = notebookId)
         }
         originalNote = _note.value
     }
@@ -81,26 +83,26 @@ class NoteDetailViewModel
     }
 
     private suspend fun addNote(): Boolean {
-        val result = repository.insertNote(_note.value)
+        val result = noteRepository.insertNote(_note.value)
         return result >= 0
     }
 
     private suspend fun updateNote(): Boolean {
-        val oldNote = repository.getNote(_note.value.id)
+        val oldNote = noteRepository.getNote(_note.value.id)
         val result =
             if (oldNote != _note.value) {
                 Timber.tag(TAG).d("updating note")
                 Timber.tag(TAG).d("note = %s", _note.value.toString())
                 if (oldNote?.text != _note.value.text)
                     _note.value = _note.value.copy(addedDateTime = HDateTime.getCurrentDateTime())
-                repository.updateNote(_note.value)
+                noteRepository.updateNote(_note.value)
             } else
                 true
         return result
     }
 
     private suspend fun deleteNote(): Boolean {
-        return repository.deleteNote(_note.value)
+        return noteRepository.deleteNote(_note.value)
     }
 
     enum class TheOperation {

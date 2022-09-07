@@ -5,6 +5,7 @@ import android.net.Uri
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
+import com.ara.aranote.domain.repository.NotebookRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class HDataBackup
 @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val repository: NoteRepository,
+    private val noteRepository: NoteRepository,
+    private val notebookRepository: NotebookRepository,
     private val coroutineDispatcherProvider: CoroutineDispatcherProvider,
 ) {
 
@@ -32,8 +34,8 @@ class HDataBackup
     suspend fun exportData(uri: Uri, onComplete: () -> Unit) =
         withContext(coroutineDispatcherProvider.io) {
             try {
-                val notebooks = repository.observeNotebooks().first()
-                val notes = repository.observeNotes().first()
+                val notebooks = notebookRepository.observeNotebooks().first()
+                val notes = noteRepository.observeNotes().first()
                 val hBackup = HBackup(notebooks, notes)
                 val exportedData = Json.encodeToString(hBackup)
 
@@ -58,19 +60,19 @@ class HDataBackup
                     }
                 }
                 val backup = Json.decodeFromString<HBackup>(string)
-                val notebooks = repository.observeNotebooks().first()
+                val notebooks = notebookRepository.observeNotebooks().first()
                 for (notebook in backup.notebooks) {
                     if (!notebooks.contains(notebook)) {
-                        val r = repository.insertNotebook(notebook)
+                        val r = notebookRepository.insertNotebook(notebook)
                         if (r == INVALID_NOTEBOOK_ID) {
                             throw Throwable("INVALID_NOTEBOOK_ID")
                         }
                     }
                 }
-                val notes = repository.observeNotes().first()
+                val notes = noteRepository.observeNotes().first()
                 for (note in backup.notes) {
                     if (!notes.contains(note)) {
-                        val r = repository.insertNote(note)
+                        val r = noteRepository.insertNote(note)
                         if (r == INVALID_NOTE_ID) {
                             throw Throwable("INVALID_NOTE_ID")
                         }
