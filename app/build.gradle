@@ -58,7 +58,7 @@ android {
         shaders false
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packagingOptions {
         resources {
@@ -111,118 +111,101 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 
 dependencies {
 
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.google.android.material)
 
-    implementation "androidx.core:core-ktx:$androidx_core_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$androidx_lifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle"
-//    implementation "androidx.lifecycle:lifecycle-common:$androidx_lifecycle"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$androidx_lifecycle"
-//    androidTestImplementation "androidx.lifecycle:lifecycle-runtime-testing:$androidx_lifecycle"
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // ### Jetpack Compose ####
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
     // Tooling support (Previews, etc.)
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation(libs.androidx.compose.ui.tooling)
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation(libs.androidx.compose.foundation)
     // Material Design
-    implementation "androidx.compose.material:material:$compose_version"
+    implementation(libs.androidx.compose.material)
     // Material design icons
-    implementation "androidx.compose.material:material-icons-core:$compose_version"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation(libs.androidx.compose.material.iconsExtended)
     // Integration with activities
-    implementation "androidx.activity:activity-compose:$activity_compose_version"
+    implementation(libs.androidx.activity.compose)
     // Integration with ViewModels
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$androidx_lifecycle"
+    implementation(libs.androidx.lifecycle.viewModelCompose)
     // Compose Testing
-    testImplementation "androidx.compose.ui:ui-test:$compose_version"
-    androidTestImplementation "androidx.compose.ui:ui-test:$compose_version"
+    testImplementation(libs.androidx.compose.ui.test)
+    androidTestImplementation(libs.androidx.compose.ui.test)
     // Test rules and transitive dependencies:
-    testImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     // Needed for createComposeRule, but not createAndroidComposeRule:
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
     // Animation
-    implementation "androidx.compose.animation:animation:$compose_version"
-    implementation "androidx.compose.animation:animation-core:$compose_version"
-//    implementation "androidx.compose.animation:animation-graphics:compose_animation"
-    // Other Compose Libs
-    implementation "com.google.android.material:compose-theme-adapter:$compose_theme_adapter_version"
-//    implementation "androidx.paging:paging-compose:1.0.0-alpha12"
+    implementation(libs.androidx.compose.animation)
 
     // Navigation Compose
-    implementation "androidx.navigation:navigation-compose:$navigation_compose"
-    implementation "androidx.hilt:hilt-navigation-compose:$hiltComposeNavigation"
-    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.accompanist.navigation.animation)
 //    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_compose"
 
     // Hilt Dependency Injection
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.android.compiler)
     // Hilt Testing
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler)
 
     // Room DB
-//    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-//    annotationProcessor "androidx.room:room-compiler:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    testImplementation "androidx.room:room-testing:$room_version"
-    androidTestImplementation "androidx.room:room-testing:$room_version"
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
+    testImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.room.testing)
 
     // DateTime
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_libs_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-datetime:$kotlinx_datetime_version"
-    implementation "org.ocpsoft.prettytime:prettytime:$prettytime_version"
+    coreLibraryDesugaring(libs.core.jdk.desugaring)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.prettytime)
 
     // Kotlinx Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version_android"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines_version"
-//    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines_version"
+    implementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 
     // ### Unit and Instrumented Test ###
-    testImplementation "junit:junit:$junit_version"
-//    androidTestImplementation "junit:junit:$junit_version"
-    testImplementation "io.mockk:mockk:$mockk_version"
-//    testImplementation "io.mockk:mockk-agent-api:$mockk_version"
-    testImplementation "io.mockk:mockk-agent-jvm:$mockk_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    testImplementation(libs.junit)
+//    androidTestImplementation(libs.junit)
+    testImplementation(libs.mockk)
+//    testImplementation(libs.mockk.agent.api)
+    testImplementation(libs.mockk.agent.jvm)
+    testImplementation(libs.kotlin.reflect)
     // Androidx Test Core
-//    androidTestImplementation "androidx.test:core:$androidx_test"
-    testImplementation "androidx.test:core-ktx:$androidx_test"
-    androidTestImplementation "androidx.test:core-ktx:$androidx_test"
+    testImplementation(libs.androidx.test.core.ktx)
+    androidTestImplementation(libs.androidx.test.core.ktx)
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation "androidx.test:runner:$androidx_test"
-    androidTestImplementation "androidx.test:rules:$androidx_test"
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
     // Assertions
-//    androidTestImplementation "androidx.test.ext:junit:$androidx_test_junit"
-    testImplementation "androidx.test.ext:junit-ktx:$androidx_test_junit"
-    androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test_junit"
-    androidTestImplementation "androidx.test.ext:truth:$androidx_test_truth"
-    testImplementation "com.google.truth:truth:$google_truth_version"
-    androidTestImplementation "com.google.truth:truth:$google_truth_version"
+    testImplementation(libs.androidx.test.ext.junit.ktx)
+    androidTestImplementation(libs.androidx.test.ext.junit.ktx)
+    androidTestImplementation(libs.androidx.test.ext.truth)
+    testImplementation(libs.google.truth)
+    androidTestImplementation(libs.google.truth)
     // Espresso dependencies
-    testImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
+    testImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso.core)
     // Other Test Libs
-    // TODO: Bump to 4.6.* after https://github.com/robolectric/robolectric/issues/6593 is fixed
-    //noinspection GradleDependency
-    testImplementation "org.robolectric:robolectric:$robolectric_version"
-//    testImplementation "io.kotest:kotest-property:$kotest_version"
-//    testImplementation "androidx.arch.core:core-testing:2.1.0"
-//    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
-//    androidTestImplementation "org.hamcrest:hamcrest-library:2.2"
-//    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
+    testImplementation(libs.robolectric)
+
 
     // Other Libs
-    implementation "com.jakewharton.timber:timber:$timberVersion"
-    implementation "io.karn:notify:$notify_version"
-    implementation "androidx.datastore:datastore-preferences:$datastore_preferences_version"
-    implementation "com.afollestad.material-dialogs:color:$material_dialogs_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization_json_version"
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.datastore)
+    implementation(libs.timber)
+    implementation(libs.karn.notify)
+    implementation(libs.afollestad.material.dialogs.color)
 }
