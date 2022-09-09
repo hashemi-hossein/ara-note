@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.components
+package com.ara.aranote.ui.component
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi

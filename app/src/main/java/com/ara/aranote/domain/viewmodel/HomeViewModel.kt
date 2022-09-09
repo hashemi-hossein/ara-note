@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.viewmodels
+package com.ara.aranote.domain.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

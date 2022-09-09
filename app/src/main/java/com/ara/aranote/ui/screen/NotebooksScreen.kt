@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screens
+package com.ara.aranote.ui.screen
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -39,9 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.domain.viewmodels.NotebooksViewModel
-import com.ara.aranote.ui.components.HAppBar
-import com.ara.aranote.ui.components.showSnackbar
+import com.ara.aranote.domain.viewmodel.NotebooksViewModel
+import com.ara.aranote.ui.component.HAppBar
+import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import kotlinx.coroutines.CoroutineScope
 

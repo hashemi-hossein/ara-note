@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screens
+package com.ara.aranote.ui.screen
 
 import android.content.Context
 import androidx.compose.runtime.MutableState

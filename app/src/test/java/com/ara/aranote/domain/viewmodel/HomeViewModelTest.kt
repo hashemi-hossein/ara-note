@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.viewmodels
+package com.ara.aranote.domain.viewmodel
 
 import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.repository.FakeNoteRepository

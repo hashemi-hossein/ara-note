@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.components
+package com.ara.aranote.ui.component
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.RowScope

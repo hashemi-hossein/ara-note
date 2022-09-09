@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.viewmodels
+package com.ara.aranote.domain.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
