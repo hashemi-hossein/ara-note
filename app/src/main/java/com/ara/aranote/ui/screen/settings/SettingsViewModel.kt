@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.viewmodel
+package com.ara.aranote.ui.screen.settings
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel

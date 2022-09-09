@@ -5,6 +5,7 @@ import com.ara.aranote.domain.repository.FakeNoteRepository
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.test_util.TestCoroutineRule
 import com.ara.aranote.test_util.TestUtil
+import com.ara.aranote.ui.screen.home.HomeViewModel
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk

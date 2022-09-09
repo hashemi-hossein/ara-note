@@ -1,12 +1,12 @@
-package com.ara.aranote.domain.viewmodel
+package com.ara.aranote.ui.screen.notebooks_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
-import com.ara.aranote.domain.usecase.notebooks.CreateNotebookUseCase
-import com.ara.aranote.domain.usecase.notebooks.DeleteNotebookUseCase
-import com.ara.aranote.domain.usecase.notebooks.UpdateNotebookUseCase
+import com.ara.aranote.domain.usecase.notebooks_list.CreateNotebookUseCase
+import com.ara.aranote.domain.usecase.notebooks_list.DeleteNotebookUseCase
+import com.ara.aranote.domain.usecase.notebooks_list.UpdateNotebookUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NotebooksViewModel
+class NotebooksListViewModel
 @Inject constructor(
     observeNotebooksUseCase: ObserveNotebooksUseCase,
     private val createNotebookUseCase: CreateNotebookUseCase,

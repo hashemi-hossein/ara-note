@@ -6,6 +6,7 @@ import com.ara.aranote.domain.repository.FakeNoteRepository
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.test_util.TestCoroutineRule
 import com.ara.aranote.test_util.TestUtil
+import com.ara.aranote.ui.screen.note_detail.NoteDetailViewModel
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID

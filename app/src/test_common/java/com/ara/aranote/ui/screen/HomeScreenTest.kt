@@ -19,6 +19,7 @@ import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.test_util.TestUtil
+import com.ara.aranote.ui.screen.home.HomeScreen
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.google.common.truth.Truth.assertThat

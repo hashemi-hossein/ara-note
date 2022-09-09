@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.main
+package com.ara.aranote.ui.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -12,14 +12,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.ara.aranote.domain.viewmodel.HomeViewModel
-import com.ara.aranote.domain.viewmodel.NoteDetailViewModel
-import com.ara.aranote.domain.viewmodel.NotebooksViewModel
-import com.ara.aranote.domain.viewmodel.SettingsViewModel
-import com.ara.aranote.ui.screen.HomeScreen
-import com.ara.aranote.ui.screen.NoteDetailScreen
-import com.ara.aranote.ui.screen.NotebooksScreen
-import com.ara.aranote.ui.screen.SettingsScreen
+import com.ara.aranote.ui.screen.home.HomeScreen
+import com.ara.aranote.ui.screen.home.HomeViewModel
+import com.ara.aranote.ui.screen.note_detail.NoteDetailScreen
+import com.ara.aranote.ui.screen.note_detail.NoteDetailViewModel
+import com.ara.aranote.ui.screen.notebooks_list.NotebooksListScreen
+import com.ara.aranote.ui.screen.notebooks_list.NotebooksListViewModel
+import com.ara.aranote.ui.screen.settings.SettingsScreen
+import com.ara.aranote.ui.screen.settings.SettingsViewModel
 import com.ara.aranote.util.ANIMATION_DURATION
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -31,7 +31,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AppMain(
+fun NavigationGraph(
     navController: NavHostController = rememberAnimatedNavController(),
     startDestination: String = NavScreen.Home.route,
 ) {
@@ -75,7 +75,7 @@ fun AppMain(
                         navController.navigate(NavScreen.NoteDetail.route + "?noteId=$noteId&notebookId=$notebookId")
                     },
                     navigateToSettingsScreen = { navController.navigate(NavScreen.Settings.route) },
-                    navigateToNotebooksScreen = { navController.navigate(NavScreen.Notebooks.route) }
+                    navigateToNotebooksScreen = { navController.navigate(NavScreen.NotebooksList.route) }
                 )
             }
 
@@ -105,20 +105,12 @@ fun AppMain(
                 }
             }
 
-            composable(NavScreen.Notebooks.route) {
-                val viewModel = hiltViewModel<NotebooksViewModel>()
-                NotebooksScreen(viewModel = viewModel) {
+            composable(NavScreen.NotebooksList.route) {
+                val viewModel = hiltViewModel<NotebooksListViewModel>()
+                NotebooksListScreen(viewModel = viewModel) {
                     navController.navigateUp()
                 }
             }
         }
     }
-}
-
-sealed class NavScreen(val route: String) {
-
-    object Home : NavScreen("Home")
-    object NoteDetail : NavScreen("NoteDetail")
-    object Settings : NavScreen("Settings")
-    object Notebooks : NavScreen("Notebooks")
 }

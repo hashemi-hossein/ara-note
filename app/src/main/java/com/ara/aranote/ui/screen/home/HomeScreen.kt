@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen
+package com.ara.aranote.ui.screen.home
 
 import android.content.Context
 import androidx.activity.compose.BackHandler
@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.domain.viewmodel.HomeViewModel
 import com.ara.aranote.ui.component.AppBarNavButtonType
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.NoteCard

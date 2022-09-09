@@ -1,4 +1,4 @@
-package com.ara.aranote.ui
+package com.ara.aranote.ui.main
 
 import android.app.Application
 import com.ara.aranote.BuildConfig

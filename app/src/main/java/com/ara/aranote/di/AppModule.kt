@@ -12,7 +12,7 @@ import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.repository.NotebookRepository
 import com.ara.aranote.domain.util.Mapper
-import com.ara.aranote.ui.BaseApplication
+import com.ara.aranote.ui.main.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

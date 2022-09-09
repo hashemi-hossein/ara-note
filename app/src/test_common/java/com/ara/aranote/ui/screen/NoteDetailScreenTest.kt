@@ -25,8 +25,9 @@ import androidx.test.filters.SmallTest
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.domain.viewmodel.NoteDetailViewModel.TheOperation
 import com.ara.aranote.test_util.TestUtil
+import com.ara.aranote.ui.screen.note_detail.NoteDetailScreen
+import com.ara.aranote.ui.screen.note_detail.NoteDetailViewModel.TheOperation
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.plus

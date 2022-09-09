@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen
+package com.ara.aranote.ui.screen.notebooks_list
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -39,20 +39,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.domain.viewmodel.NotebooksViewModel
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun NotebooksScreen(
-    viewModel: NotebooksViewModel,
+fun NotebooksListScreen(
+    viewModel: NotebooksListViewModel,
     navigateUp: () -> Unit,
 ) {
     val notebooks by viewModel.notebooks.collectAsState()
 
-    NotebooksScreen(
+    NotebooksListScreen(
         navigateUp = navigateUp,
         notebooks = notebooks,
         addNotebook = { viewModel.addNotebook(name = it) },
@@ -63,7 +62,7 @@ fun NotebooksScreen(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NotebooksScreen(
+fun NotebooksListScreen(
     navigateUp: () -> Unit,
     notebooks: List<Notebook>,
     addNotebook: (String) -> Unit = {},

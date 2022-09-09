@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen
+package com.ara.aranote.ui.screen.settings
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -39,7 +39,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
 import com.ara.aranote.R
 import com.ara.aranote.data.datastore.AppDataStore
-import com.ara.aranote.domain.viewmodel.SettingsViewModel
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.showSnackbar
 import kotlinx.coroutines.CoroutineScope

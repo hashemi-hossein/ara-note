@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.viewmodel
+package com.ara.aranote.ui.screen.note_detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
