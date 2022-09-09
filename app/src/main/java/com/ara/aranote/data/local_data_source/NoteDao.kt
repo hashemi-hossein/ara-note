@@ -11,23 +11,23 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteDao {
 
-    @Insert
-    suspend fun insertNote(noteModel: NoteModel): Long?
-
     @Query("SELECT * FROM tblNotes ORDER BY id DESC")
-    fun observeNotes(): Flow<List<NoteModel>>
+    fun observe(): Flow<List<NoteModel>>
 
     @Query("SELECT * FROM tblNotes WHERE notebook_id=:notebookId ORDER BY id DESC")
-    fun observeNotes(notebookId: Int): Flow<List<NoteModel>>
+    fun observe(notebookId: Int): Flow<List<NoteModel>>
+
+    @Insert
+    suspend fun insert(noteModel: NoteModel): Long?
+
+    @Delete
+    suspend fun delete(noteModel: NoteModel): Int?
+
+    @Update
+    suspend fun update(noteModel: NoteModel): Int?
 
     @Query("SELECT * FROM tblNotes WHERE id = :id")
     suspend fun getById(id: Int): NoteModel?
-
-    @Update
-    suspend fun updateNote(noteModel: NoteModel): Int?
-
-    @Delete
-    suspend fun deleteNote(noteModel: NoteModel): Int?
 
     @Query("SELECT MAX(id) FROM tblNotes")
     suspend fun getLastId(): Int?

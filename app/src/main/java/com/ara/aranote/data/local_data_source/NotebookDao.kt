@@ -11,15 +11,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NotebookDao {
 
-    @Insert
-    suspend fun insertNotebook(notebookModel: NotebookModel): Long?
-
     @Query("SELECT * FROM tblNotebooks ORDER BY id ASC")
-    fun observeNotebooks(): Flow<List<NotebookModel>>
+    fun observe(): Flow<List<NotebookModel>>
+
+    @Insert
+    suspend fun insert(notebookModel: NotebookModel): Long?
 
     @Delete
-    suspend fun deleteNotebook(notebookModel: NotebookModel): Int?
+    suspend fun delete(notebookModel: NotebookModel): Int?
 
     @Update
-    suspend fun updateNotebook(notebookModel: NotebookModel): Int?
+    suspend fun update(notebookModel: NotebookModel): Int?
 }

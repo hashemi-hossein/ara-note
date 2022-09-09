@@ -27,25 +27,25 @@ class NotebookRepositoryImpl(
 ) : NotebookRepository {
 
     override fun observe(): Flow<List<Notebook>> {
-        return notebookDao.observeNotebooks().map {
+        return notebookDao.observe().map {
             notebookDomainMapper.mapList(it)
         }
     }
 
     override suspend fun insert(notebook: Notebook): Result<Int> {
-        val result = notebookDao.insertNotebook(notebookDomainMapper.mapReverse(notebook))
+        val result = notebookDao.insert(notebookDomainMapper.mapReverse(notebook))
         Timber.tag(TAG).d("insert notebook result = $result")
         return if (result != null) Result.Success(result.toInt()) else Result.Error()
     }
 
     override suspend fun delete(notebook: Notebook): Result<Boolean> {
-        val result = notebookDao.deleteNotebook(notebookDomainMapper.mapReverse(notebook))
+        val result = notebookDao.delete(notebookDomainMapper.mapReverse(notebook))
         Timber.tag(TAG).d("delete notebook result = $result")
         return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
     override suspend fun update(notebook: Notebook): Result<Boolean> {
-        val result = notebookDao.updateNotebook(notebookDomainMapper.mapReverse(notebook))
+        val result = notebookDao.update(notebookDomainMapper.mapReverse(notebook))
         Timber.tag(TAG).d("update notebook result = $result")
         return if (result != null) Result.Success(result == 1) else Result.Error()
     }

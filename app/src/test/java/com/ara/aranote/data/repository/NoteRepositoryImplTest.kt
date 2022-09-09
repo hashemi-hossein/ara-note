@@ -51,35 +51,35 @@ class NoteRepositoryImplTest {
     @Test
     fun insertNote_onDbSuccessful() = runTest {
         // arrange
-        coEvery { noteDaoMock.insertNote(TestUtil.tNoteModel) } returns 1
+        coEvery { noteDaoMock.insert(TestUtil.tNoteModel) } returns 1
 
         // act
         val r = systemUnderTest.insert(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
-        coVerify { noteDaoMock.insertNote(TestUtil.tNoteModel) }
+        coVerify { noteDaoMock.insert(TestUtil.tNoteModel) }
         assertThat(r).isEqualTo(1)
     }
 
     @Test
     fun insertNote_onDbError() = runTest {
         // arrange
-        coEvery { noteDaoMock.insertNote(TestUtil.tNoteModel) } returns null
+        coEvery { noteDaoMock.insert(TestUtil.tNoteModel) } returns null
 
         // act
         val r = systemUnderTest.insert(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
-        coVerify { noteDaoMock.insertNote(TestUtil.tNoteModel) }
+        coVerify { noteDaoMock.insert(TestUtil.tNoteModel) }
         assertThat(r).isEqualTo(INVALID_NOTE_ID)
     }
 
     @Test
     fun observeNotes() = runTest {
         // arrange
-        every { noteDaoMock.observeNotes(any()) } returns flowOf(
+        every { noteDaoMock.observe(any()) } returns flowOf(
             TestUtil.tNoteModelList,
             TestUtil.tNoteModelList
         )
@@ -91,7 +91,7 @@ class NoteRepositoryImplTest {
 
         // assert
         verify { noteDomainMapperMock.toDomainList(TestUtil.tNoteModelList) }
-        verify { noteDaoMock.observeNotes(any()) }
+        verify { noteDaoMock.observe(any()) }
         assertThat(r2).containsExactly(reorderedList, reorderedList).inOrder()
     }
 
@@ -126,56 +126,56 @@ class NoteRepositoryImplTest {
     @Test
     fun updateNote_onDbSuccessful() = runTest {
         // arrange
-        coEvery { noteDaoMock.updateNote(TestUtil.tNoteModel) } returns 1
+        coEvery { noteDaoMock.update(TestUtil.tNoteModel) } returns 1
 
         // act
         val r = systemUnderTest.update(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
-        coVerify { noteDaoMock.updateNote(TestUtil.tNoteModel) }
+        coVerify { noteDaoMock.update(TestUtil.tNoteModel) }
         assertThat(r).isTrue()
     }
 
     @Test
     fun updateNote_onDbError() = runTest {
         // arrange
-        coEvery { noteDaoMock.updateNote(TestUtil.tNoteModel) } returns null
+        coEvery { noteDaoMock.update(TestUtil.tNoteModel) } returns null
 
         // act
         val r = systemUnderTest.update(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
-        coVerify { noteDaoMock.updateNote(TestUtil.tNoteModel) }
+        coVerify { noteDaoMock.update(TestUtil.tNoteModel) }
         assertThat(r).isFalse()
     }
 
     @Test
     fun deleteNote_onDbSuccessful() = runTest {
         // arrange
-        coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) } returns 1
+        coEvery { noteDaoMock.delete(TestUtil.tNoteModel) } returns 1
 
         // act
         val r = systemUnderTest.delete(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
-        coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) }
+        coEvery { noteDaoMock.delete(TestUtil.tNoteModel) }
         assertThat(r).isTrue()
     }
 
     @Test
     fun deleteNote_onDbError() = runTest {
         // arrange
-        coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) } returns null
+        coEvery { noteDaoMock.delete(TestUtil.tNoteModel) } returns null
 
         // act
         val r = systemUnderTest.delete(TestUtil.tNoteEntity)
 
         // assert
         coVerify { noteDomainMapperMock.mapFromDomainEntity(TestUtil.tNoteEntity) }
-        coEvery { noteDaoMock.deleteNote(TestUtil.tNoteModel) }
+        coEvery { noteDaoMock.delete(TestUtil.tNoteModel) }
         assertThat(r).isFalse()
     }
 
@@ -238,7 +238,7 @@ class NoteRepositoryImplTest {
     @Test
     fun observeNotebooks() = runTest {
         // arrange
-        every { notebookDaoMock.observeNotebooks() } returns flowOf(
+        every { notebookDaoMock.observe() } returns flowOf(
             TestUtil.tNotebookModelList,
             TestUtil.tNotebookModelList
         )
@@ -249,7 +249,7 @@ class NoteRepositoryImplTest {
 
         // assert
         verify { notebookDomainMapperMock.toDomainList(TestUtil.tNotebookModelList) }
-        verify { notebookDaoMock.observeNotebooks() }
+        verify { notebookDaoMock.observe() }
         assertThat(r2).containsExactly(TestUtil.tNotebookEntityList, TestUtil.tNotebookEntityList)
             .inOrder()
     }
@@ -257,28 +257,28 @@ class NoteRepositoryImplTest {
     @Test
     fun insertNotebook_onDbSuccessful() = runTest {
         // arrange
-        coEvery { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) } returns 1
+        coEvery { notebookDaoMock.insert(TestUtil.tNotebookModel) } returns 1
 
         // act
         val r = systemUnderTest.insertNotebook(TestUtil.tNotebookEntity)
 
         // assert
         coVerify { notebookDomainMapperMock.mapFromDomainEntity(TestUtil.tNotebookEntity) }
-        coVerify { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) }
+        coVerify { notebookDaoMock.insert(TestUtil.tNotebookModel) }
         assertThat(r).isEqualTo(1)
     }
 
     @Test
     fun insertNotebook_onDbError() = runTest {
         // arrange
-        coEvery { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) } returns null
+        coEvery { notebookDaoMock.insert(TestUtil.tNotebookModel) } returns null
 
         // act
         val r = systemUnderTest.insertNotebook(TestUtil.tNotebookEntity)
 
         // assert
         coVerify { notebookDomainMapperMock.mapFromDomainEntity(TestUtil.tNotebookEntity) }
-        coVerify { notebookDaoMock.insertNotebook(TestUtil.tNotebookModel) }
+        coVerify { notebookDaoMock.insert(TestUtil.tNotebookModel) }
         assertThat(r).isEqualTo(INVALID_NOTEBOOK_ID)
     }
 }
