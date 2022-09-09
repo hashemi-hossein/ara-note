@@ -5,6 +5,13 @@ import androidx.room.Room
 import com.ara.aranote.data.local_data_source.NoteDao
 import com.ara.aranote.data.local_data_source.NoteDatabase
 import com.ara.aranote.data.local_data_source.NotebookDao
+import com.ara.aranote.data.model.NoteModel
+import com.ara.aranote.data.model.NotebookModel
+import com.ara.aranote.data.util.NoteDomainMapper
+import com.ara.aranote.data.util.NotebookDomainMapper
+import com.ara.aranote.domain.entity.Note
+import com.ara.aranote.domain.entity.Notebook
+import com.ara.aranote.domain.util.Mapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,9 +34,17 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDao(database: NoteDatabase): NoteDao = database.getNoteDao()
+    fun provideNoteDao(database: NoteDatabase): NoteDao = database.getNoteDao()
 
     @Singleton
     @Provides
     fun provideNotebookDao(database: NoteDatabase): NotebookDao = database.getNotebookDao()
+
+    @Singleton
+    @Provides
+    fun provideNoteDomainMapper(): Mapper<NoteModel, Note> = NoteDomainMapper()
+
+    @Singleton
+    @Provides
+    fun provideNotebookDomainMapper(): Mapper<NotebookModel, Notebook> = NotebookDomainMapper()
 }

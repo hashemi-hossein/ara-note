@@ -7,8 +7,6 @@ import com.ara.aranote.data.model.NoteModel
 import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.data.repository.NoteRepositoryImpl
 import com.ara.aranote.data.repository.NotebookRepositoryImpl
-import com.ara.aranote.data.util.NoteDomainMapper
-import com.ara.aranote.data.util.NotebookDomainMapper
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
@@ -51,12 +49,4 @@ object AppModule {
         notebookDao = notebookDao,
         notebookDomainMapper = notebookDomainMapper,
     )
-
-    @Singleton
-    @Provides
-    fun provideNoteDomainMapper(): Mapper<NoteModel, Note> = NoteDomainMapper()
-
-    @Singleton
-    @Provides
-    fun provideNotebookDomainMapper(): Mapper<NotebookModel, Notebook> = NotebookDomainMapper()
 }
