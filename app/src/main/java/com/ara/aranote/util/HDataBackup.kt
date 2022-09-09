@@ -64,7 +64,7 @@ class HDataBackup
                 for (notebook in backup.notebooks) {
                     if (!notebooks.contains(notebook)) {
                         notebookRepository.insert(notebook).let {
-                            when(it){
+                            when (it) {
                                 is Result.Success -> it.data
                                 is Result.Error -> error("INVALID_NOTEBOOK_ID")
                             }
@@ -75,7 +75,7 @@ class HDataBackup
                 for (note in backup.notes) {
                     if (!notes.contains(note)) {
                         noteRepository.insert(note).let {
-                            when(it){
+                            when (it) {
                                 is Result.Success -> it.data
                                 is Result.Error -> error("INVALID_NOTE_ID")
                             }

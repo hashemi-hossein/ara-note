@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "6.9.1"
+    id("com.diffplug.spotless") version "6.3.0"
 }
 
 subprojects {
@@ -21,6 +21,7 @@ subprojects {
             target("**/*.kt")
             targetExclude("$buildDir/**/*.kt")
             targetExclude("bin/**/*.kt")
+            ktlint("0.42.1")
         }
     }
 }

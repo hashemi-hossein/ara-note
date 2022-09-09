@@ -8,7 +8,7 @@ interface Mapper<T, R> {
         return list.map { map(it) }
     }
 
-    fun mapReverse(r: R): T{
+    fun mapReverse(r: R): T {
         error("Not Implemented")
     }
 
