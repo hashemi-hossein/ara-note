@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.domain.repository.NoteRepository
-import com.ara.aranote.domain.repository.NotebookRepository
+import com.ara.aranote.domain.usecase.home.CreateDefaultNotebookUseCase
+import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
+import com.ara.aranote.domain.usecase.home.ObserveNotesUseCase
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_NAME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +20,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel
 @Inject constructor(
-    private val noteRepository: NoteRepository,
-    private val notebookRepository: NotebookRepository,
+    private val createDefaultNotebookUseCase: CreateDefaultNotebookUseCase,
+    private val observeNotebooksUseCase: ObserveNotebooksUseCase,
+    private val observeNotesUseCase: ObserveNotesUseCase,
     val appDataStore: AppDataStore,
 ) : ViewModel() {
 
@@ -35,10 +36,10 @@ class HomeViewModel
     val currentNotebookId = _currentNotebookId.asStateFlow()
 
     init {
-        createDefaultNotebook()
         observeNotes()
         viewModelScope.launch {
-            notebookRepository.observe().collect { notebooks ->
+            createDefaultNotebookUseCase()
+            observeNotebooksUseCase().collect { notebooks ->
                 _notebooks.update { notebooks }
             }
         }
@@ -48,7 +49,7 @@ class HomeViewModel
     private fun observeNotes() {
         observeNotesJob?.cancel()
         observeNotesJob = viewModelScope.launch {
-            noteRepository.observe(_currentNotebookId.value).collect { notes ->
+            observeNotesUseCase(_currentNotebookId.value).collect { notes ->
                 _notes.update { notes }
             }
         }
@@ -58,17 +59,5 @@ class HomeViewModel
         println("setCurrentNotebookId id=$id")
         _currentNotebookId.update { id }
         observeNotes()
-    }
-
-    private fun createDefaultNotebook() = viewModelScope.launch {
-        if (!appDataStore.readPref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, false)) {
-            appDataStore.writePref(AppDataStore.DEFAULT_NOTEBOOK_EXISTENCE_KEY, true)
-            notebookRepository.insert(
-                Notebook(
-                    id = DEFAULT_NOTEBOOK_ID,
-                    name = DEFAULT_NOTEBOOK_NAME
-                )
-            )
-        }
     }
 }
