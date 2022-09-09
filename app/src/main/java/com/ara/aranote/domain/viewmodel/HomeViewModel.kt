@@ -20,8 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel
 @Inject constructor(
-    private val createDefaultNotebookUseCase: CreateDefaultNotebookUseCase,
-    private val observeNotebooksUseCase: ObserveNotebooksUseCase,
+    createDefaultNotebookUseCase: CreateDefaultNotebookUseCase,
+    observeNotebooksUseCase: ObserveNotebooksUseCase,
     private val observeNotesUseCase: ObserveNotesUseCase,
     val appDataStore: AppDataStore,
 ) : ViewModel() {
