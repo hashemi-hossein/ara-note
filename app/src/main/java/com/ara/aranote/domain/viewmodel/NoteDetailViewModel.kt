@@ -6,14 +6,17 @@ import androidx.lifecycle.viewModelScope
 import com.ara.aranote.data.datastore.AppDataStore
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.domain.repository.NoteRepository
-import com.ara.aranote.domain.repository.NotebookRepository
+import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
+import com.ara.aranote.domain.usecase.note_detail.CreateNoteUseCase
+import com.ara.aranote.domain.usecase.note_detail.DeleteNoteUseCase
+import com.ara.aranote.domain.usecase.note_detail.GetLastNoteIdUseCase
+import com.ara.aranote.domain.usecase.note_detail.GetNoteByIdUseCase
+import com.ara.aranote.domain.usecase.note_detail.UpdateNoteUseCase
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
 import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID
-import com.ara.aranote.util.Result
 import com.ara.aranote.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,10 +30,14 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteDetailViewModel
 @Inject constructor(
-    private val noteRepository: NoteRepository,
-    private val notebookRepository: NotebookRepository,
-    val appDataStore: AppDataStore,
     savedStateHandle: SavedStateHandle,
+    observeNotebooksUseCase: ObserveNotebooksUseCase,
+    private val createNoteUseCase: CreateNoteUseCase,
+    private val updateNoteUseCase: UpdateNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val getLastNoteIdUseCase: GetLastNoteIdUseCase,
+    private val getNoteByIdUseCase: GetNoteByIdUseCase,
+    val appDataStore: AppDataStore,
 ) : ViewModel() {
 
     private val _note = MutableStateFlow(
@@ -59,26 +66,16 @@ class NoteDetailViewModel
 
         viewModelScope.launch {
             prepareNote(noteId = noteId, notebookId = notebookId)
-            _notebooks.update { notebookRepository.observe().first() }
+            _notebooks.update { observeNotebooksUseCase().first() }
         }
     }
 
     suspend fun prepareNote(noteId: Int, notebookId: Int = DEFAULT_NOTEBOOK_ID) {
         Timber.tag(TAG).d("loading note - noteId=$noteId")
         _note.value = if (noteId >= 0) {
-            noteRepository.getById(noteId).let {
-                when (it) {
-                    is Result.Success -> it.data
-                    is Result.Error -> _note.value.copy(text = "ERROR")
-                }
-            }
+            getNoteByIdUseCase(noteId)
         } else {
-            val lastId = noteRepository.getLastId().let {
-                when (it) {
-                    is Result.Success -> it.data
-                    is Result.Error -> 0
-                }
-            }
+            val lastId = getLastNoteIdUseCase()
             _note.value.copy(id = lastId + 1, notebookId = notebookId)
         }
         originalNote = _note.value
@@ -94,31 +91,18 @@ class NoteDetailViewModel
         modifyNote(originalNote)
     }
 
-    private suspend fun addNote(): Boolean {
-        return noteRepository.insert(_note.value) is Result.Success
-    }
-
     private suspend fun updateNote(): Boolean {
-        val oldNote = noteRepository.getById(_note.value.id).let {
-            when (it) {
-                is Result.Success -> it.data
-                is Result.Error -> null
-            }
-        }
+        val oldNote = getNoteByIdUseCase(_note.value.id)
         val result =
             if (oldNote != _note.value) {
                 Timber.tag(TAG).d("updating note")
                 Timber.tag(TAG).d("note = %s", _note.value.toString())
-                if (oldNote?.text != _note.value.text)
+                if (oldNote.text != _note.value.text)
                     _note.value = _note.value.copy(addedDateTime = HDateTime.getCurrentDateTime())
-                noteRepository.update(_note.value) is Result.Success
+                updateNoteUseCase(note.value)
             } else
                 true
         return result
-    }
-
-    private suspend fun deleteNote(): Boolean {
-        return noteRepository.delete(_note.value) is Result.Success
     }
 
     enum class TheOperation {
@@ -136,7 +120,7 @@ class NoteDetailViewModel
             if (isNewNote) {
 //              if(text.isNotBlank())
                 if (!doesDelete && (_note.value.text.isNotEmpty() || _note.value.alarmDateTime != null))
-                    addNote()
+                    createNoteUseCase(note.value)
                 else
                     true
             } else {
@@ -146,7 +130,7 @@ class NoteDetailViewModel
                     _note.value.alarmDateTime?.let {
                         disableAlarm(_note.value.id)
                     }
-                    deleteNote()
+                    deleteNoteUseCase(note.value)
                 }
             }
         if (result) {
