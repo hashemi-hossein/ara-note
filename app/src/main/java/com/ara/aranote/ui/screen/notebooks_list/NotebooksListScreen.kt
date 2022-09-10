@@ -24,7 +24,6 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +36,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.ui.component.HAppBar
@@ -44,12 +45,13 @@ import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import kotlinx.coroutines.CoroutineScope
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun NotebooksListScreen(
     viewModel: NotebooksListViewModel,
     navigateUp: () -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NotebooksListScreen(
         navigateUp = navigateUp,

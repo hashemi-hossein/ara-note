@@ -128,7 +128,7 @@ dependencies {
     implementation(libs.google.android.material)
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // ### Jetpack Compose ####
@@ -156,6 +156,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     // Animation
     implementation(libs.androidx.compose.animation)
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)
