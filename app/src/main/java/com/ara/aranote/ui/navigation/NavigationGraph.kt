@@ -67,12 +67,12 @@ fun NavigationGraph(
             }
         ) {
 
-            composable(NavScreen.Home.route) {
+            composable(route = NavScreen.Home.route) {
                 val viewModel = hiltViewModel<HomeViewModel>()
                 HomeScreen(
                     viewModel = viewModel,
                     navigateToNoteDetailScreen = { noteId, notebookId ->
-                        navController.navigate(NavScreen.NoteDetail.route + "?noteId=$noteId&notebookId=$notebookId")
+                        navController.navigate(NavScreen.NoteDetail(noteId, notebookId).route)
                     },
                     navigateToSettingsScreen = { navController.navigate(NavScreen.Settings.route) },
                     navigateToNotebooksScreen = { navController.navigate(NavScreen.NotebooksList.route) }
@@ -80,7 +80,7 @@ fun NavigationGraph(
             }
 
             composable(
-                NavScreen.NoteDetail.route + "?noteId={noteId}&notebookId={notebookId}",
+                route = NavScreen.NoteDetail().route,
                 arguments = listOf(
                     navArgument(NAV_ARGUMENT_NOTE_ID) {
                         type = NavType.IntType
@@ -98,14 +98,14 @@ fun NavigationGraph(
                 }
             }
 
-            composable(NavScreen.Settings.route) {
+            composable(route = NavScreen.Settings.route) {
                 val viewModel = hiltViewModel<SettingsViewModel>()
                 SettingsScreen(viewModel = viewModel) {
                     navController.navigateUp()
                 }
             }
 
-            composable(NavScreen.NotebooksList.route) {
+            composable(route = NavScreen.NotebooksList.route) {
                 val viewModel = hiltViewModel<NotebooksListViewModel>()
                 NotebooksListScreen(viewModel = viewModel) {
                     navController.navigateUp()
