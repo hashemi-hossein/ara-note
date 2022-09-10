@@ -1,48 +1,65 @@
 package com.ara.aranote.ui.screen.notebooks_list
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
 import com.ara.aranote.domain.usecase.notebooks_list.CreateNotebookUseCase
 import com.ara.aranote.domain.usecase.notebooks_list.DeleteNotebookUseCase
 import com.ara.aranote.domain.usecase.notebooks_list.UpdateNotebookUseCase
+import com.ara.aranote.util.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NotebooksListViewModel
 @Inject constructor(
-    observeNotebooksUseCase: ObserveNotebooksUseCase,
+    private val observeNotebooksUseCase: ObserveNotebooksUseCase,
     private val createNotebookUseCase: CreateNotebookUseCase,
     private val updateNotebookUseCase: UpdateNotebookUseCase,
     private val deleteNotebookUseCase: DeleteNotebookUseCase,
-) : ViewModel() {
+) : BaseViewModel<NotebooksListState, NotebooksListIntent, NotebooksListSingleEvent>() {
 
-    private val _notebooks = MutableStateFlow(listOf<Notebook>())
-    val notebooks = _notebooks.asStateFlow()
+    override fun initialState(): NotebooksListState = NotebooksListState()
 
     init {
-        viewModelScope.launch {
-            observeNotebooksUseCase().collect { notebooks ->
-                _notebooks.update { notebooks }
+        sendIntent(NotebooksListIntent.ObserveNotebooks)
+    }
+
+    override suspend fun handleIntent(
+        intent: NotebooksListIntent,
+        state: NotebooksListState
+    ) {
+        when (intent) {
+            NotebooksListIntent.ObserveNotebooks -> {
+                observeFlow("NotebooksList_observeNotebooks") {
+                    observeNotebooksUseCase().collect {
+                        sendIntent(NotebooksListIntent.ShowNotebooks(it))
+                    }
+                }
             }
+            is NotebooksListIntent.ShowNotebooks -> Unit
+
+            is NotebooksListIntent.AddNotebook ->
+                createNotebookUseCase(Notebook(id = intent.id, name = intent.name))
+            is NotebooksListIntent.ModifyNotebook -> updateNotebookUseCase(intent.notebook)
+            is NotebooksListIntent.DeleteNotebook -> deleteNotebookUseCase(intent.notebook)
         }
     }
 
-    fun addNotebook(id: Int = 0, name: String) = viewModelScope.launch {
-        createNotebookUseCase(Notebook(id = id, name = name))
-    }
+    override val reducer: Reducer<NotebooksListState, NotebooksListIntent>
+        get() = NotebooksListReducer()
+}
 
-    fun modifyNotebook(notebook: Notebook) = viewModelScope.launch {
-        updateNotebookUseCase(notebook)
-    }
+internal class NotebooksListReducer :
+    BaseViewModel.Reducer<NotebooksListState, NotebooksListIntent> {
 
-    fun deleteNotebook(notebook: Notebook) = viewModelScope.launch {
-        deleteNotebookUseCase(notebook)
+    override fun reduce(
+        state: NotebooksListState,
+        intent: NotebooksListIntent
+    ): NotebooksListState = when (intent) {
+        is NotebooksListIntent.ObserveNotebooks -> state
+        is NotebooksListIntent.ShowNotebooks -> state.copy(notebooks = intent.notebooks)
+        is NotebooksListIntent.AddNotebook -> state
+        is NotebooksListIntent.ModifyNotebook -> state
+        is NotebooksListIntent.DeleteNotebook -> state
     }
 }

@@ -49,14 +49,14 @@ fun NotebooksListScreen(
     viewModel: NotebooksListViewModel,
     navigateUp: () -> Unit,
 ) {
-    val notebooks by viewModel.notebooks.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     NotebooksListScreen(
         navigateUp = navigateUp,
-        notebooks = notebooks,
-        addNotebook = { viewModel.addNotebook(name = it) },
-        modifyNotebook = viewModel::modifyNotebook,
-        deleteNotebook = viewModel::deleteNotebook,
+        uiState = uiState,
+        addNotebook = { viewModel.sendIntent(NotebooksListIntent.AddNotebook(name = it)) },
+        modifyNotebook = { viewModel.sendIntent(NotebooksListIntent.ModifyNotebook(it)) },
+        deleteNotebook = { viewModel.sendIntent(NotebooksListIntent.DeleteNotebook(it)) },
     )
 }
 
@@ -64,7 +64,7 @@ fun NotebooksListScreen(
 @Composable
 fun NotebooksListScreen(
     navigateUp: () -> Unit,
-    notebooks: List<Notebook>,
+    uiState: NotebooksListState,
     addNotebook: (String) -> Unit = {},
     modifyNotebook: (Notebook) -> Unit = {},
     deleteNotebook: (Notebook) -> Unit,
@@ -90,7 +90,7 @@ fun NotebooksListScreen(
         },
     ) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
-            items(notebooks) { notebook ->
+            items(uiState.notebooks) { notebook ->
                 ListItem(trailing = {
                     Row {
                         IconButton(onClick = {
