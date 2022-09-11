@@ -9,12 +9,14 @@ import com.ara.aranote.util.MviState
 
 data class NoteDetailState(
     val note: Note = Note(),
-    val notebooks: List<Notebook> = listOf(),
+    val notebooks: List<Notebook> = emptyList(),
     val userPreferences: UserPreferences = UserPreferences(),
+    val isNewNote: Boolean = true,
 ) : MviState
 
 sealed interface NoteDetailIntent : MviIntent {
     object PrepareNote : NoteDetailIntent
+    data class SetIsNewNote(val isNewNote: Boolean) : NoteDetailIntent
 
     data class ModifyNote(val note: Note) : NoteDetailIntent
 

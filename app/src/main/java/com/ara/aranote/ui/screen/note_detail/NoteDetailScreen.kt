@@ -101,8 +101,6 @@ fun NoteDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val isNewNote = viewModel.isNewNote
-
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
@@ -161,7 +159,7 @@ fun NoteDetailScreen(
         uiState = uiState,
         onNoteChanged = { viewModel.sendIntent(NoteDetailIntent.ModifyNote(it)) },
         onBackPressed = { viewModel.triggerSingleEvent(NoteDetailSingleEvent.BackPressed(it)) },
-        isNewNote = isNewNote,
+        isNewNote = uiState.isNewNote,
         isAutoNoteSaving = uiState.userPreferences.isAutoSaveMode,
         modalBottomSheetState = modalBottomSheetState,
         scaffoldState = scaffoldState,
@@ -542,7 +540,7 @@ private fun HBottomSheet(
 //            text = "Hello!",
 //            addedDateTime = HDateTime.getCurrentDateTime()
 //        ),
-//        notebooks = listOf(),
+//        notebooks = emptyList(),
 //        onNoteChanged = {},
 //        onBackPressed = {},
 //        isNewNote = true,

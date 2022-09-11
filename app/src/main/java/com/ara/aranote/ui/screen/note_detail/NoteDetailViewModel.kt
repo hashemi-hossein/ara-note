@@ -38,13 +38,15 @@ class NoteDetailViewModel
 
     init {
         sendIntent(NoteDetailIntent.PrepareNote)
+        sendIntent(NoteDetailIntent.LoadNotebooks)
+        sendIntent(NoteDetailIntent.LoadUserPreferences)
     }
 
     override suspend fun handleIntent(intent: NoteDetailIntent, state: NoteDetailState) {
         when (intent) {
             is NoteDetailIntent.PrepareNote -> {
                 val noteId = savedStateHandle.get<Int>(NAV_ARGUMENT_NOTE_ID) ?: INVALID_NOTE_ID
-                isNewNote = noteId < 0
+                val isNewNote = noteId < 0
                 val notebookId =
                     savedStateHandle.get<Int>(NAV_ARGUMENT_NOTEBOOK_ID) ?: DEFAULT_NOTEBOOK_ID
 
@@ -57,14 +59,14 @@ class NoteDetailViewModel
                     Note(id = lastId + 1, notebookId = notebookId)
                 }
 
+                sendIntent(NoteDetailIntent.SetIsNewNote(isNewNote))
                 sendIntent(NoteDetailIntent.ModifyNote(note))
             }
-
             is NoteDetailIntent.ModifyNote -> Unit
+            is NoteDetailIntent.SetIsNewNote -> Unit
 
             is NoteDetailIntent.LoadNotebooks -> observeNotebooksUseCase().first()
                 .let { sendIntent(NoteDetailIntent.ShowNotebooks(it)) }
-
             is NoteDetailIntent.ShowNotebooks -> Unit
 
             is NoteDetailIntent.UpdateNote -> {
@@ -80,7 +82,7 @@ class NoteDetailViewModel
 
             is NoteDetailIntent.BackPressed -> {
                 val result =
-                    if (isNewNote) {
+                    if (state.isNewNote) {
 //              if(text.isNotBlank())
                         if (!intent.doesDelete && (state.note.text.isNotEmpty() || state.note.alarmDateTime != null))
                             createNoteUseCase(state.note)
@@ -114,8 +116,6 @@ class NoteDetailViewModel
     override val reducer: Reducer<NoteDetailState, NoteDetailIntent>
         get() = NoteDetailReducer()
 
-    var isNewNote: Boolean = true
-
     enum class TheOperation {
         SAVE, DISCARD, DELETE
     }
@@ -126,6 +126,7 @@ internal class NoteDetailReducer : BaseViewModel.Reducer<NoteDetailState, NoteDe
     override fun reduce(state: NoteDetailState, intent: NoteDetailIntent): NoteDetailState =
         when (intent) {
             is NoteDetailIntent.PrepareNote -> state
+            is NoteDetailIntent.SetIsNewNote -> state.copy(isNewNote = intent.isNewNote)
             is NoteDetailIntent.ModifyNote -> state.copy(note = intent.note)
 
             is NoteDetailIntent.LoadNotebooks -> state

@@ -6,7 +6,7 @@ import com.ara.aranote.util.MviSingleEvent
 import com.ara.aranote.util.MviState
 
 data class NotebooksListState(
-    val notebooks: List<Notebook> = listOf(),
+    val notebooks: List<Notebook> = emptyList(),
 ) : MviState
 
 sealed interface NotebooksListIntent : MviIntent {
