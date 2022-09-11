@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.OpenInNewOff
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -35,39 +34,34 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
 import com.ara.aranote.R
-import com.ara.aranote.data.datastore.AppDataStore
+import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.showSnackbar
 import kotlinx.coroutines.CoroutineScope
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel,
     navigateUp: () -> Unit,
 ) {
-    val isDark by viewModel.appDataStore.isDark.collectAsState(initial = false)
-    val isAutoSaveMode by viewModel.appDataStore.isAutoSaveMode.collectAsState(initial = true)
-    val noteColor by viewModel.appDataStore.noteColor.collectAsState(initial = -43230)
-    val isDoubleBackToExitMode by viewModel.appDataStore.isDoubleBackToExitMode.collectAsState(
-        initial = true
-    )
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SettingsScreen(
         navigateUp = navigateUp,
-        isDark = isDark,
-        setIsDark = { viewModel.appDataStore.writePref(AppDataStore.DARK_THEME_KEY, it) },
-        isAutoSaveMode = isAutoSaveMode,
+        userPreferences = uiState.userPreferences,
+        setIsDark = { viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::isDark, it)) },
         setIsAutoSaveMode = {
-            viewModel.appDataStore.writePref(AppDataStore.AUTO_SAVE_MODE, it)
+            viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::isAutoSaveMode, it))
         },
-        noteColor = noteColor,
-        setNoteColor = { viewModel.appDataStore.writePref(AppDataStore.NOTE_COLOR, it) },
-        isDoubleBackToExitMode = isDoubleBackToExitMode,
+        setNoteColor = { viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::noteColor, it)) },
         setIsDoubleBackToExitMode = {
-            viewModel.appDataStore.writePref(AppDataStore.DOUBLE_BACK_TO_EXIT_MODE, it)
+            viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::isDoubleBackToExitMode, it))
         },
         exportData = { uri, onComplete ->
             viewModel.sendIntent(SettingsIntent.ExportData(uri, onComplete))
@@ -83,13 +77,10 @@ fun SettingsScreen(
 @Composable
 internal fun SettingsScreen(
     navigateUp: () -> Unit,
-    isDark: Boolean,
+    userPreferences: UserPreferences,
     setIsDark: (Boolean) -> Unit,
-    isAutoSaveMode: Boolean,
     setIsAutoSaveMode: (Boolean) -> Unit,
-    noteColor: Long,
     setNoteColor: (Long) -> Unit,
-    isDoubleBackToExitMode: Boolean,
     setIsDoubleBackToExitMode: (Boolean) -> Unit,
     exportData: (Uri, () -> Unit) -> Unit,
     importData: (Uri, () -> Unit) -> Unit,
@@ -109,18 +100,18 @@ internal fun SettingsScreen(
                 .padding(innerPadding)
         ) {
             ListItem(trailing = {
-                Switch(checked = isDark, onCheckedChange = setIsDark)
+                Switch(checked = userPreferences.isDark, onCheckedChange = setIsDark)
             }) {
                 Text(text = "Dark Theme")
             }
             ListItem(trailing = {
-                Switch(checked = isAutoSaveMode, onCheckedChange = setIsAutoSaveMode)
+                Switch(checked = userPreferences.isAutoSaveMode, onCheckedChange = setIsAutoSaveMode)
             }) {
                 Text(text = "Auto save Mode")
             }
             ListItem(trailing = {
                 Switch(
-                    checked = isDoubleBackToExitMode,
+                    checked = userPreferences.isDoubleBackToExitMode,
                     onCheckedChange = setIsDoubleBackToExitMode
                 )
             }) {
@@ -131,7 +122,7 @@ internal fun SettingsScreen(
                     modifier = Modifier
                         .size(35.dp)
                         .clip(CircleShape)
-                        .background(color = Color(noteColor))
+                        .background(color = Color(userPreferences.noteColor))
                         .clickable {
                             val colors = intArrayOf(
                                 android.graphics.Color.parseColor("#FF5722"),
@@ -152,7 +143,7 @@ internal fun SettingsScreen(
                             MaterialDialog(context).show {
                                 colorChooser(
                                     colors,
-                                    initialSelection = noteColor.toInt(),
+                                    initialSelection = userPreferences.noteColor.toInt(),
                                     allowCustomArgb = true,
                                 ) { _, color ->
 //                                println("color=$color")
