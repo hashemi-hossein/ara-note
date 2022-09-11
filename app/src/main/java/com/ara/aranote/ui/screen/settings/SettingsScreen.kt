@@ -69,8 +69,12 @@ fun SettingsScreen(
         setIsDoubleBackToExitMode = {
             viewModel.appDataStore.writePref(AppDataStore.DOUBLE_BACK_TO_EXIT_MODE, it)
         },
-        exportData = viewModel::exportData,
-        importData = viewModel::importData,
+        exportData = { uri, onComplete ->
+            viewModel.sendIntent(SettingsIntent.ExportData(uri, onComplete))
+        },
+        importData = { uri, onComplete ->
+            viewModel.sendIntent(SettingsIntent.ImportData(uri, onComplete))
+        },
     )
 }
 
@@ -115,7 +119,10 @@ internal fun SettingsScreen(
                 Text(text = "Auto save Mode")
             }
             ListItem(trailing = {
-                Switch(checked = isDoubleBackToExitMode, onCheckedChange = setIsDoubleBackToExitMode)
+                Switch(
+                    checked = isDoubleBackToExitMode,
+                    onCheckedChange = setIsDoubleBackToExitMode
+                )
             }) {
                 Text(text = "Double back to exit Mode")
             }
