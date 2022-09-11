@@ -1,6 +1,9 @@
 package com.ara.aranote.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import com.ara.aranote.data.datastore.UserPreferences
+import com.ara.aranote.data.datastore.userPreferencesStore
 import com.ara.aranote.data.local_data_source.NoteDao
 import com.ara.aranote.data.local_data_source.NotebookDao
 import com.ara.aranote.data.model.NoteModel
@@ -49,4 +52,10 @@ object AppModule {
         notebookDao = notebookDao,
         notebookDomainMapper = notebookDomainMapper,
     )
+
+    @Singleton
+    @Provides
+    fun provideUserPreferencesStore(
+        @ApplicationContext context: Context
+    ): DataStore<UserPreferences> = context.userPreferencesStore
 }
