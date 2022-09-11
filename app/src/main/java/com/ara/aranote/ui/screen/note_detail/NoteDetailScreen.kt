@@ -39,14 +39,12 @@ import androidx.compose.material.icons.filled.AlarmOff
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.RestorePage
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,8 +62,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDirection
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
@@ -84,70 +83,70 @@ import com.ara.aranote.util.plus
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(
+    ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class,
+    ExperimentalLifecycleComposeApi::class
+)
 @Composable
 fun NoteDetailScreen(
     viewModel: NoteDetailViewModel,
     navigateUp: () -> Unit,
 ) {
-    val note: Note by viewModel.note.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     val isNewNote = viewModel.isNewNote
-    val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
-    val isAutoNoteSaving by viewModel.appDataStore.isAutoSaveMode.collectAsState(initial = true)
-    val isModified by viewModel.isModified.collectAsState()
 
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
 
-    val onBackPressed: (TheOperation) -> Unit = { theOperation ->
-        if (theOperation == TheOperation.DISCARD) {
-            if (viewModel.isModified.value)
-                showSnackbar(
-                    scope = scope,
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    actionLabel = context.getString(R.string.discard)
-                ) {
-                    navigateUp()
+    LaunchedEffect(Unit) {
+        viewModel.singleEvent.onEach {
+            when (it) {
+                is NoteDetailSingleEvent.NavigateUp -> navigateUp()
+
+                is NoteDetailSingleEvent.DisableAlarm ->
+                    hManageAlarm(context = context, doesCreate = false, noteId = it.noteId)
+
+                is NoteDetailSingleEvent.OperationError ->
+                    Toast.makeText(context, "error in operation occurred", Toast.LENGTH_LONG)
+                        .show()
+
+                is NoteDetailSingleEvent.BackPressed -> {
+                    if (it.theOperation == TheOperation.DISCARD) {
+                        showSnackbar(
+                            scope = scope,
+                            snackbarHostState = scaffoldState.snackbarHostState,
+                            actionLabel = context.getString(R.string.discard)
+                        ) {
+                            navigateUp()
+                        }
+                    } else {
+                        val deleteOrSaveOperation = {
+                            viewModel.sendIntent(NoteDetailIntent.BackPressed(doesDelete = it.theOperation == TheOperation.DELETE))
+                        }
+                        if (it.theOperation == TheOperation.DELETE) {
+                            showSnackbar(
+                                scope = scope,
+                                snackbarHostState = scaffoldState.snackbarHostState,
+                                actionLabel = context.getString(R.string.delete)
+                            ) {
+                                deleteOrSaveOperation()
+                            }
+                        } else {
+                            deleteOrSaveOperation()
+                        }
+                    }
                 }
-            else
-                navigateUp()
-        } else {
-            val deleteOrSaveOperation = {
-                viewModel.backPressed(
-                    isNewNote = isNewNote,
-                    doesDelete = theOperation == TheOperation.DELETE,
-                    navigateUp = navigateUp,
-                    disableAlarm = {
-                        hManageAlarm(
-                            context = context,
-                            doesCreate = false,
-                            noteId = it,
-                        )
-                    },
-                    onOperationError = {
-                        Toast.makeText(context, "error in operation occurred", Toast.LENGTH_LONG)
-                            .show()
-                    },
-                )
             }
-            if (theOperation == TheOperation.DELETE) {
-                showSnackbar(
-                    scope = scope,
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    actionLabel = context.getString(R.string.delete)
-                ) {
-                    deleteOrSaveOperation()
-                }
-            } else {
-                deleteOrSaveOperation()
-            }
-        }
+        }.collect()
     }
 
     val modalBottomSheetState = rememberModalBottomSheetState(
@@ -159,14 +158,11 @@ fun NoteDetailScreen(
     )
 
     NoteDetailScreen(
-        note = note,
-        notebooks = notebooks,
-        onNoteChanged = viewModel::modifyNote,
-        onBackPressed = onBackPressed,
+        uiState = uiState,
+        onNoteChanged = { viewModel.sendIntent(NoteDetailIntent.ModifyNote(it)) },
+        onBackPressed = { viewModel.triggerSingleEvent(NoteDetailSingleEvent.BackPressed(it)) },
         isNewNote = isNewNote,
-        isModified = isModified,
-        restoreNote = viewModel::restoreNote,
-        isAutoNoteSaving = isAutoNoteSaving,
+        isAutoNoteSaving = uiState.userPreferences.isAutoSaveMode,
         modalBottomSheetState = modalBottomSheetState,
         scaffoldState = scaffoldState,
         scope = scope,
@@ -176,13 +172,10 @@ fun NoteDetailScreen(
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun NoteDetailScreen(
-    note: Note,
-    notebooks: List<Notebook>,
+    uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
-    isModified: Boolean,
-    restoreNote: () -> Unit,
     isAutoNoteSaving: Boolean = true,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -202,7 +195,7 @@ internal fun NoteDetailScreen(
         sheetState = modalBottomSheetState,
         sheetContent = {
             HBottomSheet(
-                note = note,
+                note = uiState.note,
                 onNoteChanged = onNoteChanged,
                 scope = scope,
                 scaffoldState = scaffoldState,
@@ -219,14 +212,11 @@ internal fun NoteDetailScreen(
                     icon = if (isAutoNoteSaving) Icons.Default.Done else Icons.Default.ArrowBack,
                     actions = {
                         HAppBarActions(
-                            note = note,
-                            notebooks = notebooks,
+                            note = uiState.note,
+                            notebooks = uiState.notebooks,
                             onNoteChanged = onNoteChanged,
                             onBackPressed = onBackPressed,
                             isNewNote = isNewNote,
-                            isModified = isModified,
-                            restoreNote = restoreNote,
-                            scaffoldState = scaffoldState,
                             scope = scope,
                             context = context,
                             modalBottomSheetState = modalBottomSheetState,
@@ -253,7 +243,7 @@ internal fun NoteDetailScreen(
         ) { innerPadding ->
             HBody(
                 innerPadding = innerPadding,
-                note = note,
+                note = uiState.note,
                 onNoteChanged = onNoteChanged,
                 isNewNote = isNewNote,
             )
@@ -327,9 +317,6 @@ private fun HAppBarActions(
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
-    isModified: Boolean,
-    restoreNote: () -> Unit,
-    scaffoldState: ScaffoldState,
     scope: CoroutineScope,
     context: Context,
     modalBottomSheetState: ModalBottomSheetState,
@@ -337,21 +324,6 @@ private fun HAppBarActions(
 ) {
     val doesHasAlarm = note.alarmDateTime != null
 
-    AnimatedVisibility(isModified) {
-        IconButton(onClick = {
-            showSnackbar(
-                scope,
-                scaffoldState.snackbarHostState,
-                actionLabel = "Restore Note",
-                onClick = restoreNote
-            )
-        }) {
-            Icon(
-                imageVector = Icons.Default.RestorePage,
-                contentDescription = "Restore Note"
-            )
-        }
-    }
     IconButton(onClick = {
         keyboardController?.hide()
         onBackPressed(if (!isNewNote) TheOperation.DELETE else TheOperation.DISCARD)
@@ -553,28 +525,28 @@ private fun HBottomSheet(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
-@Preview(
-//    showBackground = true,
-//    backgroundColor = 0xff2ff2f2,
-//    widthDp = 200,
-//    heightDp = 300,
-//    showSystemUi = true,
-)
-@Composable
-private fun HPreview() {
-    NoteDetailScreen(
-        note = Note(
-            id = 1,
-            notebookId = 1,
-            text = "Hello!",
-            addedDateTime = HDateTime.getCurrentDateTime()
-        ),
-        notebooks = listOf(),
-        onNoteChanged = {},
-        onBackPressed = {},
-        isNewNote = true,
-        isModified = false,
-        restoreNote = {},
-    )
-}
+// @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+// @Preview(
+// //    showBackground = true,
+// //    backgroundColor = 0xff2ff2f2,
+// //    widthDp = 200,
+// //    heightDp = 300,
+// //    showSystemUi = true,
+// )
+// @Composable
+// private fun HPreview() {
+//    NoteDetailScreen(
+//        note = Note(
+//            id = 1,
+//            notebookId = 1,
+//            text = "Hello!",
+//            addedDateTime = HDateTime.getCurrentDateTime()
+//        ),
+//        notebooks = listOf(),
+//        onNoteChanged = {},
+//        onBackPressed = {},
+//        isNewNote = true,
+//        isModified = false,
+//        restoreNote = {},
+//    )
+// }
