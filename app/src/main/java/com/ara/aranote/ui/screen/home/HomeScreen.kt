@@ -34,7 +34,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,8 +45,9 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
@@ -56,14 +56,11 @@ import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.NoteCard
 import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
-import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
-import com.ara.aranote.util.minus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
@@ -71,38 +68,24 @@ fun HomeScreen(
     navigateToNotebooksScreen: () -> Unit,
     navigateToNoteDetailScreen: (Int, Int) -> Unit,
 ) {
-    val notes: List<Note> by viewModel.notes.collectAsState()
-    val notebooks: List<Notebook> by viewModel.notebooks.collectAsState()
-    val currentNotebookId by viewModel.currentNotebookId.collectAsState()
-    val noteColor by viewModel.appDataStore.noteColor.collectAsState(initial = 0)
-    val isDoubleBackToExitMode by viewModel.appDataStore.isDoubleBackToExitMode.collectAsState(
-        initial = true
-    )
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     HomeScreen(
-        notes = notes,
-        notebooks = notebooks,
+        uiState = uiState,
         navigateToSettingsScreen = navigateToSettingsScreen,
         navigateToNotebooksScreen = navigateToNotebooksScreen,
-        navigateToNoteDetailScreen = { navigateToNoteDetailScreen(it, currentNotebookId) },
-        currentNotebookId = currentNotebookId,
-        setCurrentNotebookId = viewModel::setCurrentNotebookId,
-        noteColor = noteColor,
-        isDoubleBackToExitMode = isDoubleBackToExitMode,
+        navigateToNoteDetailScreen = { navigateToNoteDetailScreen(it, uiState.currentNotebookId) },
+        setCurrentNotebookId = { viewModel.sendIntent(HomeIntent.ChangeNotebook(it)) },
     )
 }
 
 @Composable
 internal fun HomeScreen(
-    notes: List<Note>,
-    notebooks: List<Notebook>,
+    uiState: HomeState,
     navigateToNoteDetailScreen: (Int) -> Unit,
     navigateToSettingsScreen: () -> Unit,
     navigateToNotebooksScreen: () -> Unit,
-    currentNotebookId: Int = DEFAULT_NOTEBOOK_ID,
     setCurrentNotebookId: (Int) -> Unit = {},
-    noteColor: Long = 0,
-    isDoubleBackToExitMode: Boolean = true,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
@@ -115,13 +98,13 @@ internal fun HomeScreen(
             when {
                 scaffoldState.drawerState.isOpen && !scaffoldState.drawerState.isAnimationRunning ->
                     scope.launch { scaffoldState.drawerState.close() }
-                currentNotebookId != DEFAULT_NOTEBOOK_ID -> {
+                uiState.currentNotebookId != DEFAULT_NOTEBOOK_ID -> {
                     setCurrentNotebookId(DEFAULT_NOTEBOOK_ID)
                     scope.launch {
                         listState.animateScrollToItem(0)
                     }
                 }
-                !isDoubleBackToExitMode || System.currentTimeMillis() - lastTimeMillis < 2000 ->
+                !uiState.userPreferences.isDoubleBackToExitMode || System.currentTimeMillis() - lastTimeMillis < 2000 ->
                     (context as AppCompatActivity).finish()
                 else -> {
                     lastTimeMillis = System.currentTimeMillis()
@@ -142,7 +125,7 @@ internal fun HomeScreen(
         scaffoldState = scaffoldState,
         topBar = {
             HAppBar(
-                title = notebooks.find { it.id == currentNotebookId }?.name
+                title = uiState.notebooks.find { it.id == uiState.currentNotebookId }?.name
                     ?: stringResource(id = R.string.app_name),
                 appBarNavButtonType = AppBarNavButtonType.MENU,
                 actions = {
@@ -156,10 +139,10 @@ internal fun HomeScreen(
         },
         drawerContent = {
             HDrawer(
-                notebooks = notebooks,
-                currentNotebookId = currentNotebookId,
+                notebooks = uiState.notebooks,
+                currentNotebookId = uiState.currentNotebookId,
                 setCurrentNotebookId = {
-                    if (it != currentNotebookId) {
+                    if (it != uiState.currentNotebookId) {
                         setCurrentNotebookId(it)
                         scope.launch {
                             scaffoldState.drawerState.close()
@@ -187,9 +170,9 @@ internal fun HomeScreen(
     ) { innerPadding ->
         HBody(
             innerPadding = innerPadding,
-            notes = notes,
+            notes = uiState.notes,
             navigateToNoteDetailScreen = navigateToNoteDetailScreen,
-            noteColor = noteColor,
+            noteColor = uiState.userPreferences.noteColor,
             listState = listState,
         )
     }
@@ -314,40 +297,40 @@ private fun HDrawerColumn(
     }
 }
 
-@OptIn(ExperimentalTime::class)
-@Preview(
-//    showBackground = true,
-//    backgroundColor = 0xff2ff2f2,
-//    widthDp = 200,
-//    heightDp = 300,
-//    showSystemUi = true,
-)
-@Composable
-private fun HPreview() {
-    val lstNotes = mutableListOf<Note>()
-    val currentDateTime = HDateTime.getCurrentDateTime()
-    for (i in 1..10) {
-        lstNotes.add(
-            Note(
-                id = i,
-                notebookId = DEFAULT_NOTEBOOK_ID,
-                text = "item $i",
-                addedDateTime = currentDateTime.minus((i * i * i * i * i).seconds),
-                alarmDateTime = if (i % 3 == 1) currentDateTime else null,
-            )
-        )
-    }
-    val lstNotebooks = mutableListOf<Notebook>()
-    for (i in 1..3) {
-        lstNotebooks.add(
-            Notebook(id = i, name = "notebook$i")
-        )
-    }
-    HomeScreen(
-        notes = lstNotes,
-        notebooks = lstNotebooks,
-        navigateToNoteDetailScreen = { },
-        navigateToSettingsScreen = {},
-        navigateToNotebooksScreen = {},
-    )
-}
+// @OptIn(ExperimentalTime::class)
+// @Preview(
+// //    showBackground = true,
+// //    backgroundColor = 0xff2ff2f2,
+// //    widthDp = 200,
+// //    heightDp = 300,
+// //    showSystemUi = true,
+// )
+// @Composable
+// private fun HPreview() {
+//    val lstNotes = mutableListOf<Note>()
+//    val currentDateTime = HDateTime.getCurrentDateTime()
+//    for (i in 1..10) {
+//        lstNotes.add(
+//            Note(
+//                id = i,
+//                notebookId = DEFAULT_NOTEBOOK_ID,
+//                text = "item $i",
+//                addedDateTime = currentDateTime.minus((i * i * i * i * i).seconds),
+//                alarmDateTime = if (i % 3 == 1) currentDateTime else null,
+//            )
+//        )
+//    }
+//    val lstNotebooks = mutableListOf<Notebook>()
+//    for (i in 1..3) {
+//        lstNotebooks.add(
+//            Notebook(id = i, name = "notebook$i")
+//        )
+//    }
+//    HomeScreen(
+//        notes = lstNotes,
+//        notebooks = lstNotebooks,
+//        navigateToNoteDetailScreen = { },
+//        navigateToSettingsScreen = {},
+//        navigateToNotebooksScreen = {},
+//    )
+// }

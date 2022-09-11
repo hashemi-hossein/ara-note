@@ -1,63 +1,79 @@
 package com.ara.aranote.ui.screen.home
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.ara.aranote.data.datastore.AppDataStore
-import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.usecase.home.CreateDefaultNotebookUseCase
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
 import com.ara.aranote.domain.usecase.home.ObserveNotesUseCase
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
+import com.ara.aranote.domain.usecase.user_preferences.ObserveUserPreferencesUseCase
+import com.ara.aranote.util.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel
 @Inject constructor(
-    createDefaultNotebookUseCase: CreateDefaultNotebookUseCase,
-    observeNotebooksUseCase: ObserveNotebooksUseCase,
+    private val createDefaultNotebookUseCase: CreateDefaultNotebookUseCase,
+    private val observeNotebooksUseCase: ObserveNotebooksUseCase,
     private val observeNotesUseCase: ObserveNotesUseCase,
-    val appDataStore: AppDataStore,
-) : ViewModel() {
+    private val observeUserPreferencesUseCase: ObserveUserPreferencesUseCase
+) : BaseViewModel<HomeState, HomeIntent, HomeSingleEvent>() {
 
-    private val _notes = MutableStateFlow(listOf<Note>())
-    val notes = _notes.asStateFlow()
-
-    private val _notebooks = MutableStateFlow(listOf<Notebook>())
-    val notebooks = _notebooks.asStateFlow()
-
-    private val _currentNotebookId = MutableStateFlow(DEFAULT_NOTEBOOK_ID)
-    val currentNotebookId = _currentNotebookId.asStateFlow()
+    override fun initialState(): HomeState = HomeState()
 
     init {
-        observeNotes()
-        viewModelScope.launch {
-            createDefaultNotebookUseCase()
-            observeNotebooksUseCase().collect { notebooks ->
-                _notebooks.update { notebooks }
+        sendIntent(HomeIntent.ObserveNotes)
+        sendIntent(HomeIntent.ObserveNotebooks)
+    }
+
+    override suspend fun handleIntent(intent: HomeIntent, state: HomeState) {
+        when (intent) {
+            HomeIntent.ObserveNotes -> {
+                observeFlow(taskId = "Home_observeNotes", isUnique = false) {
+                    observeNotesUseCase(state.currentNotebookId).collect {
+                        sendIntent(HomeIntent.ShowNotes(it))
+                    }
+                }
             }
+            is HomeIntent.ShowNotes -> Unit
+
+            HomeIntent.ObserveNotebooks -> {
+                createDefaultNotebookUseCase()
+                observeFlow("Home_observeNotebooks") {
+                    observeNotebooksUseCase().collect {
+                        sendIntent(HomeIntent.ShowNotebooks(it))
+                    }
+                }
+            }
+            is HomeIntent.ShowNotebooks -> Unit
+
+            is HomeIntent.ChangeNotebook -> sendIntent(HomeIntent.ObserveNotes)
+
+            is HomeIntent.ObserveUserPreferences ->
+                observeFlow("Home_observeUserPreferences") {
+                    observeUserPreferencesUseCase().collect {
+                        sendIntent(HomeIntent.ShowUserPreferences(it))
+                    }
+                }
+            is HomeIntent.ShowUserPreferences -> Unit
         }
     }
 
-    private var observeNotesJob: Job? = null
-    private fun observeNotes() {
-        observeNotesJob?.cancel()
-        observeNotesJob = viewModelScope.launch {
-            observeNotesUseCase(_currentNotebookId.value).collect { notes ->
-                _notes.update { notes }
-            }
-        }
-    }
+    override val reducer: Reducer<HomeState, HomeIntent>
+        get() = HomeReducer()
+}
 
-    fun setCurrentNotebookId(id: Int) {
-        println("setCurrentNotebookId id=$id")
-        _currentNotebookId.update { id }
-        observeNotes()
-    }
+internal class HomeReducer : BaseViewModel.Reducer<HomeState, HomeIntent> {
+
+    override fun reduce(state: HomeState, intent: HomeIntent): HomeState =
+        when (intent) {
+            is HomeIntent.ObserveNotes -> state
+            is HomeIntent.ShowNotes -> state.copy(notes = intent.notes)
+
+            is HomeIntent.ObserveNotebooks -> state
+            is HomeIntent.ShowNotebooks -> state.copy(notebooks = intent.notebooks)
+
+            is HomeIntent.ChangeNotebook -> state.copy(currentNotebookId = intent.notebookId)
+
+            is HomeIntent.ObserveUserPreferences -> state
+            is HomeIntent.ShowUserPreferences -> state.copy(userPreferences = intent.userPreferences)
+        }
 }
