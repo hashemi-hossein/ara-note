@@ -80,12 +80,12 @@ android {
     // Tests can be Robolectric or instrumented tests
     sourceSets {
         val sharedTestDir = "src/test_common/java"
-        getByName("test") {
-            java.srcDir(sharedTestDir)
-        }
-//        getByName("androidTest") {
+//        getByName("test") {
 //            java.srcDir(sharedTestDir)
 //        }
+        getByName("androidTest") {
+            java.srcDir(sharedTestDir)
+        }
     }
 
     testOptions {
