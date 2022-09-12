@@ -10,7 +10,6 @@ import kotlinx.datetime.toLocalDateTime
 import org.ocpsoft.prettytime.PrettyTime
 import java.time.format.DateTimeFormatter
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
 enum class DateTimeFormatPattern(val pattern: String) {
     DATE("yyyy/MM/dd"),
@@ -48,19 +47,16 @@ fun LocalDateTime.change(
 
 fun LocalDateTime.millis() = toInstant(TIME_ZONE).toEpochMilliseconds()
 
-@OptIn(ExperimentalTime::class)
 fun LocalDateTime.plus(duration: Duration): LocalDateTime {
     return this.toInstant(TIME_ZONE).plus(duration)
         .toLocalDateTime(TIME_ZONE)
 }
 
-@OptIn(ExperimentalTime::class)
 fun LocalDateTime.minus(duration: Duration): LocalDateTime {
     return this.toInstant(TIME_ZONE).minus(duration)
         .toLocalDateTime(TIME_ZONE)
 }
 
-@OptIn(ExperimentalTime::class)
 fun LocalDateTime.minus(other: LocalDateTime): Duration {
     return this.toInstant(TIME_ZONE).minus(other.toInstant(TIME_ZONE))
 }
