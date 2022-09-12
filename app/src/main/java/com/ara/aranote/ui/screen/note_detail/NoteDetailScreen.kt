@@ -277,7 +277,7 @@ private fun HBody(
             Text(
                 text = "Alarm has been set for " +
                     if (note.alarmDateTime != null)
-                        HDateTime.gerPrettyDateTime(note.alarmDateTime)
+                        HDateTime.gerPrettyDateTime(note.alarmDateTime!!)
                     else "",
                 style = MaterialTheme.typography.body2,
                 modifier = Modifier.alpha(0.4f)

@@ -34,7 +34,6 @@ class NotebookRepositoryImplTest {
         notebookDomainMapper = notebookDomainMapperMock,
     )
 
-
     @Test
     fun observeNotebooks() = runTest {
         // arrange
