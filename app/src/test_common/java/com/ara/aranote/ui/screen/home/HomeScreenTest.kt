@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen
+package com.ara.aranote.ui.screen.home
 
 import android.content.Context
 import androidx.compose.runtime.MutableState
@@ -16,12 +16,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.ara.aranote.R
-import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.test_util.TestUtil
-import com.ara.aranote.ui.screen.home.HomeScreen
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
+import com.ara.core_test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -37,41 +34,38 @@ class HomeScreenTest {
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
-    private lateinit var notes: MutableState<List<Note>>
-    private lateinit var notebooks: MutableState<List<Notebook>>
-    private lateinit var currentNotebookId: MutableState<Int>
+    private lateinit var uiState: MutableState<HomeState>
 
     private var noteIdToNavigate: Int? = null
     private var notebookIdToNavigate: Int? = null
-//    private var notebookNameToAdd: String? = null
 
     @Before
     fun setUp() {
-        notes = mutableStateOf(TestUtil.tNoteEntityList)
-        notebooks = mutableStateOf(TestUtil.tNotebookEntityList)
-        currentNotebookId = mutableStateOf(TestUtil.tNotebookEntity.id)
+        uiState = mutableStateOf(
+            HomeState(
+                notes = TestUtil.tNoteEntityList,
+                notebooks = TestUtil.tNotebookEntityList,
+                currentNotebookId = TestUtil.tNotebookEntity.id
+            )
+        )
         val filterNotes = {
-            notes.value =
-                TestUtil.tNoteEntityList.filter { it.notebookId == currentNotebookId.value }
+            uiState.value =
+                uiState.value.copy(notes = TestUtil.tNoteEntityList.filter { it.notebookId == uiState.value.currentNotebookId })
         }
         filterNotes()
         noteIdToNavigate = null
         notebookIdToNavigate = null
-//        notebookNameToAdd = null
         composeTestRule.setContent {
             HomeScreen(
-                notes = notes.value,
-                notebooks = notebooks.value,
+                uiState = uiState.value,
                 navigateToNoteDetailScreen = { noteId ->
                     noteIdToNavigate = noteId
-                    notebookIdToNavigate = currentNotebookId.value
+                    notebookIdToNavigate = uiState.value.currentNotebookId
                 },
                 navigateToSettingsScreen = {},
-//                addNotebook = { notebookNameToAdd = it },
                 navigateToNotebooksScreen = {},
-                currentNotebookId = currentNotebookId.value,
                 setCurrentNotebookId = { notebookId ->
-                    currentNotebookId.value = notebookId
+                    uiState.value = uiState.value.copy(currentNotebookId = notebookId)
                     filterNotes()
                 },
             )
@@ -113,7 +107,7 @@ class HomeScreenTest {
 
         // assert
         assertThat(noteIdToNavigate).isEqualTo(TestUtil.tNoteEntity.id)
-        assertThat(notebookIdToNavigate).isEqualTo(currentNotebookId.value)
+        assertThat(notebookIdToNavigate).isEqualTo(uiState.value.currentNotebookId)
     }
 
 //    @Test
@@ -134,9 +128,9 @@ class HomeScreenTest {
         composeTestRule.onNodeWithText(TestUtil.tNotebookEntity2.name).performClick()
 
         // assert
-        assertThat(currentNotebookId.value).isEqualTo(TestUtil.tNotebookEntity2.id)
+        assertThat(uiState.value.currentNotebookId).isEqualTo(TestUtil.tNotebookEntity2.id)
         composeTestRule.onNodeWithText(
-            TestUtil.tNoteEntityList.first { it.notebookId == currentNotebookId.value }.text,
+            TestUtil.tNoteEntityList.first { it.notebookId == uiState.value.currentNotebookId }.text,
             substring = true,
         ).assertIsDisplayed()
     }

@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen
+package com.ara.aranote.ui.screen.note_detail
 
 import android.content.Context
 import androidx.compose.material.ExperimentalMaterialApi
@@ -15,29 +15,23 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextReplacement
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.test_util.TestUtil
-import com.ara.aranote.ui.screen.note_detail.NoteDetailScreen
 import com.ara.aranote.ui.screen.note_detail.NoteDetailViewModel.TheOperation
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
+import com.ara.aranote.util.DateTimeFormatPattern
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.plus
+import com.ara.core_test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.time.Duration.Companion.hours
-import kotlin.time.ExperimentalTime
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -48,33 +42,25 @@ class NoteDetailScreenTest {
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
-    private lateinit var note: MutableState<Note>
-    private lateinit var notebooks: MutableState<List<Notebook>>
+    private lateinit var uiState: MutableState<NoteDetailState>
     private var backPressResult: TheOperation? = null
 
     @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
     @Before
     fun setUp() {
-        note = mutableStateOf(
-            Note(
-                id = 1,
-                notebookId = DEFAULT_NOTEBOOK_ID,
-                text = "",
-                addedDateTime = HDateTime.getCurrentDateTime()
+        uiState = mutableStateOf(
+            NoteDetailState(
+                note = Note(id = 1),
+                notebooks = TestUtil.tNotebookEntityList
             )
         )
-        notebooks = mutableStateOf(TestUtil.tNotebookEntityList)
         backPressResult = null
         composeTestRule.setContent {
             NoteDetailScreen(
-                note = note.value,
-                notebooks = notebooks.value,
-                onNoteChanged = { note.value = it },
-                onNoteTextChanged = { note.value = note.value.copy(text = it) },
+                uiState = uiState.value,
+                onNoteChanged = { uiState.value = uiState.value.copy(note = it) },
                 onBackPressed = { backPressResult = it },
                 isNewNote = true,
-                isModified = false,
-                restoreNote = {},
             )
         }
     }
@@ -82,21 +68,18 @@ class NoteDetailScreenTest {
     @Test
     fun entering_text() {
         // act
-//        composeTestRule.onNodeWithText(note.value.text).performTextInput("hello")
-        Espresso.onView(ViewMatchers.withText(note.value.text))
-            .perform(ViewActions.typeText("Hello"))
+        composeTestRule.onNodeWithText(context.getString(R.string.type_here))
+            .performTextReplacement("Hello")
 
         // assert
-//        composeTestRule.onNodeWithText("Hello").assertIsDisplayed()
-        Espresso.onView(ViewMatchers.withText("Hello"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        assertThat(note.value.text).isEqualTo("Hello")
+        composeTestRule.onNodeWithText("Hello").assertIsDisplayed()
+        assertThat(uiState.value.note.text).isEqualTo("Hello")
     }
 
     @Test
     fun notebooks_visibility() {
         // act
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[note.value.notebookId - 1].name)
+        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[uiState.value.note.notebookId - 1].name)
             .assertIsDisplayed().performClick()
 
         // assert
@@ -110,7 +93,7 @@ class NoteDetailScreenTest {
     @Test
     fun changing_notebook_of_note() {
         // act
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[note.value.notebookId - 1].name)
+        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[uiState.value.note.notebookId - 1].name)
             .assertIsDisplayed().performClick()
         composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[1].name)
             .assertIsDisplayed().performClick()
@@ -121,7 +104,7 @@ class NoteDetailScreenTest {
                 !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button) and
                     hasText(item.name)
             ).assertDoesNotExist()
-        assertThat(note.value.notebookId).isEqualTo(TestUtil.tNotebookEntityList[1].id)
+        assertThat(uiState.value.note.notebookId).isEqualTo(TestUtil.tNotebookEntityList[1].id)
     }
 
     @Test
@@ -157,7 +140,6 @@ class NoteDetailScreenTest {
             .assertIsDisplayed()
     }
 
-    @OptIn(ExperimentalTime::class)
     @Test
     fun set_and_reset_alarmDateTime() {
         // arrange
@@ -166,19 +148,19 @@ class NoteDetailScreenTest {
         // act
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))
             .assertIsDisplayed().performClick()
-        note.value = note.value.copy(alarmDateTime = newAlarmDateTime)
+        uiState.value = uiState.value.copy(note = uiState.value.note.copy(alarmDateTime = newAlarmDateTime))
 
         // assert
         composeTestRule.onNodeWithText(
             HDateTime.formatDateAndTime(
                 newAlarmDateTime,
-                isDate = true
+                DateTimeFormatPattern.DATE
             )
         ).assertIsDisplayed()
         composeTestRule.onNodeWithText(
             HDateTime.formatDateAndTime(
                 newAlarmDateTime,
-                isDate = false
+                DateTimeFormatPattern.TIME
             )
         ).assertIsDisplayed()
 
@@ -190,13 +172,13 @@ class NoteDetailScreenTest {
         composeTestRule.onNodeWithText(
             HDateTime.formatDateAndTime(
                 HDateTime.getCurrentDateTime(),
-                isDate = true
+                DateTimeFormatPattern.DATE
             )
         ).assertIsDisplayed()
         composeTestRule.onNodeWithText(
             HDateTime.formatDateAndTime(
                 HDateTime.getCurrentDateTime(),
-                isDate = false
+                DateTimeFormatPattern.TIME
             )
         ).assertIsDisplayed()
     }
@@ -204,7 +186,7 @@ class NoteDetailScreenTest {
     @Test
     fun delete_alarm() {
         // arrange
-        note.value = note.value.copy(alarmDateTime = HDateTime.getCurrentDateTime())
+        uiState.value = uiState.value.copy(note = uiState.value.note.copy(alarmDateTime = HDateTime.getCurrentDateTime()))
 
         // act
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_delete_alarm))
@@ -213,7 +195,7 @@ class NoteDetailScreenTest {
         // assert
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_delete_alarm))
             .assertDoesNotExist()
-        assertThat(note.value.alarmDateTime).isNull()
+        assertThat(uiState.value.note.alarmDateTime).isNull()
     }
 
     @Test
@@ -221,15 +203,6 @@ class NoteDetailScreenTest {
         // act
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_happbar_back))
             .assertIsDisplayed().performClick()
-
-        // assert
-        assertThat(backPressResult).isEqualTo(TheOperation.SAVE)
-    }
-
-    @Test
-    fun phone_back_press() {
-        // act
-        Espresso.pressBack()
 
         // assert
         assertThat(backPressResult).isEqualTo(TheOperation.SAVE)
@@ -252,7 +225,7 @@ class NoteDetailScreenTest {
     @Test
     fun clickDeleteIcon_when_text() {
         // arrange
-        note.value = note.value.copy(text = "hello")
+        uiState.value = uiState.value.copy(note = uiState.value.note.copy(text = "hello"))
 
         // act
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_discard))
