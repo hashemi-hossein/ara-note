@@ -8,3 +8,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Ara Note"
 include(":app")
+include(":core_test")
+include(":core")

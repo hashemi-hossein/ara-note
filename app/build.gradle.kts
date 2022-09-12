@@ -23,13 +23,13 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {
+        debug {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
             isDebuggable = true
             isMinifyEnabled = false
         }
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -122,6 +122,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
+
+    implementation(project(":core"))
+
+    testImplementation(project(":core_test"))
+    androidTestImplementation(project(":core_test"))
 
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.appcompat)
