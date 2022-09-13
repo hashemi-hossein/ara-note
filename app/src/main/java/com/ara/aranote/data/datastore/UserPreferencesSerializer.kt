@@ -8,8 +8,11 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserPreferencesSerializer(
+@Singleton
+class UserPreferencesSerializer @Inject constructor(
     private val dispatcherProvider: CoroutineDispatcherProvider
 ) : Serializer<UserPreferences> {
 
