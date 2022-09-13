@@ -22,6 +22,7 @@ class HomeViewModel
     init {
         sendIntent(HomeIntent.ObserveNotes)
         sendIntent(HomeIntent.ObserveNotebooks)
+        sendIntent(HomeIntent.ObserveUserPreferences)
     }
 
     override suspend fun handleIntent(intent: HomeIntent, state: HomeState) {
