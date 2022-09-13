@@ -27,5 +27,5 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.prettytime)
-    implementation(libs.hilt.android)
+    implementation(libs.javax.inject)
 }

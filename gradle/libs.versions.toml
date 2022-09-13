@@ -34,6 +34,7 @@ hilt = "2.43.2"
 hiltExt = "1.0.0"
 # @pin When updating to AGP 7.3.0-beta03 and up we can update this https://developer.android.com/studio/write/java8-support#library-desugaring-versions
 jdkDesugar = "1.1.5"
+javax-inject = "1"
 junit = "4.13.2"
 karn-notify = "1.4.0"
 kotlin = "1.7.10"
@@ -116,6 +117,7 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltExt" }
 hilt-gradlePlugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 junit = { module = "junit:junit", version.ref = "junit" }
 karn-notify = { module = "io.karn:notify", version.ref = "karn-notify" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
