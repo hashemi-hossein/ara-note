@@ -2,8 +2,9 @@ package com.ara.aranote.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import com.ara.aranote.data.datastore.UserPreferences
-import com.ara.aranote.data.datastore.userPreferencesStore
+import com.ara.aranote.data.datastore.UserPreferencesSerializer
 import com.ara.aranote.data.local_data_source.NoteDao
 import com.ara.aranote.data.local_data_source.NotebookDao
 import com.ara.aranote.data.model.NoteModel
@@ -16,6 +17,8 @@ import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.repository.NotebookRepository
 import com.ara.aranote.domain.util.Mapper
 import com.ara.aranote.ui.main.BaseApplication
+import com.ara.aranote.util.CoroutineDispatcherProvider
+import com.ara.aranote.util.USER_PREFERENCES_FILE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,6 +54,11 @@ object AppModule {
     ): NotebookRepository = NotebookRepositoryImpl(
         notebookDao = notebookDao,
         notebookDomainMapper = notebookDomainMapper,
+    )
+
+    private val Context.userPreferencesStore: DataStore<UserPreferences> by dataStore(
+        fileName = USER_PREFERENCES_FILE_NAME,
+        serializer = UserPreferencesSerializer(CoroutineDispatcherProvider())
     )
 
     @Singleton
