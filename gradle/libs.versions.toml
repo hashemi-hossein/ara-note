@@ -1,7 +1,7 @@
 [versions]
 afollestad-material-dialogs = "3.3.0"
 accompanist = "0.26.2-beta"
-androidGradlePlugin = "7.2.2"
+androidGradlePlugin = "7.3.0"
 androidx-activity-compose = "1.5.1"
 androidx-appcompat = "1.5.0"
 #androidx-benchmark = "1.1.0"
