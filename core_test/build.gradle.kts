@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = "com.ara.core_test"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
