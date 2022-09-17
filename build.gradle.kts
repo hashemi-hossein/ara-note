@@ -11,7 +11,24 @@ buildscript {
 }
 
 plugins {
+    id("com.github.ben-manes.versions") version "0.42.0"
+    id("nl.littlerobots.version-catalog-update") version "0.6.1"
+
     id("com.diffplug.spotless") version "6.3.0"
+}
+
+versionCatalogUpdate {
+    // sort the catalog by key
+    sortByKey.set(true)
+
+    keep {
+        // keep versions without any library or plugin reference
+        keepUnusedVersions.set(true)
+        // keep all libraries that aren't used in the project
+        keepUnusedLibraries.set(true)
+        // keep all plugins that aren't used in the project
+        keepUnusedPlugins.set(true)
+    }
 }
 
 subprojects {
