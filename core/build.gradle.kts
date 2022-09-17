@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ara.aranote"
+    namespace = "aranote.core"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
