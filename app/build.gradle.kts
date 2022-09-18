@@ -135,6 +135,8 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     // Material Design
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.windowsize)
     // Material design icons
     implementation(libs.androidx.compose.material.iconsExtended)
     // Integration with activities
