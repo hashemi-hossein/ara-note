@@ -2,26 +2,25 @@ package com.ara.aranote.ui.component
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.ara.aranote.R
 
 enum class AppBarNavButtonType {
     MENU, BACK
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HAppBar(
     title: String = "",
@@ -32,9 +31,6 @@ fun HAppBar(
     onNavButtonClick: () -> Unit,
 ) {
     TopAppBar(
-        elevation = 0.dp,
-        backgroundColor = Color.Transparent,
-        contentColor = MaterialTheme.colors.primary,
         actions = actions,
         title = {
             Crossfade(targetState = title) {
