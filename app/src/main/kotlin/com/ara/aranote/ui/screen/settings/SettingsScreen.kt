@@ -107,8 +107,10 @@ internal fun SettingsScreen(
             ListItem(
                 headlineText = { Text(text = "Auto save Mode") },
                 trailingContent = {
-                    Switch(checked = userPreferences.isAutoSaveMode,
-                        onCheckedChange = setIsAutoSaveMode)
+                    Switch(
+                        checked = userPreferences.isAutoSaveMode,
+                        onCheckedChange = setIsAutoSaveMode,
+                    )
                 },
             )
             ListItem(
