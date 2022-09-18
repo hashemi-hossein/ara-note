@@ -7,22 +7,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.ListItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.ui.component.HAppBar
+import com.ara.aranote.ui.component.HSnackbarHost
 import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import kotlinx.coroutines.CoroutineScope
@@ -62,7 +62,7 @@ fun NotebooksListScreen(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotebooksListScreen(
     navigateUp: () -> Unit,
@@ -70,7 +70,7 @@ fun NotebooksListScreen(
     addNotebook: (String) -> Unit = {},
     modifyNotebook: (Notebook) -> Unit = {},
     deleteNotebook: (Notebook) -> Unit,
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
 ) {
@@ -79,7 +79,7 @@ fun NotebooksListScreen(
     val setDialogType: (DialogType) -> Unit = { dialogType = it }
 
     Scaffold(
-        scaffoldState = scaffoldState,
+        snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
         topBar = {
             HAppBar(title = "Notebooks", onNavButtonClick = navigateUp, actions = {
                 IconButton(onClick = { setDialogType(DialogType.ADD_NOTEBOOK) }) {
@@ -93,42 +93,42 @@ fun NotebooksListScreen(
     ) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
             items(uiState.notebooks) { notebook ->
-                ListItem(trailing = {
-                    Row {
-                        IconButton(onClick = {
-                            selectedNotebook = notebook
-                            setDialogType(DialogType.EDIT_NOTEBOOK)
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = stringResource(R.string.edit_notebook),
-                                modifier = Modifier.alpha(0.3f)
-                            )
-                        }
-                        if (notebook.id != DEFAULT_NOTEBOOK_ID)
+                ListItem(
+                    headlineText = {
+                        Text(text = notebook.name, style = MaterialTheme.typography.bodyLarge)
+                    },
+                    trailingContent = {
+                        Row {
                             IconButton(onClick = {
-                                showSnackbar(
-                                    scope,
-                                    scaffoldState.snackbarHostState,
-                                    message = "Do you confirm deleting ${notebook.name} notebook and all its notes?",
-                                    actionLabel = context.getString(R.string.delete)
-                                ) {
-                                    deleteNotebook(notebook)
-                                }
+                                selectedNotebook = notebook
+                                setDialogType(DialogType.EDIT_NOTEBOOK)
                             }) {
                                 Icon(
-                                    imageVector = Icons.Default.Delete,
-                                    contentDescription = stringResource(R.string.cd_delete_notebook),
+                                    imageVector = Icons.Default.Edit,
+                                    contentDescription = stringResource(R.string.edit_notebook),
                                     modifier = Modifier.alpha(0.3f)
                                 )
                             }
-                    }
-                }) {
-                    Text(
-                        text = notebook.name,
-                        style = MaterialTheme.typography.body1,
-                    )
-                }
+                            if (notebook.id != DEFAULT_NOTEBOOK_ID)
+                                IconButton(onClick = {
+                                    showSnackbar(
+                                        scope,
+                                        snackbarHostState,
+                                        message = "Do you confirm deleting ${notebook.name} notebook and all its notes?",
+                                        actionLabel = context.getString(R.string.delete)
+                                    ) {
+                                        deleteNotebook(notebook)
+                                    }
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = stringResource(R.string.cd_delete_notebook),
+                                        modifier = Modifier.alpha(0.3f)
+                                    )
+                                }
+                        }
+                    },
+                )
             }
         }
         HDialog(
@@ -145,6 +145,7 @@ private enum class DialogType {
     HIDE, ADD_NOTEBOOK, EDIT_NOTEBOOK
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HDialog(
     dialogType: DialogType,
@@ -179,7 +180,7 @@ private fun HDialog(
                     Text(
                         text = if (dialogType == DialogType.ADD_NOTEBOOK) stringResource(R.string.add_notebook)
                         else stringResource(R.string.edit_notebook),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                     )
                     TextField(
