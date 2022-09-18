@@ -16,22 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.AlarmAdd
@@ -42,7 +30,19 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -56,7 +56,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
@@ -70,6 +69,7 @@ import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.HDropdown
+import com.ara.aranote.ui.component.HSnackbarHost
 import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.ui.screen.note_detail.NoteDetailViewModel.TheOperation
 import com.ara.aranote.util.DateTimeFormatPattern
@@ -102,7 +102,7 @@ fun NoteDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -121,7 +121,7 @@ fun NoteDetailScreen(
                     if (it.theOperation == TheOperation.DISCARD) {
                         showSnackbar(
                             scope = scope,
-                            snackbarHostState = scaffoldState.snackbarHostState,
+                            snackbarHostState = snackbarHostState,
                             actionLabel = context.getString(R.string.discard)
                         ) {
                             navigateUp()
@@ -133,7 +133,7 @@ fun NoteDetailScreen(
                         if (it.theOperation == TheOperation.DELETE) {
                             showSnackbar(
                                 scope = scope,
-                                snackbarHostState = scaffoldState.snackbarHostState,
+                                snackbarHostState = snackbarHostState,
                                 actionLabel = context.getString(R.string.delete)
                             ) {
                                 deleteOrSaveOperation()
@@ -162,12 +162,15 @@ fun NoteDetailScreen(
         isNewNote = uiState.isNewNote,
         isAutoNoteSaving = uiState.userPreferences.isAutoSaveMode,
         modalBottomSheetState = modalBottomSheetState,
-        scaffoldState = scaffoldState,
+        snackbarHostState = snackbarHostState,
         scope = scope,
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(
+    ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class,
+    ExperimentalMaterial3Api::class
+)
 @Composable
 internal fun NoteDetailScreen(
     uiState: NoteDetailState,
@@ -175,7 +178,7 @@ internal fun NoteDetailScreen(
     onBackPressed: (TheOperation) -> Unit,
     isNewNote: Boolean,
     isAutoNoteSaving: Boolean = true,
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
     modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
@@ -196,14 +199,14 @@ internal fun NoteDetailScreen(
                 note = uiState.note,
                 onNoteChanged = onNoteChanged,
                 scope = scope,
-                scaffoldState = scaffoldState,
+                snackbarHostState = snackbarHostState,
                 context = context,
                 modalBottomSheetState = modalBottomSheetState,
             )
         }
     ) {
         Scaffold(
-            scaffoldState = scaffoldState,
+            snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
             topBar = {
                 HAppBar(
                     title = /*if (isNewNote) stringResource(R.string.add_note) else*/ "",
@@ -249,6 +252,7 @@ internal fun NoteDetailScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HBody(
     innerPadding: PaddingValues,
@@ -279,7 +283,7 @@ private fun HBody(
                     if (note.alarmDateTime != null)
                         HDateTime.gerPrettyDateTime(note.alarmDateTime!!)
                     else "",
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.alpha(0.4f)
             )
         }
@@ -291,11 +295,11 @@ private fun HBody(
             modifier = Modifier
                 .fillMaxSize()
                 .focusRequester(focusRequester),
-            textStyle = MaterialTheme.typography.body1.copy(
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
                 textDirection = TextDirection.Content,
             ),
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.background,
             ),
             placeholder = { Text(text = stringResource(id = R.string.type_here)) },
         )
@@ -318,7 +322,7 @@ private fun HAppBarActions(
     scope: CoroutineScope,
     context: Context,
     modalBottomSheetState: ModalBottomSheetState,
-    keyboardController: SoftwareKeyboardController?
+    keyboardController: SoftwareKeyboardController?,
 ) {
     val doesHasAlarm = note.alarmDateTime != null
 
@@ -371,7 +375,7 @@ private fun HBottomSheet(
     note: Note,
     onNoteChanged: (Note) -> Unit,
     scope: CoroutineScope,
-    scaffoldState: ScaffoldState,
+    snackbarHostState: SnackbarHostState,
     context: Context,
     modalBottomSheetState: ModalBottomSheetState,
 ) {
@@ -386,7 +390,7 @@ private fun HBottomSheet(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Date: ", style = MaterialTheme.typography.body1)
+                Text(text = "Date: ", style = MaterialTheme.typography.bodyLarge)
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(onClick = {
                     MaterialDatePicker.Builder.datePicker()
@@ -410,12 +414,12 @@ private fun HBottomSheet(
                             dateTime = dateTime,
                             dateTimeFormatPattern = DateTimeFormatPattern.DATE
                         ),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Time: ", style = MaterialTheme.typography.body1)
+                Text(text = "Time: ", style = MaterialTheme.typography.bodyLarge)
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(onClick = {
                     MaterialTimePicker.Builder()
@@ -438,7 +442,7 @@ private fun HBottomSheet(
                             dateTime = dateTime,
                             dateTimeFormatPattern = DateTimeFormatPattern.TIME
                         ),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
             }
@@ -506,7 +510,7 @@ private fun HBottomSheet(
                     } else {
                         showSnackbar(
                             scope = scope,
-                            scaffoldState.snackbarHostState,
+                            snackbarHostState = snackbarHostState,
                             message = context.getString(R.string.invalid_date_and_time),
                             actionLabel = context.getString(R.string.ok)
                         )
