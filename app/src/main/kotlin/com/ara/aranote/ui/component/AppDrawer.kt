@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -42,90 +41,65 @@ fun AppDrawer(
     navigateToNotebooksScreen: () -> Unit,
 ) {
     ModalDrawerSheet {
-        HDrawerColumn {
-            Column {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp)
-                        .padding(top = 15.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.notebooks),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    IconButton(onClick = { navigateToNotebooksScreen() }) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = stringResource(R.string.cd_goto_notebooks_screen)
-                        )
-                    }
-                }
-                LazyColumn(modifier = Modifier.selectableGroup()) {
-                    items(notebooks) { item: Notebook ->
-                        Surface(
-                            color = if (item.id == currentNotebookId)
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else MaterialTheme.colorScheme.surface,
-                            modifier = Modifier
-                                .selectable(
-                                    selected = item.id == currentNotebookId,
-                                    role = Role.RadioButton
-                                ) { setCurrentNotebookId(item.id) },
-                        ) {
-                            Text(
-                                text = item.name,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(15.dp)
-                            )
-                        }
-                    }
-                }
-            }
-            Column {
-                Divider()
-                ListItem(
-                    headlineText = {
-                        Text(
-                            text = "Settings",
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                    },
-                    trailingContent = {
-                        Icon(imageVector = Icons.Default.Settings, contentDescription = null)
-                    },
-                    modifier = Modifier.clickable { navigateToSettingsScreen() }
+        Column {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .padding(top = 15.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.notebooks),
+                    style = MaterialTheme.typography.titleMedium
                 )
+                IconButton(onClick = { navigateToNotebooksScreen() }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(R.string.cd_goto_notebooks_screen)
+                    )
+                }
             }
-        }
-    }
-}
-
-@Composable
-private fun HDrawerColumn(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    Layout(content = content, modifier = modifier) { measurables, constraints ->
-        check(measurables.size == 2) { "This component must have tow item" }
-        val secondItemPlaceable = measurables[1].measure(constraints)
-        val remainedSpace = constraints.maxHeight - secondItemPlaceable.height
-        val secondItemConstraints =
-            constraints.copy(minHeight = remainedSpace, maxHeight = remainedSpace)
-        val placeables = listOf(
-            measurables[0].measure(secondItemConstraints),
-            secondItemPlaceable,
-        )
-        var yPosition = 0
-        layout(width = constraints.maxWidth, height = constraints.maxHeight) {
-            placeables.forEach { placeable ->
-                placeable.placeRelative(x = 0, y = yPosition)
-                yPosition += placeable.height
+            LazyColumn(
+                modifier = Modifier
+                    .selectableGroup()
+                    .weight(1f)
+            ) {
+                items(notebooks) { item: Notebook ->
+                    Surface(
+                        color = if (item.id == currentNotebookId)
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else MaterialTheme.colorScheme.surface,
+                        modifier = Modifier
+                            .selectable(
+                                selected = item.id == currentNotebookId,
+                                role = Role.RadioButton
+                            ) { setCurrentNotebookId(item.id) },
+                    ) {
+                        Text(
+                            text = item.name,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(15.dp)
+                        )
+                    }
+                }
             }
+            Divider()
+            ListItem(
+                headlineText = {
+                    Text(
+                        text = "Settings",
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                },
+                trailingContent = {
+                    Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                },
+                modifier = Modifier.clickable { navigateToSettingsScreen() }
+            )
         }
     }
 }
