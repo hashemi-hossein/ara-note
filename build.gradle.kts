@@ -11,10 +11,10 @@ buildscript {
 }
 
 plugins {
-    id("com.github.ben-manes.versions") version "0.43.0"
-    id("nl.littlerobots.version-catalog-update") version "0.7.0"
+    alias(libs.plugins.ben.manes.versions)
+    alias(libs.plugins.version.catalog.update)
 
-    id("com.diffplug.spotless") version "6.10.0"
+    alias(libs.plugins.spotless)
 }
 
 versionCatalogUpdate {
