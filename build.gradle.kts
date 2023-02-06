@@ -3,14 +3,13 @@ buildscript {
         google()
         mavenCentral()
     }
-    dependencies {
-        classpath(libs.android.gradlePlugin)
-        classpath(libs.kotlin.gradlePlugin)
-        classpath(libs.hilt.gradlePlugin)
-    }
 }
 
 plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.hilt) apply false
+
     alias(libs.plugins.ben.manes.versions)
     alias(libs.plugins.version.catalog.update)
 

@@ -51,7 +51,6 @@ spotless = "6.10.0"
 [libraries]
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 afollestad-material-dialogs-color = { module = "com.afollestad.material-dialogs:color", version.ref = "afollestad-material-dialogs" }
-android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity-ktx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -93,11 +92,9 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltExt" }
-hilt-gradlePlugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 junit = { module = "junit:junit", version.ref = "junit" }
 karn-notify = { module = "io.karn:notify", version.ref = "karn-notify" }
-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
@@ -111,6 +108,9 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "roboelect
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
