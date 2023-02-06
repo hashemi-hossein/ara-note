@@ -32,9 +32,6 @@ class UserPreferencesRepository
                 UserPreferences::isAutoSaveMode -> {
                     it.copy(isAutoSaveMode = value as Boolean)
                 }
-                UserPreferences::noteColor -> {
-                    it.copy(noteColor = value as Long)
-                }
                 UserPreferences::isDoubleBackToExitMode -> {
                     it.copy(isDoubleBackToExitMode = value as Boolean)
                 }

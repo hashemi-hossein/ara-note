@@ -169,7 +169,6 @@ internal fun HomeScreen(
                 uiState = uiState,
                 innerPadding = innerPadding,
                 navigateToNoteDetailScreen = navigateToNoteDetailScreen,
-                noteColor = uiState.userPreferences.noteColor,
                 listState = listState,
             )
         }
@@ -182,7 +181,6 @@ private fun HBody(
     uiState: HomeState,
     innerPadding: PaddingValues,
     navigateToNoteDetailScreen: (Int) -> Unit,
-    noteColor: Long,
     listState: LazyListState,
 ) {
     Surface(
@@ -191,10 +189,7 @@ private fun HBody(
     ) {
         
         val noteCard: @Composable (Note) -> Unit = {
-            NoteCard(
-                note = it,
-                noteColor = noteColor,
-            ) {
+            NoteCard(note = it) {
                 navigateToNoteDetailScreen(it.id)
             }
         }

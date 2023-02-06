@@ -13,7 +13,6 @@ androidGradlePlugin = "7.4.1"
 kotlin = "1.8.0"
 
 accompanist = "0.28.0"
-afollestad-material-dialogs = "3.3.0"
 androidx-activity-compose = "1.6.1"
 androidx-activity-ktx = "1.5.1"
 androidx-appcompat = "1.6.0"
@@ -68,7 +67,6 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 
 accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
-afollestad-material-dialogs-color = { group = "com.afollestad.material-dialogs", name = "color", version.ref = "afollestad-material-dialogs" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity-ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }

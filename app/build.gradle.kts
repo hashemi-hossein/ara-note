@@ -221,5 +221,4 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.timber)
     implementation(libs.karn.notify)
-    implementation(libs.afollestad.material.dialogs.color)
 }

@@ -27,7 +27,6 @@ import com.ara.aranote.util.HDateTime
 fun NoteCard(
     modifier: Modifier = Modifier,
     note: Note,
-    noteColor: Long,
     onClick: () -> Unit,
 ) {
     Card(
