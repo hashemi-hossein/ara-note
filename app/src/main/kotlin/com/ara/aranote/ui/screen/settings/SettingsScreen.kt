@@ -38,8 +38,10 @@ import androidx.compose.ui.unit.dp
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
 import com.ara.aranote.R
+import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.ui.component.HAppBar
+import com.ara.aranote.ui.component.HDropdown
 import com.ara.aranote.ui.component.HSnackbarHost
 import com.ara.aranote.ui.component.showSnackbar
 import kotlinx.coroutines.CoroutineScope
@@ -50,7 +52,7 @@ fun SettingsScreen(
     navigateUp: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
+    
     SettingsScreen(
         navigateUp = navigateUp,
         userPreferences = uiState.userPreferences,
@@ -61,6 +63,9 @@ fun SettingsScreen(
         setNoteColor = { viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::noteColor, it)) },
         setIsDoubleBackToExitMode = {
             viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::isDoubleBackToExitMode, it))
+        },
+        setNoteViewMode = {
+            viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::noteViewMode, it))
         },
         exportData = { uri, onComplete ->
             viewModel.sendIntent(SettingsIntent.ExportData(uri, onComplete))
@@ -81,6 +86,7 @@ internal fun SettingsScreen(
     setIsAutoSaveMode: (Boolean) -> Unit,
     setNoteColor: (Long) -> Unit,
     setIsDoubleBackToExitMode: (Boolean) -> Unit,
+    setNoteViewMode: (NoteViewMode) -> Unit,
     exportData: (Uri, () -> Unit) -> Unit,
     importData: (Uri, () -> Unit) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -121,6 +127,16 @@ internal fun SettingsScreen(
                 },
             )
             ListItem(
+                headlineText = { Text(text = "Note View Mode") },
+                trailingContent = {
+                    HDropdown(
+                        items = NoteViewMode.values().associate { it.ordinal to it.name },
+                        selectedKey = userPreferences.noteViewMode.ordinal,
+                        onItemClick = { setNoteViewMode(NoteViewMode.values()[it]) },
+                    )
+                }
+            )
+            ListItem(
                 headlineText = { Text(text = "Note Color") },
                 trailingContent = {
                     Box(
@@ -135,7 +151,7 @@ internal fun SettingsScreen(
                 },
             )
             Divider()
-
+            
             val activityResultLauncherCreateDocument =
                 rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) {
                     if (it != null)
@@ -161,7 +177,7 @@ internal fun SettingsScreen(
                     }
                 },
             )
-
+            
             val activityResultLauncherOpenDocument =
                 rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
                     if (it != null)

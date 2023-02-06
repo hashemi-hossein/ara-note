@@ -3,12 +3,16 @@ package com.ara.aranote.ui.screen.home
 import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
@@ -34,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.ara.aranote.R
+import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.ui.component.AppBarNavButtonType
 import com.ara.aranote.ui.component.AppDrawer
@@ -55,7 +60,7 @@ fun HomeScreen(
     navigateToNoteDetailScreen: (Int, Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
+    
     HomeScreen(
         uiState = uiState,
         navigateToSettingsScreen = navigateToSettingsScreen,
@@ -80,7 +85,7 @@ internal fun HomeScreen(
 ) {
     var lastTimeMillis by remember { mutableStateOf(0L) }
     val listState: LazyListState = rememberLazyListState()
-
+    
     BackHandler(
         onBack = {
             when {
@@ -109,7 +114,7 @@ internal fun HomeScreen(
             }
         }
     )
-
+    
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -161,8 +166,8 @@ internal fun HomeScreen(
             },
         ) { innerPadding ->
             HBody(
+                uiState = uiState,
                 innerPadding = innerPadding,
-                notes = uiState.notes,
                 navigateToNoteDetailScreen = navigateToNoteDetailScreen,
                 noteColor = uiState.userPreferences.noteColor,
                 listState = listState,
@@ -171,10 +176,11 @@ internal fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HBody(
+    uiState: HomeState,
     innerPadding: PaddingValues,
-    notes: List<Note>,
     navigateToNoteDetailScreen: (Int) -> Unit,
     noteColor: Long,
     listState: LazyListState,
@@ -183,13 +189,24 @@ private fun HBody(
         modifier = Modifier
             .padding(innerPadding)
     ) {
-        LazyColumn(state = listState) {
-            items(notes) { item: Note ->
-                NoteCard(
-                    note = item,
-                    noteColor = noteColor,
-                ) {
-                    navigateToNoteDetailScreen(item.id)
+        
+        val noteCard: @Composable (Note) -> Unit = {
+            NoteCard(
+                note = it,
+                noteColor = noteColor,
+            ) {
+                navigateToNoteDetailScreen(it.id)
+            }
+        }
+        when (uiState.userPreferences.noteViewMode) {
+            NoteViewMode.LIST -> {
+                LazyColumn(state = listState) {
+                    items(uiState.notes) { noteCard(it) }
+                }
+            }
+            NoteViewMode.GRID -> {
+                LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2)) {
+                    items(uiState.notes) { noteCard(it) }
                 }
             }
         }

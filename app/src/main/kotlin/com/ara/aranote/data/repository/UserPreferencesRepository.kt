@@ -2,6 +2,7 @@ package com.ara.aranote.data.repository
 
 import android.util.Log
 import androidx.datastore.core.DataStore
+import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.util.TAG
 import kotlinx.coroutines.flow.Flow
@@ -39,6 +40,9 @@ class UserPreferencesRepository
                 }
                 UserPreferences::doesDefaultNotebookExist -> {
                     it.copy(doesDefaultNotebookExist = value as Boolean)
+                }
+                UserPreferences::noteViewMode -> {
+                    it.copy(noteViewMode = value as NoteViewMode)
                 }
                 else -> {
                     error("wrong input")

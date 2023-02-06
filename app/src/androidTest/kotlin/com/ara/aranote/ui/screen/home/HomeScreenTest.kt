@@ -1,6 +1,7 @@
 package com.ara.aranote.ui.screen.home
 
 import android.content.Context
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.semantics.Role
@@ -39,6 +40,7 @@ class HomeScreenTest {
     private var noteIdToNavigate: Int? = null
     private var notebookIdToNavigate: Int? = null
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Before
     fun setUp() {
         uiState = mutableStateOf(
