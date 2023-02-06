@@ -360,7 +360,7 @@ private fun HAppBarActions(
     if (notebooks.isNotEmpty())
         HDropdown(
             items = notebooks.associate { it.id to it.name },
-            selectedIndex = note.notebookId,
+            selectedKey = note.notebookId,
             onItemClick = { onNoteChanged(note.copy(notebookId = it)) },
         )
 }
