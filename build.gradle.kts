@@ -18,7 +18,7 @@ plugins {
 
 versionCatalogUpdate {
     // sort the catalog by key
-    sortByKey.set(true)
+    sortByKey.set(false)
 
     keep {
         // keep versions without any library or plugin reference
