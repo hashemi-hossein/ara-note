@@ -45,6 +45,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,8 +63,6 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
@@ -90,16 +89,13 @@ import timber.log.Timber
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
-@OptIn(
-    ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class,
-    ExperimentalLifecycleComposeApi::class
-)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun NoteDetailScreen(
     viewModel: NoteDetailViewModel,
     navigateUp: () -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsState()
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -269,10 +265,10 @@ private fun HBody(
         if (!isNewNote) {
             Text(
                 text = "Created at " +
-                    HDateTime.formatDateAndTime(
-                        dateTime = note.addedDateTime,
-                        dateTimeFormatPattern = DateTimeFormatPattern.DATE_TIME
-                    ),
+                        HDateTime.formatDateAndTime(
+                            dateTime = note.addedDateTime,
+                            dateTimeFormatPattern = DateTimeFormatPattern.DATE_TIME
+                        ),
                 modifier = Modifier.alpha(0.7f)
             )
             Spacer(Modifier.padding(vertical = 3.dp))
@@ -280,9 +276,9 @@ private fun HBody(
         AnimatedVisibility(note.alarmDateTime != null) {
             Text(
                 text = "Alarm has been set for " +
-                    if (note.alarmDateTime != null)
-                        HDateTime.gerPrettyDateTime(note.alarmDateTime!!)
-                    else "",
+                        if (note.alarmDateTime != null)
+                            HDateTime.gerPrettyDateTime(note.alarmDateTime!!)
+                        else "",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.alpha(0.4f)
             )

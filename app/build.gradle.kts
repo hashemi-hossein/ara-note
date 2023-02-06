@@ -158,7 +158,7 @@ dependencies {
     // Animation
     implementation(libs.androidx.compose.animation)
     // Lifecycle
-    implementation(libs.androidx.lifecycle.runtime.compose)
+//    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)
