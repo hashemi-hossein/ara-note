@@ -19,6 +19,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.util.HDateTime
@@ -77,5 +78,13 @@ fun NoteCard(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun HPreview() {
+    val note = Note(text = "sample text")
+    NoteCard(note = note) {
     }
 }
