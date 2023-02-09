@@ -1,10 +1,11 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
 }
 
 android {
-    namespace = "com.ara.core_test"
+    namespace = "aranote.core.entity"
     compileSdk = libs.versions.compileSdk.get().toInt()
     
     defaultConfig {
@@ -19,14 +20,16 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        buildConfig = false
+    }
 }
 
 dependencies {
     
-    implementation(project(":core:entity"))
     implementation(project(":core:util"))
     
-    implementation(libs.kotlinx.coroutines.test)
-    implementation(libs.junit)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.kotlinx.serialization.json)
 }

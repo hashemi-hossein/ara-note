@@ -113,8 +113,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 
 dependencies {
 
-    implementation(project(":core"))
-
+    implementation(project(":core:entity"))
+    implementation(project(":core:util"))
     testImplementation(project(":core_test"))
     androidTestImplementation(project(":core_test"))
 
