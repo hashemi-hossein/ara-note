@@ -34,8 +34,8 @@ class SettingsViewModel
             is SettingsIntent.WriteUserPreferences<*> ->
                 writeUserPreferencesUseCase(intent.kProperty, intent.value)
 
-            is SettingsIntent.ExportData -> hDataBackup.importData(intent.uri, intent.onComplete)
-            is SettingsIntent.ImportData -> hDataBackup.exportData(intent.uri, intent.onComplete)
+            is SettingsIntent.ExportData -> hDataBackup.exportData(intent.uri, intent.onComplete)
+            is SettingsIntent.ImportData -> hDataBackup.importData(intent.uri, intent.onComplete)
         }
     }
 
