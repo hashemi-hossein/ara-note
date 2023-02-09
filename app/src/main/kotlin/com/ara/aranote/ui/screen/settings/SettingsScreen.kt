@@ -126,7 +126,7 @@ internal fun SettingsScreen(
             Divider()
             
             val activityResultLauncherCreateDocument =
-                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) {
+                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
                     if (it != null)
                         exportData(it) {
                             showSnackbar(
