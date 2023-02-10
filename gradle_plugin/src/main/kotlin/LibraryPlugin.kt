@@ -22,11 +22,11 @@ class LibraryPlugin : Plugin<Project> {
                 }
                 
                 compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_1_8
-                    targetCompatibility = JavaVersion.VERSION_1_8
+                    sourceCompatibility = JavaVersion.VERSION_11
+                    targetCompatibility = JavaVersion.VERSION_11
                 }
                 (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
-                    jvmTarget = JavaVersion.VERSION_1_8.toString()
+                    jvmTarget = JavaVersion.VERSION_11.toString()
                 }
             }
         }
