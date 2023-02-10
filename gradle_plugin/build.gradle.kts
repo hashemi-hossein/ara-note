@@ -13,5 +13,9 @@ gradlePlugin {
             id = "ara.library"
             implementationClass = "LibraryPlugin"
         }
+        register("application") {
+            id = "ara.application"
+            implementationClass = "ApplicationPlugin"
+        }
     }
 }
