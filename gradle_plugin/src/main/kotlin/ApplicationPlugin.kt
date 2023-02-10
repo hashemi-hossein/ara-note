@@ -43,7 +43,7 @@ class ApplicationPlugin : Plugin<Project> {
                 }
                 composeOptions {
                     kotlinCompilerExtensionVersion =
-                        libs.findVersion("compose.compiler").get().preferredVersion
+                        libs.findVersion("compose.compiler").get().toString()
                 }
             }
     

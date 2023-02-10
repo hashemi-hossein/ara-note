@@ -77,12 +77,13 @@ dependencies {
     androidTestImplementation(project(":core_test"))
 
     implementation(libs.kotlin.stdlib)
-    implementation(libs.androidx.appcompat)
     implementation(libs.google.android.material)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.datastore)
 
     // ### Jetpack Compose ####
     implementation(libs.androidx.compose.ui)
@@ -100,7 +101,7 @@ dependencies {
     // Integration with activities
     implementation(libs.androidx.activity.compose)
     // Integration with ViewModels
-    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     // Compose Testing
     testImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.androidx.compose.ui.test)
@@ -121,7 +122,7 @@ dependencies {
 //    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_compose"
 
     // Hilt Dependency Injection
-    kapt(libs.hilt.compiler)
+    kapt(libs.androidx.hilt.compiler)
     // Hilt Testing
     androidTestImplementation(libs.hilt.android.testing)
 
@@ -168,7 +169,6 @@ dependencies {
 
     // Other Libs
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.datastore)
     implementation(libs.timber)
     implementation(libs.karn.notify)
 }
