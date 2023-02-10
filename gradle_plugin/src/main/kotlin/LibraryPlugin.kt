@@ -28,6 +28,9 @@ class LibraryPlugin : Plugin<Project> {
                 (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
                     jvmTarget = JavaVersion.VERSION_11.toString()
                 }
+                buildFeatures {
+                    buildConfig = false
+                }
             }
         }
     }
