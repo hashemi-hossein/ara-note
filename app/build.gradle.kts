@@ -1,6 +1,5 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    id("ara.application")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
@@ -8,12 +7,9 @@ plugins {
 
 android {
     namespace = "com.ara.aranote"
-    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.ara.aranote"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "220.904"
 
@@ -37,14 +33,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-
-    compileOptions {
-        // Flag to enable support for the new language APIs
-        isCoreLibraryDesugaringEnabled = true
-
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
 
     buildFeatures {
@@ -98,9 +86,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
         else false
 
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
-
-        // Set JVM target to 1.8
-        jvmTarget = "1.8"
     }
 }
 
@@ -175,7 +160,6 @@ dependencies {
     androidTestImplementation(libs.androidx.room.testing)
 
     // DateTime
-    coreLibraryDesugaring(libs.core.jdk.desugaring)
     implementation(libs.kotlinx.datetime)
     implementation(libs.prettytime)
 
