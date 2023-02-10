@@ -17,6 +17,8 @@ class ApplicationPlugin : Plugin<Project> {
                 apply(KOTLIN_ANDROID)
             }
             
+            val libs = getVersionCatalogLibs()
+            
             extensions.configure<ApplicationExtension> {
                 compileSdk = 33
                 defaultConfig {
@@ -33,11 +35,22 @@ class ApplicationPlugin : Plugin<Project> {
                 (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
                     jvmTarget = JavaVersion.VERSION_11.toString()
                 }
+    
+                buildFeatures {
+                    compose = true
+                }
+                composeOptions {
+                    kotlinCompilerExtensionVersion =
+                        libs.findVersion("compose.compiler").get().preferredVersion
+                }
             }
     
-            val libs = getVersionCatalogLibs()
             dependencies {
                 add("coreLibraryDesugaring", libs.findLibrary("core.jdk.desugaring").get())
+    
+                val composeBom = platform(libs.findLibrary("androidx.compose.bom").get())
+                add("implementation", composeBom)
+                add("androidTestImplementation", composeBom)
             }
         }
     }

@@ -34,14 +34,6 @@ android {
         }
     }
 
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
     packagingOptions {
         resources {
             // Multiple dependency bring these files in. Exclude them to enable
@@ -104,10 +96,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // ### Jetpack Compose ####
-    val composeBom = platform(libs.androidx.compose.bom)
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
-
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
     // Tooling support (Previews, etc.)
