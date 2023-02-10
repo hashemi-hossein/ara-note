@@ -17,5 +17,9 @@ gradlePlugin {
             id = "ara.application"
             implementationClass = "ApplicationPlugin"
         }
+        register("hilt") {
+            id = "ara.hilt"
+            implementationClass = "HiltPlugin"
+        }
     }
 }
