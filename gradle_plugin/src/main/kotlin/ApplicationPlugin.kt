@@ -34,6 +34,8 @@ class ApplicationPlugin : Plugin<Project> {
                 }
                 (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
                     jvmTarget = JavaVersion.VERSION_11.toString()
+    
+                    freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
                 }
     
                 buildFeatures {

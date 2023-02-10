@@ -69,17 +69,6 @@ tasks.withType<Test>().configureEach {
     systemProperties.put("robolectric.logging", "stdout")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        // Treat all Kotlin warnings as errors (disabled by default)
-        allWarningsAsErrors = if (project.hasProperty("warningsAsErrors"))
-            project.findProperty("warningsAsErrors")!! as Boolean
-        else false
-
-        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
-    }
-}
-
 dependencies {
 
     implementation(project(":core:entity"))
