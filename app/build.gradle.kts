@@ -1,7 +1,6 @@
 plugins {
     id("ara.application")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    id("ara.hilt")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
 }
 
@@ -145,12 +144,9 @@ dependencies {
 //    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_compose"
 
     // Hilt Dependency Injection
-    implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-    kapt(libs.hilt.android.compiler)
     // Hilt Testing
     androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler)
 
     // Room DB
     implementation(libs.androidx.room.runtime)
