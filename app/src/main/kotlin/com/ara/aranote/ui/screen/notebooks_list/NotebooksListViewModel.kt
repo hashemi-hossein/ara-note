@@ -2,9 +2,9 @@ package com.ara.aranote.ui.screen.notebooks_list
 
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
-import com.ara.aranote.domain.usecase.notebooks_list.CreateNotebookUseCase
-import com.ara.aranote.domain.usecase.notebooks_list.DeleteNotebookUseCase
-import com.ara.aranote.domain.usecase.notebooks_list.UpdateNotebookUseCase
+import com.ara.aranote.domain.usecase.notebookslist.CreateNotebookUseCase
+import com.ara.aranote.domain.usecase.notebookslist.DeleteNotebookUseCase
+import com.ara.aranote.domain.usecase.notebookslist.UpdateNotebookUseCase
 import com.ara.aranote.util.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
