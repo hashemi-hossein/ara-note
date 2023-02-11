@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.note_detail
+package com.ara.aranote.ui.screen.notedetail
 
 import android.content.Context
 import android.widget.Toast
@@ -70,7 +70,7 @@ import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.HDropdown
 import com.ara.aranote.ui.component.HSnackbarHost
 import com.ara.aranote.ui.component.showSnackbar
-import com.ara.aranote.ui.screen.note_detail.NoteDetailViewModel.TheOperation
+import com.ara.aranote.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import com.ara.aranote.util.DateTimeFormatPattern
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.TAG

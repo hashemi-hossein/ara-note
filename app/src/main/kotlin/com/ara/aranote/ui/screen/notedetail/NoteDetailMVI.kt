@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.note_detail
+package com.ara.aranote.ui.screen.notedetail
 
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.domain.entity.Note

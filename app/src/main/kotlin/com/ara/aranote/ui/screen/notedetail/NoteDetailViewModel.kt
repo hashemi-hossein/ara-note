@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.note_detail
+package com.ara.aranote.ui.screen.notedetail
 
 import androidx.lifecycle.SavedStateHandle
 import com.ara.aranote.domain.entity.Note

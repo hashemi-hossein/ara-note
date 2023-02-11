@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.note_detail
+package com.ara.aranote.ui.screen.notedetail
 
 import android.content.Context
 import androidx.compose.material.ExperimentalMaterialApi
@@ -21,7 +21,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.ara.aranote.R
 import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.ui.screen.note_detail.NoteDetailViewModel.TheOperation
+import com.ara.aranote.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import com.ara.aranote.util.DateTimeFormatPattern
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.plus
