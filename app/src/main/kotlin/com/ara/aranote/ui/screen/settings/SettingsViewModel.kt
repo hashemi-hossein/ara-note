@@ -1,7 +1,7 @@
 package com.ara.aranote.ui.screen.settings
 
-import com.ara.aranote.domain.usecase.user_preferences.ObserveUserPreferencesUseCase
-import com.ara.aranote.domain.usecase.user_preferences.WriteUserPreferencesUseCase
+import com.ara.aranote.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
+import com.ara.aranote.domain.usecase.userpreferences.WriteUserPreferencesUseCase
 import com.ara.aranote.util.BaseViewModel
 import com.ara.aranote.util.HDataBackup
 import dagger.hilt.android.lifecycle.HiltViewModel

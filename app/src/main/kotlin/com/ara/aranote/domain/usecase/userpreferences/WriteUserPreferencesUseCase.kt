@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.usecase.user_preferences
+package com.ara.aranote.domain.usecase.userpreferences
 
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.data.repository.UserPreferencesRepository
