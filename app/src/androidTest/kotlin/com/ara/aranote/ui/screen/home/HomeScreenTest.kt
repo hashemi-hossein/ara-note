@@ -19,7 +19,7 @@ import androidx.test.filters.SmallTest
 import com.ara.aranote.R
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
-import com.ara.core_test.TestUtil
+import com.ara.test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule

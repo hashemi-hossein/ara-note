@@ -1,4 +1,4 @@
-package com.ara.core_test
+package com.ara.test
 
 import com.ara.aranote.util.CoroutineDispatcherProvider
 import kotlinx.coroutines.Dispatchers

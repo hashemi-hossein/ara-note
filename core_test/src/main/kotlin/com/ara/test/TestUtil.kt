@@ -1,4 +1,4 @@
-package com.ara.core_test
+package com.ara.test
 
 import com.ara.aranote.data.model.NoteModel
 import com.ara.aranote.data.model.NotebookModel
