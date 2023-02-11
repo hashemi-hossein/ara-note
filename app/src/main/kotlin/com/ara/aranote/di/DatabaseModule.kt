@@ -2,9 +2,9 @@ package com.ara.aranote.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ara.aranote.data.local_data_source.NoteDao
-import com.ara.aranote.data.local_data_source.NoteDatabase
-import com.ara.aranote.data.local_data_source.NotebookDao
+import com.ara.aranote.data.localdatasource.NoteDao
+import com.ara.aranote.data.localdatasource.NoteDatabase
+import com.ara.aranote.data.localdatasource.NotebookDao
 import com.ara.aranote.data.model.NoteModel
 import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.data.util.NoteDomainMapper

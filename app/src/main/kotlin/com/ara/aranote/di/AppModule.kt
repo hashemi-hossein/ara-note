@@ -7,8 +7,8 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.data.datastore.UserPreferencesSerializer
-import com.ara.aranote.data.local_data_source.NoteDao
-import com.ara.aranote.data.local_data_source.NotebookDao
+import com.ara.aranote.data.localdatasource.NoteDao
+import com.ara.aranote.data.localdatasource.NotebookDao
 import com.ara.aranote.data.model.NoteModel
 import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.data.repository.NoteRepositoryImpl

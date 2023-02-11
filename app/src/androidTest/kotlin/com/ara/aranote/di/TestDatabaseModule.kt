@@ -2,8 +2,8 @@ package com.ara.aranote.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ara.aranote.data.local_data_source.NoteDao
-import com.ara.aranote.data.local_data_source.NoteDatabase
+import com.ara.aranote.data.localdatasource.NoteDao
+import com.ara.aranote.data.localdatasource.NoteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext

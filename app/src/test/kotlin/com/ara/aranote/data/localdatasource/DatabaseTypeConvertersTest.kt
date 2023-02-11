@@ -1,4 +1,4 @@
-package com.ara.aranote.data.local_data_source
+package com.ara.aranote.data.localdatasource
 
 import com.google.common.truth.Truth.assertThat
 import kotlinx.datetime.LocalDateTime

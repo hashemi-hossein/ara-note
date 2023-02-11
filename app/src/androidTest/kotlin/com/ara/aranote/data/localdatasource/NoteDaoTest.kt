@@ -1,4 +1,4 @@
-package com.ara.aranote.data.local_data_source
+package com.ara.aranote.data.localdatasource
 
 import android.content.Context
 import androidx.room.Room
