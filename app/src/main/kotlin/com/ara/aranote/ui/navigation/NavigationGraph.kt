@@ -14,8 +14,8 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.ara.aranote.ui.screen.home.HomeScreen
 import com.ara.aranote.ui.screen.home.HomeViewModel
-import com.ara.aranote.ui.screen.notebooks_list.NotebooksListScreen
-import com.ara.aranote.ui.screen.notebooks_list.NotebooksListViewModel
+import com.ara.aranote.ui.screen.notebookslist.NotebooksListScreen
+import com.ara.aranote.ui.screen.notebookslist.NotebooksListViewModel
 import com.ara.aranote.ui.screen.notedetail.NoteDetailScreen
 import com.ara.aranote.ui.screen.notedetail.NoteDetailViewModel
 import com.ara.aranote.ui.screen.settings.SettingsScreen

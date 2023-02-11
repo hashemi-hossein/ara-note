@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.notebooks_list
+package com.ara.aranote.ui.screen.notebookslist
 
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.util.MviIntent

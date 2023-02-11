@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.notebooks_list
+package com.ara.aranote.ui.screen.notebookslist
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
