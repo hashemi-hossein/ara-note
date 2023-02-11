@@ -21,5 +21,9 @@ gradlePlugin {
             id = "ara.hilt"
             implementationClass = "HiltPlugin"
         }
+        register("room") {
+            id = "ara.room"
+            implementationClass = "RoomPlugin"
+        }
     }
 }
