@@ -3,11 +3,11 @@ package com.ara.aranote.ui.screen.notedetail
 import androidx.lifecycle.SavedStateHandle
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
-import com.ara.aranote.domain.usecase.note_detail.CreateNoteUseCase
-import com.ara.aranote.domain.usecase.note_detail.DeleteNoteUseCase
-import com.ara.aranote.domain.usecase.note_detail.GetLastNoteIdUseCase
-import com.ara.aranote.domain.usecase.note_detail.GetNoteByIdUseCase
-import com.ara.aranote.domain.usecase.note_detail.UpdateNoteUseCase
+import com.ara.aranote.domain.usecase.notedetail.CreateNoteUseCase
+import com.ara.aranote.domain.usecase.notedetail.DeleteNoteUseCase
+import com.ara.aranote.domain.usecase.notedetail.GetLastNoteIdUseCase
+import com.ara.aranote.domain.usecase.notedetail.GetNoteByIdUseCase
+import com.ara.aranote.domain.usecase.notedetail.UpdateNoteUseCase
 import com.ara.aranote.domain.usecase.user_preferences.ObserveUserPreferencesUseCase
 import com.ara.aranote.util.BaseViewModel
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
