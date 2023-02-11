@@ -16,28 +16,28 @@ class ApplicationPlugin : Plugin<Project> {
                 apply("com.android.application")
                 apply(KOTLIN_ANDROID)
             }
-            
+
             val libs = getVersionCatalogLibs()
-            
+
             extensions.configure<ApplicationExtension> {
                 compileSdk = 33
                 defaultConfig {
                     minSdk = 21
                 }
-                
+
                 compileOptions {
                     // Flag to enable support for the new language APIs
                     isCoreLibraryDesugaringEnabled = true
-                    
+
                     sourceCompatibility = JavaVersion.VERSION_11
                     targetCompatibility = JavaVersion.VERSION_11
                 }
                 (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
                     jvmTarget = JavaVersion.VERSION_11.toString()
-    
+
                     freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
                 }
-    
+
                 buildFeatures {
                     compose = true
                 }
@@ -46,10 +46,10 @@ class ApplicationPlugin : Plugin<Project> {
                         libs.findVersion("compose.compiler").get().toString()
                 }
             }
-    
+
             dependencies {
                 add("coreLibraryDesugaring", libs.findLibrary("core.jdk.desugaring").get())
-    
+
                 val composeBom = platform(libs.findLibrary("androidx.compose.bom").get())
                 add("implementation", composeBom)
                 add("androidTestImplementation", composeBom)

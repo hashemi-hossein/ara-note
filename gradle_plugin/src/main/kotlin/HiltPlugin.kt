@@ -11,7 +11,7 @@ class HiltPlugin : Plugin<Project> {
                 apply("dagger.hilt.android.plugin")
                 apply(KOTLIN_KAPT)
             }
-            
+
             val libs = getVersionCatalogLibs()
             dependencies {
                 add("implementation", libs.findLibrary("hilt.android").get())

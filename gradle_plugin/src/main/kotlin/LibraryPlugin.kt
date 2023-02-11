@@ -14,13 +14,13 @@ class LibraryPlugin : Plugin<Project> {
                 apply("com.android.library")
                 apply(KOTLIN_ANDROID)
             }
-            
+
             extensions.configure<LibraryExtension> {
                 compileSdk = 33
                 defaultConfig {
                     minSdk = 21
                 }
-                
+
                 compileOptions {
                     sourceCompatibility = JavaVersion.VERSION_11
                     targetCompatibility = JavaVersion.VERSION_11

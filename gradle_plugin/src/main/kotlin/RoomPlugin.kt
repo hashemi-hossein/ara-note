@@ -10,7 +10,7 @@ class RoomPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply(KOTLIN_KAPT)
             }
-            
+
             val libs = getVersionCatalogLibs()
             dependencies {
                 add("implementation", libs.findLibrary("androidx.room.runtime").get())
