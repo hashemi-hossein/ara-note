@@ -26,7 +26,7 @@ class NotebooksListViewModel
 
     override suspend fun handleIntent(
         intent: NotebooksListIntent,
-        state: NotebooksListState
+        state: NotebooksListState,
     ) {
         when (intent) {
             NotebooksListIntent.ObserveNotebooks -> {
@@ -54,7 +54,7 @@ internal class NotebooksListReducer :
 
     override fun reduce(
         state: NotebooksListState,
-        intent: NotebooksListIntent
+        intent: NotebooksListIntent,
     ): NotebooksListState = when (intent) {
         is NotebooksListIntent.ObserveNotebooks -> state
         is NotebooksListIntent.ShowNotebooks -> state.copy(notebooks = intent.notebooks)

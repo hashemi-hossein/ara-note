@@ -69,7 +69,7 @@ class NoteRepositoryImplTest {
         // arrange
         every { noteDaoMock.observe(any()) } returns flowOf(
             TestUtil.tNoteModelList,
-            TestUtil.tNoteModelList
+            TestUtil.tNoteModelList,
         )
         val reorderedList = TestUtil.tNoteEntityList.sortedByDescending { it.addedDateTime }
 

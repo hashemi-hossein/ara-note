@@ -23,28 +23,30 @@ fun hManageAlarm(
             Intent(context, AlarmReceiver::class.java).apply {
                 putExtra(
                     "requestCode",
-                    noteId
+                    noteId,
                 )
             },
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-            else
+            } else {
                 PendingIntent.FLAG_ONE_SHOT
+            },
         )
 
         if (doesCreate) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
                     triggerAtMillis,
                     pendingIntent,
                 )
-            else
+            } else {
                 alarmManager.setExact(
                     AlarmManager.RTC_WAKEUP,
                     triggerAtMillis,
                     pendingIntent,
                 )
+            }
             Timber.tag(TAG).i("Alarm set successfully -- code=$noteId")
         } else {
             alarmManager.cancel(pendingIntent)
@@ -56,7 +58,7 @@ fun hManageAlarm(
         Toast.makeText(
             context,
             "error in ${if (doesCreate) "setting" else "deleting"} alarm",
-            Toast.LENGTH_LONG
+            Toast.LENGTH_LONG,
         ).show()
         Timber.tag(TAG).e(e)
         return false

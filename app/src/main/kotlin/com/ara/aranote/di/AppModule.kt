@@ -54,7 +54,7 @@ object AppModule {
     @Provides
     fun provideNotebookRepository(
         notebookDao: NotebookDao,
-        notebookDomainMapper: Mapper<NotebookModel, Notebook>
+        notebookDomainMapper: Mapper<NotebookModel, Notebook>,
     ): NotebookRepository = NotebookRepositoryImpl(
         notebookDao = notebookDao,
         notebookDomainMapper = notebookDomainMapper,
@@ -69,9 +69,9 @@ object AppModule {
     ): DataStore<UserPreferences> = DataStoreFactory.create(
         serializer = userPreferencesSerializer,
         corruptionHandler = ReplaceFileCorruptionHandler(
-            produceNewData = { UserPreferences() }
+            produceNewData = { UserPreferences() },
         ),
         scope = CoroutineScope(dispatcherProvider.io + SupervisorJob()),
-        produceFile = { context.dataStoreFile(USER_PREFERENCES_FILE_NAME) }
+        produceFile = { context.dataStoreFile(USER_PREFERENCES_FILE_NAME) },
     )
 }

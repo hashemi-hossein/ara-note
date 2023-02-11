@@ -39,7 +39,7 @@ class NotebookRepositoryImplTest {
         // arrange
         every { notebookDaoMock.observe() } returns flowOf(
             TestUtil.tNotebookModelList,
-            TestUtil.tNotebookModelList
+            TestUtil.tNotebookModelList,
         )
 
         // act

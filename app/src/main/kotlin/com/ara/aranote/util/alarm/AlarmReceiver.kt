@@ -55,10 +55,11 @@ class AlarmReceiver : BroadcastReceiver() {
                                     0,
                                     Intent(context, MainActivity::class.java)
                                         .putExtra("requestCode", requestCode),
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                         PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-                                    else
+                                    } else {
                                         PendingIntent.FLAG_ONE_SHOT
+                                    },
                                 )
                             }
                             .show()

@@ -43,7 +43,7 @@ class BootReceiver : BroadcastReceiver() {
                                 doesCreate = true,
                                 noteId = note.id,
                                 triggerAtMillis = note.alarmDateTime?.millis()
-                                    ?: System.currentTimeMillis()
+                                    ?: System.currentTimeMillis(),
                             )
                         }
                     }

@@ -53,28 +53,31 @@ class NoteRepositoryImpl(
 
     override suspend fun getById(id: Int): Result<Note> {
         return noteDao.getById(id).let {
-            if (it != null)
+            if (it != null) {
                 Result.Success(noteDomainMapper.map(it))
-            else
+            } else {
                 Result.Error()
+            }
         }
     }
 
     override suspend fun getLastId(): Result<Int> {
         return noteDao.getLastId().let {
-            if (it != null)
+            if (it != null) {
                 Result.Success(it)
-            else
+            } else {
                 Result.Error()
+            }
         }
     }
 
     override suspend fun getAllNotesWithAlarm(): Result<List<Note>> {
         return noteDao.getAllNotesWithAlarm().let {
-            if (it != null)
+            if (it != null) {
                 Result.Success(noteDomainMapper.mapList(it))
-            else
+            } else {
                 Result.Error()
+            }
         }
     }
 }

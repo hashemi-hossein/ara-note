@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [DatabaseModule::class]
+    replaces = [DatabaseModule::class],
 )
 object TestDatabaseModule {
 

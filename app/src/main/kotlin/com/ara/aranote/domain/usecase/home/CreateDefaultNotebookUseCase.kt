@@ -18,8 +18,8 @@ class CreateDefaultNotebookUseCase @Inject constructor(
             notebookRepository.insert(
                 Notebook(
                     id = DEFAULT_NOTEBOOK_ID,
-                    name = DEFAULT_NOTEBOOK_NAME
-                )
+                    name = DEFAULT_NOTEBOOK_NAME,
+                ),
             )
         }
     }

@@ -17,8 +17,11 @@ class FakeNotebookRepository : NotebookRepository {
     }
 
     override suspend fun insert(notebook: Notebook): Result<Int> {
-        val r = if (notebooks.put(notebook.id, notebook) == null) notebook.id
-        else return Result.Error()
+        val r = if (notebooks.put(notebook.id, notebook) == null) {
+            notebook.id
+        } else {
+            return Result.Error()
+        }
         notebooksFlow.update { notebooks.values.toList() }
         return Result.Success(r)
     }

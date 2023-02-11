@@ -38,12 +38,15 @@ fun HDropdown(
             Text(
                 text = items.getValue(selectedKey),
                 softWrap = false,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             Icon(
                 imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                contentDescription = if (expanded) stringResource(R.string.cd_close_dropdown)
-                else stringResource(R.string.cd_open_dropdown),
+                contentDescription = if (expanded) {
+                    stringResource(R.string.cd_close_dropdown)
+                } else {
+                    stringResource(R.string.cd_open_dropdown)
+                },
             )
         }
         DropdownMenu(

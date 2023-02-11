@@ -14,7 +14,7 @@ class HomeViewModel
     private val createDefaultNotebookUseCase: CreateDefaultNotebookUseCase,
     private val observeNotebooksUseCase: ObserveNotebooksUseCase,
     private val observeNotesUseCase: ObserveNotesUseCase,
-    private val observeUserPreferencesUseCase: ObserveUserPreferencesUseCase
+    private val observeUserPreferencesUseCase: ObserveUserPreferencesUseCase,
 ) : BaseViewModel<HomeState, HomeIntent, HomeSingleEvent>() {
 
     override fun initialState(): HomeState = HomeState()

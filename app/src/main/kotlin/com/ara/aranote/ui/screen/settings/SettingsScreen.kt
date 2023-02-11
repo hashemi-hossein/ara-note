@@ -41,7 +41,7 @@ fun SettingsScreen(
     navigateUp: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
     SettingsScreen(
         navigateUp = navigateUp,
         userPreferences = uiState.userPreferences,
@@ -87,7 +87,7 @@ internal fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
         ) {
             ListItem(
                 headlineText = { Text(text = "Dark Theme") },
@@ -109,7 +109,7 @@ internal fun SettingsScreen(
                 trailingContent = {
                     Switch(
                         checked = userPreferences.isDoubleBackToExitMode,
-                        onCheckedChange = setIsDoubleBackToExitMode
+                        onCheckedChange = setIsDoubleBackToExitMode,
                     )
                 },
             )
@@ -121,21 +121,22 @@ internal fun SettingsScreen(
                         selectedKey = userPreferences.noteViewMode.ordinal,
                         onItemClick = { setNoteViewMode(NoteViewMode.values()[it]) },
                     )
-                }
+                },
             )
             Divider()
-            
+
             val activityResultLauncherCreateDocument =
                 rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
-                    if (it != null)
+                    if (it != null) {
                         exportData(it) {
                             showSnackbar(
                                 scope = scope,
                                 snackbarHostState = snackbarHostState,
                                 message = "Operation was done",
-                                actionLabel = "OK"
+                                actionLabel = "OK",
                             )
                         }
+                    }
                 }
             ListItem(
                 headlineText = { Text(text = "Export Data") },
@@ -145,23 +146,24 @@ internal fun SettingsScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Default.OpenInNewOff,
-                            contentDescription = "Export Data"
+                            contentDescription = "Export Data",
                         )
                     }
                 },
             )
-            
+
             val activityResultLauncherOpenDocument =
                 rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
-                    if (it != null)
+                    if (it != null) {
                         importData(it) {
                             showSnackbar(
                                 scope = scope,
                                 snackbarHostState = snackbarHostState,
                                 message = "Operation was done",
-                                actionLabel = "OK"
+                                actionLabel = "OK",
                             )
                         }
+                    }
                 }
             ListItem(
                 headlineText = { Text(text = "Import Data") },
@@ -171,7 +173,7 @@ internal fun SettingsScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Default.ExitToApp,
-                            contentDescription = "Import Data"
+                            contentDescription = "Import Data",
                         )
                     }
                 },

@@ -51,8 +51,8 @@ class NoteDetailScreenTest {
         uiState = mutableStateOf(
             NoteDetailState(
                 note = Note(id = 1),
-                notebooks = TestUtil.tNotebookEntityList
-            )
+                notebooks = TestUtil.tNotebookEntityList,
+            ),
         )
         backPressResult = null
         composeTestRule.setContent {
@@ -86,7 +86,7 @@ class NoteDetailScreenTest {
         for (item in TestUtil.tNotebookEntityList)
             composeTestRule.onNode(
                 !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button) and
-                    hasText(item.name)
+                    hasText(item.name),
             ).assertIsDisplayed()
     }
 
@@ -102,7 +102,7 @@ class NoteDetailScreenTest {
         for (item in TestUtil.tNotebookEntityList)
             composeTestRule.onNode(
                 !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button) and
-                    hasText(item.name)
+                    hasText(item.name),
             ).assertDoesNotExist()
         assertThat(uiState.value.note.notebookId).isEqualTo(TestUtil.tNotebookEntityList[1].id)
     }
@@ -154,14 +154,14 @@ class NoteDetailScreenTest {
         composeTestRule.onNodeWithText(
             HDateTime.formatDateAndTime(
                 newAlarmDateTime,
-                DateTimeFormatPattern.DATE
-            )
+                DateTimeFormatPattern.DATE,
+            ),
         ).assertIsDisplayed()
         composeTestRule.onNodeWithText(
             HDateTime.formatDateAndTime(
                 newAlarmDateTime,
-                DateTimeFormatPattern.TIME
-            )
+                DateTimeFormatPattern.TIME,
+            ),
         ).assertIsDisplayed()
 
         // act
@@ -172,14 +172,14 @@ class NoteDetailScreenTest {
         composeTestRule.onNodeWithText(
             HDateTime.formatDateAndTime(
                 HDateTime.getCurrentDateTime(),
-                DateTimeFormatPattern.DATE
-            )
+                DateTimeFormatPattern.DATE,
+            ),
         ).assertIsDisplayed()
         composeTestRule.onNodeWithText(
             HDateTime.formatDateAndTime(
                 HDateTime.getCurrentDateTime(),
-                DateTimeFormatPattern.TIME
-            )
+                DateTimeFormatPattern.TIME,
+            ),
         ).assertIsDisplayed()
     }
 

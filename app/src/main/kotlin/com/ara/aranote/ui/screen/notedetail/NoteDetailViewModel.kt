@@ -84,17 +84,19 @@ class NoteDetailViewModel
                 val result =
                     if (state.isNewNote) {
 //              if(text.isNotBlank())
-                        if (!intent.doesDelete && (state.note.text.isNotEmpty() || state.note.alarmDateTime != null))
+                        if (!intent.doesDelete && (state.note.text.isNotEmpty() || state.note.alarmDateTime != null)) {
                             createNoteUseCase(state.note)
-                        else
+                        } else {
                             true
+                        }
                     } else {
                         if (!intent.doesDelete) {
                             sendIntent(NoteDetailIntent.UpdateNote)
                             true
                         } else {
-                            if (state.note.alarmDateTime != null)
+                            if (state.note.alarmDateTime != null) {
                                 triggerSingleEvent(NoteDetailSingleEvent.DisableAlarm(state.note.id))
+                            }
 
                             deleteNoteUseCase(state.note)
                         }

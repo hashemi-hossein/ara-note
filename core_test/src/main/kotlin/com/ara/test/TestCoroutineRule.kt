@@ -13,7 +13,7 @@ import org.junit.runner.Description
 
 @ExperimentalCoroutinesApi
 class TestDispatcherProvider(
-    testDispatcher: TestDispatcher
+    testDispatcher: TestDispatcher,
 ) : CoroutineDispatcherProvider() {
     override val main = testDispatcher
     override val default = testDispatcher
@@ -24,7 +24,7 @@ class TestDispatcherProvider(
 @ExperimentalCoroutinesApi
 class TestCoroutineRule(
     private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher(),
-    val testDispatcherProvider: TestDispatcherProvider = TestDispatcherProvider(testDispatcher)
+    val testDispatcherProvider: TestDispatcherProvider = TestDispatcherProvider(testDispatcher),
 ) : TestWatcher() {
 
     override fun starting(description: Description?) {

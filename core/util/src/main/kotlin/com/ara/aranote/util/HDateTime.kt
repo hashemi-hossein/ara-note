@@ -31,7 +31,7 @@ object HDateTime {
 
     fun formatDateAndTime(dateTime: LocalDateTime, dateTimeFormatPattern: DateTimeFormatPattern): String =
         dateTime.toJavaLocalDateTime().format(
-            DateTimeFormatter.ofPattern(dateTimeFormatPattern.pattern)
+            DateTimeFormatter.ofPattern(dateTimeFormatPattern.pattern),
         )
 }
 

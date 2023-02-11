@@ -48,32 +48,35 @@ fun AppDrawer(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp)
-                    .padding(top = 15.dp)
+                    .padding(top = 15.dp),
             ) {
                 Text(
                     text = stringResource(R.string.notebooks),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 IconButton(onClick = { navigateToNotebooksScreen() }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.cd_goto_notebooks_screen)
+                        contentDescription = stringResource(R.string.cd_goto_notebooks_screen),
                     )
                 }
             }
             LazyColumn(
                 modifier = Modifier
                     .selectableGroup()
-                    .weight(1f)
+                    .weight(1f),
             ) {
                 items(notebooks) { item: Notebook ->
                     Surface(
-                        color = if (item.id == currentNotebookId)
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else MaterialTheme.colorScheme.surface,
+                        color = if (item.id == currentNotebookId) {
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+                        } else {
+                            MaterialTheme.colorScheme.surface
+                        },
                         modifier = Modifier
                             .selectable(
                                 selected = item.id == currentNotebookId,
-                                role = Role.RadioButton
+                                role = Role.RadioButton,
                             ) { setCurrentNotebookId(item.id) },
                     ) {
                         Text(
@@ -82,7 +85,7 @@ fun AppDrawer(
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(15.dp)
+                                .padding(15.dp),
                         )
                     }
                 }
@@ -98,7 +101,7 @@ fun AppDrawer(
                 trailingContent = {
                     Icon(imageVector = Icons.Default.Settings, contentDescription = null)
                 },
-                modifier = Modifier.clickable { navigateToSettingsScreen() }
+                modifier = Modifier.clickable { navigateToSettingsScreen() },
             )
         }
     }

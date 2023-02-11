@@ -25,8 +25,11 @@ enum class AppBarNavButtonType {
 fun HAppBar(
     title: String = "",
     appBarNavButtonType: AppBarNavButtonType = AppBarNavButtonType.BACK,
-    icon: ImageVector = if (appBarNavButtonType == AppBarNavButtonType.BACK) Icons.Filled.ArrowBack
-    else Icons.Filled.Menu,
+    icon: ImageVector = if (appBarNavButtonType == AppBarNavButtonType.BACK) {
+        Icons.Filled.ArrowBack
+    } else {
+        Icons.Filled.Menu
+    },
     actions: @Composable RowScope.() -> Unit = {},
     onNavButtonClick: () -> Unit,
 ) {
@@ -45,8 +48,11 @@ fun HAppBar(
                 Icon(
                     imageVector = icon,
                     contentDescription =
-                    if (appBarNavButtonType == AppBarNavButtonType.BACK) stringResource(R.string.cd_happbar_back)
-                    else stringResource(R.string.cd_happbar_menu),
+                    if (appBarNavButtonType == AppBarNavButtonType.BACK) {
+                        stringResource(R.string.cd_happbar_back)
+                    } else {
+                        stringResource(R.string.cd_happbar_menu)
+                    },
                 )
             }
         },

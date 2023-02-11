@@ -118,7 +118,7 @@ fun NoteDetailScreen(
                         showSnackbar(
                             scope = scope,
                             snackbarHostState = snackbarHostState,
-                            actionLabel = context.getString(R.string.discard)
+                            actionLabel = context.getString(R.string.discard),
                         ) {
                             navigateUp()
                         }
@@ -130,7 +130,7 @@ fun NoteDetailScreen(
                             showSnackbar(
                                 scope = scope,
                                 snackbarHostState = snackbarHostState,
-                                actionLabel = context.getString(R.string.delete)
+                                actionLabel = context.getString(R.string.delete),
                             ) {
                                 deleteOrSaveOperation()
                             }
@@ -164,8 +164,9 @@ fun NoteDetailScreen(
 }
 
 @OptIn(
-    ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class,
-    ExperimentalMaterial3Api::class
+    ExperimentalMaterialApi::class,
+    ExperimentalComposeUiApi::class,
+    ExperimentalMaterial3Api::class,
 )
 @Composable
 internal fun NoteDetailScreen(
@@ -178,15 +179,16 @@ internal fun NoteDetailScreen(
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
     modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
-        ModalBottomSheetValue.Hidden
+        ModalBottomSheetValue.Hidden,
     ),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
     BackHandler(onBack = {
-        if (modalBottomSheetState.isVisible)
+        if (modalBottomSheetState.isVisible) {
             scope.launch { modalBottomSheetState.hide() }
-        else
+        } else {
             onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD)
+        }
     })
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
@@ -199,7 +201,7 @@ internal fun NoteDetailScreen(
                 context = context,
                 modalBottomSheetState = modalBottomSheetState,
             )
-        }
+        },
     ) {
         Scaffold(
             snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
@@ -227,15 +229,16 @@ internal fun NoteDetailScreen(
                 )
             },
             floatingActionButton = {
-                if (!isAutoNoteSaving)
+                if (!isAutoNoteSaving) {
                     FloatingActionButton(onClick = {
                         onBackPressed(TheOperation.SAVE)
                     }) {
                         Icon(
                             imageVector = Icons.Default.Save,
-                            contentDescription = stringResource(R.string.cd_save)
+                            contentDescription = stringResource(R.string.cd_save),
                         )
                     }
+                }
             },
         ) { innerPadding ->
             HBody(
@@ -259,28 +262,28 @@ private fun HBody(
     Column(
         modifier = Modifier
             .padding(innerPadding)
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = 10.dp),
     ) {
         Divider(Modifier.padding(vertical = 3.dp))
         if (!isNewNote) {
             Text(
                 text = "Created at " +
-                        HDateTime.formatDateAndTime(
-                            dateTime = note.addedDateTime,
-                            dateTimeFormatPattern = DateTimeFormatPattern.DATE_TIME
-                        ),
-                modifier = Modifier.alpha(0.7f)
+                    HDateTime.formatDateAndTime(
+                        dateTime = note.addedDateTime,
+                        dateTimeFormatPattern = DateTimeFormatPattern.DATE_TIME,
+                    ),
+                modifier = Modifier.alpha(0.7f),
             )
             Spacer(Modifier.padding(vertical = 3.dp))
         }
         AnimatedVisibility(note.alarmDateTime != null) {
             Text(
                 text = "Alarm has been set for " +
-                        if (note.alarmDateTime != null)
-                            HDateTime.gerPrettyDateTime(note.alarmDateTime!!)
-                        else "",
+                    note.alarmDateTime?.let {
+                        HDateTime.gerPrettyDateTime(it)
+                    },
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.alpha(0.4f)
+                modifier = Modifier.alpha(0.4f),
             )
         }
 
@@ -301,8 +304,9 @@ private fun HBody(
         )
 
         LaunchedEffect(true) {
-            if (isNewNote)
+            if (isNewNote) {
                 focusRequester.requestFocus()
+            }
         }
     }
 }
@@ -328,8 +332,11 @@ private fun HAppBarActions(
     }) {
         Icon(
             imageVector = Icons.Default.Delete,
-            contentDescription = if (!isNewNote) stringResource(R.string.cd_delete)
-            else stringResource(R.string.cd_discard)
+            contentDescription = if (!isNewNote) {
+                stringResource(R.string.cd_delete)
+            } else {
+                stringResource(R.string.cd_discard)
+            },
         )
     }
     IconButton(onClick = {
@@ -338,8 +345,11 @@ private fun HAppBarActions(
     }) {
         Icon(
             imageVector = if (doesHasAlarm) Icons.Default.Alarm else Icons.Default.AlarmAdd,
-            contentDescription = if (doesHasAlarm) stringResource(R.string.cd_edit_note_alarm)
-            else stringResource(R.string.cd_add_alarm)
+            contentDescription = if (doesHasAlarm) {
+                stringResource(R.string.cd_edit_note_alarm)
+            } else {
+                stringResource(R.string.cd_add_alarm)
+            },
         )
     }
     AnimatedVisibility(doesHasAlarm) {
@@ -353,16 +363,17 @@ private fun HAppBarActions(
         }) {
             Icon(
                 imageVector = Icons.Default.AlarmOff,
-                contentDescription = stringResource(R.string.cd_delete_alarm)
+                contentDescription = stringResource(R.string.cd_delete_alarm),
             )
         }
     }
-    if (notebooks.isNotEmpty())
+    if (notebooks.isNotEmpty()) {
         HDropdown(
             items = notebooks.associate { it.id to it.name },
             selectedKey = note.notebookId,
             onItemClick = { onNoteChanged(note.copy(notebookId = it)) },
         )
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -383,7 +394,7 @@ private fun HBottomSheet(
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = "Date: ", style = MaterialTheme.typography.bodyLarge)
@@ -399,7 +410,7 @@ private fun HBottomSheet(
                                     dateTime = dateTime.change(
                                         year = result.year,
                                         month = result.monthNumber,
-                                        day = result.dayOfMonth
+                                        day = result.dayOfMonth,
                                     )
                                 }
                             }
@@ -408,7 +419,7 @@ private fun HBottomSheet(
                     Text(
                         text = HDateTime.formatDateAndTime(
                             dateTime = dateTime,
-                            dateTimeFormatPattern = DateTimeFormatPattern.DATE
+                            dateTimeFormatPattern = DateTimeFormatPattern.DATE,
                         ),
                         style = MaterialTheme.typography.bodyLarge,
                     )
@@ -428,7 +439,7 @@ private fun HBottomSheet(
                                     hour = this.hour,
                                     minute = this.minute,
                                     second = 0,
-                                    nanosecond = 0
+                                    nanosecond = 0,
                                 )
                             }
                         }.show((context as AppCompatActivity).supportFragmentManager, "time_picker")
@@ -436,7 +447,7 @@ private fun HBottomSheet(
                     Text(
                         text = HDateTime.formatDateAndTime(
                             dateTime = dateTime,
-                            dateTimeFormatPattern = DateTimeFormatPattern.TIME
+                            dateTimeFormatPattern = DateTimeFormatPattern.TIME,
                         ),
                         style = MaterialTheme.typography.bodyLarge,
                     )
@@ -446,7 +457,7 @@ private fun HBottomSheet(
         Spacer(modifier = Modifier.height(15.dp))
         LazyRow(
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             item {
                 Button(onClick = {
@@ -483,14 +494,14 @@ private fun HBottomSheet(
         Spacer(modifier = Modifier.height(20.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             OutlinedButton(onClick = {
                 dateTime = HDateTime.getCurrentDateTime()
             }) {
                 Icon(
                     imageVector = Icons.Default.Undo,
-                    contentDescription = stringResource(R.string.cd_reset_date_and_time)
+                    contentDescription = stringResource(R.string.cd_reset_date_and_time),
                 )
             }
             OutlinedButton(
@@ -508,15 +519,15 @@ private fun HBottomSheet(
                             scope = scope,
                             snackbarHostState = snackbarHostState,
                             message = context.getString(R.string.invalid_date_and_time),
-                            actionLabel = context.getString(R.string.ok)
+                            actionLabel = context.getString(R.string.ok),
                         )
                     }
                     scope.launch { modalBottomSheetState.hide() }
-                }
+                },
             ) {
                 Icon(
                     imageVector = Icons.Default.Done,
-                    contentDescription = stringResource(R.string.cd_set_alarm)
+                    contentDescription = stringResource(R.string.cd_set_alarm),
                 )
             }
         }

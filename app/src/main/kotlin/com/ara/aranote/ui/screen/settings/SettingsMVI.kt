@@ -17,7 +17,7 @@ sealed interface SettingsIntent : MviIntent {
 
     data class WriteUserPreferences<T>(
         val kProperty: KProperty1<UserPreferences, T>,
-        val value: T
+        val value: T,
     ) : SettingsIntent
 
     data class ImportData(val uri: Uri, val onComplete: () -> Unit) : SettingsIntent

@@ -64,9 +64,8 @@ fun NavigationGraph(
                     initialOffsetX = { -boxWith },
                     animationSpec = tween(ANIMATION_DURATION),
                 ).plus(fadeIn(animationSpec = tween(ANIMATION_DURATION)))
-            }
+            },
         ) {
-
             composable(route = NavScreen.Home.route) {
                 val viewModel = hiltViewModel<HomeViewModel>()
                 HomeScreen(
@@ -75,7 +74,7 @@ fun NavigationGraph(
                         navController.navigate(NavScreen.NoteDetail(noteId, notebookId).route)
                     },
                     navigateToSettingsScreen = { navController.navigate(NavScreen.Settings.route) },
-                    navigateToNotebooksScreen = { navController.navigate(NavScreen.NotebooksList.route) }
+                    navigateToNotebooksScreen = { navController.navigate(NavScreen.NotebooksList.route) },
                 )
             }
 

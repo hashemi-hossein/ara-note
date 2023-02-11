@@ -29,7 +29,7 @@ object DatabaseModule {
         Room.databaseBuilder(
             context,
             NoteDatabase::class.java,
-            NoteDatabase.DATABASE_NAME
+            NoteDatabase.DATABASE_NAME,
         ).build()
 
     @Singleton

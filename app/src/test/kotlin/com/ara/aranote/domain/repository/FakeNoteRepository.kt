@@ -21,8 +21,9 @@ class FakeNoteRepository : NoteRepository {
         return if (r != null) {
             notesFlow.update { notes.values.toList() }
             Result.Success(r)
-        } else
+        } else {
             Result.Error()
+        }
     }
 
     override suspend fun delete(note: Note): Result<Boolean> {
@@ -30,8 +31,9 @@ class FakeNoteRepository : NoteRepository {
         return if (r) {
             notesFlow.update { notes.values.toList() }
             Result.Success(r)
-        } else
+        } else {
             Result.Error()
+        }
     }
 
     override suspend fun update(note: Note): Result<Boolean> {
@@ -39,8 +41,9 @@ class FakeNoteRepository : NoteRepository {
         return if (r) {
             notesFlow.update { notes.values.toList() }
             Result.Success(r)
-        } else
+        } else {
             Result.Error()
+        }
     }
 
     override suspend fun getById(id: Int): Result<Note> {
@@ -48,8 +51,11 @@ class FakeNoteRepository : NoteRepository {
     }
 
     override suspend fun getLastId(): Result<Int> {
-        return if (notes.keys.isEmpty()) Result.Error()
-        else Result.Success(notes.keys.last())
+        return if (notes.keys.isEmpty()) {
+            Result.Error()
+        } else {
+            Result.Success(notes.keys.last())
+        }
     }
 
     override suspend fun getAllNotesWithAlarm(): Result<List<Note>> {

@@ -47,8 +47,8 @@ class HomeScreenTest {
             HomeState(
                 notes = TestUtil.tNoteEntityList,
                 notebooks = TestUtil.tNotebookEntityList,
-                currentNotebookId = TestUtil.tNotebookEntity.id
-            )
+                currentNotebookId = TestUtil.tNotebookEntity.id,
+            ),
         )
         val filterNotes = {
             uiState.value =
@@ -81,12 +81,12 @@ class HomeScreenTest {
         // notebook name in the Appbar
         composeTestRule.onNode(
             !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
-                hasText(TestUtil.tNotebookEntity.name)
+                hasText(TestUtil.tNotebookEntity.name),
         ).assertIsDisplayed()
         // notebook name in the drawer
         composeTestRule.onNode(
             SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
-                hasText(TestUtil.tNotebookEntity.name)
+                hasText(TestUtil.tNotebookEntity.name),
         ).assertExists()
         composeTestRule.onNodeWithText(HDateTime.gerPrettyDateTime(TestUtil.tNoteEntity.addedDateTime))
             .assertExists()

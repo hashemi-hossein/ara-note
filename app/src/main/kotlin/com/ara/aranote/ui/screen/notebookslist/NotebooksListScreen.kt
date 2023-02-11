@@ -83,7 +83,7 @@ fun NotebooksListScreen(
                 IconButton(onClick = { setDialogType(DialogType.ADD_NOTEBOOK) }) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.cd_add_notebook)
+                        contentDescription = stringResource(R.string.cd_add_notebook),
                     )
                 }
             })
@@ -104,16 +104,16 @@ fun NotebooksListScreen(
                                 Icon(
                                     imageVector = Icons.Default.Edit,
                                     contentDescription = stringResource(R.string.edit_notebook),
-                                    modifier = Modifier.alpha(0.3f)
+                                    modifier = Modifier.alpha(0.3f),
                                 )
                             }
-                            if (notebook.id != DEFAULT_NOTEBOOK_ID)
+                            if (notebook.id != DEFAULT_NOTEBOOK_ID) {
                                 IconButton(onClick = {
                                     showSnackbar(
                                         scope,
                                         snackbarHostState,
                                         message = "Do you confirm deleting ${notebook.name} notebook and all its notes?",
-                                        actionLabel = context.getString(R.string.delete)
+                                        actionLabel = context.getString(R.string.delete),
                                     ) {
                                         deleteNotebook(notebook)
                                     }
@@ -121,9 +121,10 @@ fun NotebooksListScreen(
                                     Icon(
                                         imageVector = Icons.Default.Delete,
                                         contentDescription = stringResource(R.string.cd_delete_notebook),
-                                        modifier = Modifier.alpha(0.3f)
+                                        modifier = Modifier.alpha(0.3f),
                                     )
                                 }
+                            }
                         }
                     },
                 )
@@ -155,8 +156,11 @@ private fun HDialog(
     if (dialogType != DialogType.HIDE) {
         var text by rememberSaveable {
             mutableStateOf(
-                if (dialogType == DialogType.ADD_NOTEBOOK || selectedNotebook == null) ""
-                else selectedNotebook.name
+                if (dialogType == DialogType.ADD_NOTEBOOK || selectedNotebook == null) {
+                    ""
+                } else {
+                    selectedNotebook.name
+                },
             )
         }
         AlertDialog(
@@ -164,20 +168,24 @@ private fun HDialog(
             confirmButton = {
                 IconButton(onClick = {
                     setDialogType(DialogType.HIDE)
-                    if (dialogType == DialogType.ADD_NOTEBOOK) addNotebook(text)
-                    else if (selectedNotebook != null) modifyNotebook(selectedNotebook.copy(name = text))
+                    if (dialogType == DialogType.ADD_NOTEBOOK) {
+                        addNotebook(text)
+                    } else if (selectedNotebook != null) modifyNotebook(selectedNotebook.copy(name = text))
                 }) {
                     Icon(
                         imageVector = Icons.Default.Done,
-                        contentDescription = stringResource(R.string.cd_dialog_confirm)
+                        contentDescription = stringResource(R.string.cd_dialog_confirm),
                     )
                 }
             },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text(
-                        text = if (dialogType == DialogType.ADD_NOTEBOOK) stringResource(R.string.add_notebook)
-                        else stringResource(R.string.edit_notebook),
+                        text = if (dialogType == DialogType.ADD_NOTEBOOK) {
+                            stringResource(R.string.add_notebook)
+                        } else {
+                            stringResource(R.string.edit_notebook)
+                        },
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                     )

@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class UserPreferencesSerializer @Inject constructor(
-    private val dispatcherProvider: CoroutineDispatcherProvider
+    private val dispatcherProvider: CoroutineDispatcherProvider,
 ) : Serializer<UserPreferences> {
 
     override val defaultValue: UserPreferences
@@ -24,7 +24,7 @@ class UserPreferencesSerializer @Inject constructor(
             try {
                 Json.decodeFromString(
                     deserializer = UserPreferences.serializer(),
-                    string = input.readBytes().decodeToString()
+                    string = input.readBytes().decodeToString(),
                 )
             } catch (e: SerializationException) {
                 e.printStackTrace()
@@ -39,8 +39,8 @@ class UserPreferencesSerializer @Inject constructor(
             output.write(
                 Json.encodeToString(
                     serializer = UserPreferences.serializer(),
-                    value = t
-                ).encodeToByteArray()
+                    value = t,
+                ).encodeToByteArray(),
             )
         }
     }

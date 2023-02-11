@@ -60,7 +60,7 @@ fun HomeScreen(
     navigateToNoteDetailScreen: (Int, Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
     HomeScreen(
         uiState = uiState,
         navigateToSettingsScreen = navigateToSettingsScreen,
@@ -85,7 +85,7 @@ internal fun HomeScreen(
 ) {
     var lastTimeMillis by remember { mutableStateOf(0L) }
     val listState: LazyListState = rememberLazyListState()
-    
+
     BackHandler(
         onBack = {
             when {
@@ -112,9 +112,9 @@ internal fun HomeScreen(
                     }
                 }
             }
-        }
+        },
     )
-    
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -149,7 +149,7 @@ internal fun HomeScreen(
                         IconButton(onClick = { /*todo*/ }) {
                             Icon(imageVector = Icons.Default.Search, contentDescription = null)
                         }
-                    }
+                    },
                 ) {
                     scope.launch { drawerState.open() }
                 }
@@ -185,9 +185,8 @@ private fun HBody(
 ) {
     Surface(
         modifier = Modifier
-            .padding(innerPadding)
+            .padding(innerPadding),
     ) {
-        
         val noteCard: @Composable (Note) -> Unit = {
             NoteCard(note = it) {
                 navigateToNoteDetailScreen(it.id)

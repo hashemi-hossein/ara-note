@@ -8,9 +8,9 @@ android {
 }
 
 dependencies {
-    
+
     implementation(project(":core:util"))
-    
+
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.kotlinx.serialization.json)

@@ -36,7 +36,7 @@ fun NoteCard(
                 bottom = 3.dp,
                 top = 3.dp,
                 start = 3.dp,
-                end = 3.dp
+                end = 3.dp,
             )
             .fillMaxWidth()
             .clickable(onClick = onClick),
@@ -52,10 +52,10 @@ fun NoteCard(
                 maxLines = 10,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(7.dp)
+                    .padding(7.dp),
             )
             CompositionLocalProvider(
-                LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -69,12 +69,13 @@ fun NoteCard(
                         text = HDateTime.gerPrettyDateTime(note.addedDateTime),
                         style = MaterialTheme.typography.bodySmall,
                     )
-                    if (note.alarmDateTime != null)
+                    if (note.alarmDateTime != null) {
                         Icon(
                             imageVector = Icons.Default.Alarm,
                             contentDescription = null,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
+                    }
                 }
             }
         }

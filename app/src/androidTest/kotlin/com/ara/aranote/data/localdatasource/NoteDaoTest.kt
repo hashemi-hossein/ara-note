@@ -27,7 +27,8 @@ class NoteDaoTest {
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(
-            context, NoteDatabase::class.java
+            context,
+            NoteDatabase::class.java,
         ).allowMainThreadQueries().build()
         systemUnderTest = database.getNoteDao()
     }
@@ -45,7 +46,7 @@ class NoteDaoTest {
         val note2 = TestUtil.tNoteModel.copy(
             id = 2,
             text = "t2",
-            alarmDateTime = null
+            alarmDateTime = null,
         )
         val note3 = TestUtil.tNoteModel.copy(
             id = 5,
@@ -132,14 +133,14 @@ class NoteDaoTest {
             notebookId = 1,
             text = "t2",
             addedDateTime = TestUtil.tDateTime,
-            alarmDateTime = null
+            alarmDateTime = null,
         )
         val note3 = NoteModel(
             id = 5,
             notebookId = 1,
             text = "t5",
             addedDateTime = TestUtil.tDateTime,
-            alarmDateTime = TestUtil.tDateTime
+            alarmDateTime = TestUtil.tDateTime,
         )
 
         // act

@@ -70,7 +70,7 @@ abstract class BaseViewModel<S : MviState, I : MviIntent, E : MviSingleEvent> : 
     fun observeFlow(
         taskId: String,
         isUnique: Boolean = true,
-        taskStartedByIntent: suspend () -> Unit
+        taskStartedByIntent: suspend () -> Unit,
     ) {
         when {
             taskId in longRunningJobs.keys &&
