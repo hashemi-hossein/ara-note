@@ -1,6 +1,7 @@
 plugins {
     id("ara.application")
     id("ara.hilt")
+    id("ara.room")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
 }
 
@@ -125,13 +126,6 @@ dependencies {
     kapt(libs.androidx.hilt.compiler)
     // Hilt Testing
     androidTestImplementation(libs.hilt.android.testing)
-
-    // Room DB
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
-    testImplementation(libs.androidx.room.testing)
-    androidTestImplementation(libs.androidx.room.testing)
 
     // DateTime
     implementation(libs.kotlinx.datetime)
