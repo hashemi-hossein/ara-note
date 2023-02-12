@@ -8,6 +8,7 @@ buildscript {
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.symbolProcessing) apply false
     alias(libs.plugins.hilt.android) apply false
 
     alias(libs.plugins.ben.manes.versions)
