@@ -1,7 +1,6 @@
 package com.ara.aranote.ui.screen.settings
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.ui.component.HAppBar
@@ -78,7 +76,6 @@ internal fun SettingsScreen(
     importData: (Uri, () -> Unit) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
-    context: Context = LocalContext.current,
 ) {
     Scaffold(
         snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
