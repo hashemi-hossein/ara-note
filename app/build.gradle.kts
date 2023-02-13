@@ -74,8 +74,8 @@ dependencies {
 
     implementation(project(":core:entity"))
     implementation(project(":core:util"))
-    testImplementation(project(":core_test"))
-    androidTestImplementation(project(":core_test"))
+    testImplementation(project(":core:test"))
+    androidTestImplementation(project(":core:test"))
 
     implementation(libs.kotlin.stdlib)
     implementation(libs.google.android.material)

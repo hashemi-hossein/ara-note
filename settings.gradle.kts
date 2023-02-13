@@ -20,4 +20,4 @@ rootProject.name = "AraNote"
 include(":app")
 include(":core:entity")
 include(":core:util")
-include(":core_test")
+include(":core:test")
