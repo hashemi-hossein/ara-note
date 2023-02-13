@@ -9,7 +9,7 @@ import com.ara.aranote.data.model.NotebookModel
 @Database(
     entities = [NoteModel::class, NotebookModel::class],
     version = 1,
-    exportSchema = false,
+    exportSchema = true,
 )
 @TypeConverters(DatabaseTypeConverters::class)
 abstract class NoteDatabase : RoomDatabase() {
