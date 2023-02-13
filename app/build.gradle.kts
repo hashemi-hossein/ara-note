@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "com.ara.aranote"
         versionCode = 1
-        versionName = "220.904"
+        versionName = "0.0.1"
 
         testInstrumentationRunnerArguments["disableAnalytics"] = "true"
         testInstrumentationRunner = "com.ara.aranote.HTestRunner"
