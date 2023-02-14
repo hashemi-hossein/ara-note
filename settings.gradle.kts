@@ -19,5 +19,8 @@ dependencyResolutionManagement {
 rootProject.name = "AraNote"
 include(":app")
 include(":core:entity")
+include(":core:data")
+include(":core:database")
 include(":core:util")
+include(":core:backup")
 include(":core:test")

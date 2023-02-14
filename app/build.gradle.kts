@@ -1,7 +1,6 @@
 plugins {
     id("ara.application")
     id("ara.hilt")
-    id("ara.room")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
 }
 
@@ -73,7 +72,10 @@ tasks.withType<Test>().configureEach {
 dependencies {
 
     implementation(project(":core:entity"))
+    implementation(project(":core:data"))
+    implementation(project(":core:database"))
     implementation(project(":core:util"))
+    implementation(project(":core:backup"))
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))
 
