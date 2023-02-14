@@ -1,6 +1,7 @@
 plugins {
     id("ara.library")
     id("ara.room")
+    id("ara.hilt")
 }
 
 android {
