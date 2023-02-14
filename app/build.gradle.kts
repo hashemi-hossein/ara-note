@@ -74,6 +74,7 @@ dependencies {
     implementation(project(":core:entity"))
     implementation(project(":core:data"))
     implementation(project(":core:database"))
+    implementation(project(":core:preference"))
     implementation(project(":core:util"))
     implementation(project(":core:backup"))
     testImplementation(project(":core:test"))
@@ -86,7 +87,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.datastore)
 
     // ### Jetpack Compose ####
     implementation(libs.androidx.compose.ui)
