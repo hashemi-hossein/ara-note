@@ -6,10 +6,8 @@ import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.util.Mapper
 import com.ara.aranote.util.Result
-import com.ara.aranote.util.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 
 /**
  * Based on SINGLE-SOURCE-OF-TRUTH strategy:
@@ -35,19 +33,16 @@ class NoteRepositoryImpl(
 
     override suspend fun insert(note: Note): Result<Int> {
         val result = noteDao.insert(noteDomainMapper.mapReverse(note))
-        Timber.tag(TAG).d("insert note result = $result")
         return if (result != null) Result.Success(result.toInt()) else Result.Error()
     }
 
     override suspend fun delete(note: Note): Result<Boolean> {
         val result = noteDao.delete(noteDomainMapper.mapReverse(note))
-        Timber.tag(TAG).d("delete note result = $result")
         return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
     override suspend fun update(note: Note): Result<Boolean> {
         val result = noteDao.update(noteDomainMapper.mapReverse(note))
-        Timber.tag(TAG).d("update note result = $result")
         return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
