@@ -6,13 +6,11 @@ import android.content.Intent
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.util.CoroutineDispatcherProvider
 import com.ara.aranote.util.Result
-import com.ara.aranote.util.TAG
 import com.ara.aranote.util.millis
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,7 +26,7 @@ class BootReceiver : BroadcastReceiver() {
     private val coroutineScope = CoroutineScope(job + coroutineDispatcherProvider.io)
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Timber.tag(TAG).d("BootReceiver -- onReceive -- intent?.action=${intent?.action}")
+//        Timber.tag(TAG).d("BootReceiver -- onReceive -- intent?.action=${intent?.action}")
 
         if (context != null && intent?.action == "android.intent.action.BOOT_COMPLETED") {
             coroutineScope.launch {

@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.widget.Toast
-import com.ara.aranote.util.TAG
-import timber.log.Timber
 
 fun hManageAlarm(
     context: Context,
@@ -47,10 +45,10 @@ fun hManageAlarm(
                     pendingIntent,
                 )
             }
-            Timber.tag(TAG).i("Alarm set successfully -- code=$noteId")
+//            Timber.tag(TAG).i("Alarm set successfully -- code=$noteId")
         } else {
             alarmManager.cancel(pendingIntent)
-            Timber.tag(TAG).i("Alarm canceled successfully -- code=$noteId")
+//            Timber.tag(TAG).i("Alarm canceled successfully -- code=$noteId")
         }
 
         return true
@@ -60,7 +58,7 @@ fun hManageAlarm(
             "error in ${if (doesCreate) "setting" else "deleting"} alarm",
             Toast.LENGTH_LONG,
         ).show()
-        Timber.tag(TAG).e(e)
+//        Timber.tag(TAG).e(e)
         return false
     }
 }

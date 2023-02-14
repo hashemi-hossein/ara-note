@@ -77,6 +77,7 @@ dependencies {
     implementation(project(":core:preference"))
     implementation(project(":core:util"))
     implementation(project(":core:backup"))
+    implementation(project(":core:alarm"))
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))
 
@@ -165,5 +166,4 @@ dependencies {
     // Other Libs
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.timber)
-    implementation(libs.karn.notify)
 }
