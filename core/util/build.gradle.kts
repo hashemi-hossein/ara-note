@@ -12,4 +12,5 @@ dependencies {
     implementation(libs.prettytime)
     implementation(libs.javax.inject)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 }
