@@ -82,9 +82,9 @@ dependencies {
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))
     implementation(project(":feature:settings"))
+    implementation(project(":feature:notedetail"))
 
     implementation(libs.kotlin.stdlib)
-    implementation(libs.google.android.material)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

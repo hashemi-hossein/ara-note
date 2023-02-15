@@ -15,10 +15,8 @@ import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
 import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID
-import com.ara.aranote.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,7 +48,7 @@ class NoteDetailViewModel
                 val notebookId =
                     savedStateHandle.get<Int>(NAV_ARGUMENT_NOTEBOOK_ID) ?: DEFAULT_NOTEBOOK_ID
 
-                Timber.tag(TAG).d("loading note - noteId=$noteId")
+//                Timber.tag(TAG).d("loading note - noteId=$noteId")
 
                 val note = if (noteId >= 0) {
                     getNoteByIdUseCase(noteId)
@@ -72,8 +70,8 @@ class NoteDetailViewModel
             is NoteDetailIntent.UpdateNote -> {
                 val oldNote = getNoteByIdUseCase(state.note.id)
                 if (oldNote != state.note) {
-                    Timber.tag(TAG).d("updating note")
-                    Timber.tag(TAG).d("note = %s", state.note.toString())
+//                    Timber.tag(TAG).d("updating note")
+//                    Timber.tag(TAG).d("note = %s", state.note.toString())
                     val note = if (oldNote.text != state.note.text) {
                         state.note.copy(addedDateTime = HDateTime.getCurrentDateTime())
                     } else
@@ -107,7 +105,7 @@ class NoteDetailViewModel
                 if (result) {
                     triggerSingleEvent(NoteDetailSingleEvent.NavigateUp)
                 } else {
-                    Timber.tag(TAG).d("error in operation occurred")
+//                    Timber.tag(TAG).d("error in operation occurred")
                     triggerSingleEvent(NoteDetailSingleEvent.OperationError())
                 }
             }

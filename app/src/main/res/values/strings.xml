@@ -2,10 +2,7 @@
     <string name="app_name">Ara Note</string>
 
     <string name="delete">Delete</string>
-    <string name="discard">Discard</string>
     <string name="add_note">Add Note</string>
-    <string name="invalid_date_and_time">invalid Date and Time</string>
-    <string name="ok">OK</string>
     <string name="notebooks">Notebooks</string>
     <string name="add_notebook">Add Notebook</string>
     <string name="name">name</string>
@@ -13,22 +10,13 @@
     <string name="exit">Exit</string>
     <string name="select">Select</string>
     <string name="cancel">Cancel</string>
-    <string name="type_here">Type here…</string>
     <string name="edit_notebook">Edit Notebook</string>
 
     <!--  Content Descriptions  -->
-    <string name="cd_discard">Discard</string>
-    <string name="cd_delete">Delete</string>
-    <string name="cd_edit_note_alarm">Edit Note Alarm</string>
-    <string name="cd_add_alarm">Add Alarm</string>
-    <string name="cd_delete_alarm">Delete Alarm</string>
     <string name="cd_add_note">Add Note</string>
-    <string name="cd_set_alarm">Set Alarm</string>
-    <string name="cd_reset_date_and_time">Reset Date and Time</string>
     <string name="cd_add_notebook">Add Notebook</string>
     <string name="cd_goto_notebooks_screen">Go to notebooks screen</string>
     <string name="cd_dialog_confirm">dialog confirm</string>
-    <string name="cd_save">save</string>
     <string name="cd_delete_notebook">delete notebook</string>
 
 </resources>

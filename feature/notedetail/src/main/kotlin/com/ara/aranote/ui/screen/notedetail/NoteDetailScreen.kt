@@ -63,7 +63,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
-import com.ara.aranote.R
+import aranote.feature.notedetail.R
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.ui.component.HAppBar
@@ -73,7 +73,6 @@ import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import com.ara.aranote.util.DateTimeFormatPattern
 import com.ara.aranote.util.HDateTime
-import com.ara.aranote.util.TAG
 import com.ara.aranote.util.alarm.hManageAlarm
 import com.ara.aranote.util.change
 import com.ara.aranote.util.millis
@@ -85,7 +84,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
@@ -406,7 +404,7 @@ private fun HBottomSheet(
                             addOnPositiveButtonClickListener {
                                 it?.let {
                                     val result = HDateTime.getDateTimeFromMillis(it)
-                                    Timber.tag(TAG).d(result.toString())
+//                                    Timber.tag(TAG).d(result.toString())
                                     dateTime = dateTime.change(
                                         year = result.year,
                                         month = result.monthNumber,
@@ -434,7 +432,7 @@ private fun HBottomSheet(
                         .setMinute(dateTime.minute)
                         .build().apply {
                             addOnPositiveButtonClickListener {
-                                Timber.tag(TAG).d("%d:%d", this.hour, this.minute)
+//                                Timber.tag(TAG).d("%d:%d", this.hour, this.minute)
                                 dateTime = dateTime.change(
                                     hour = this.hour,
                                     minute = this.minute,
