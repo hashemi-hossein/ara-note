@@ -9,10 +9,12 @@ android {
 
 dependencies {
 
+    implementation(project(":core:entity"))
     implementation(project(":core:data"))
     implementation(project(":core:util"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.karn.notify)
 }
