@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="add_notebook">Add Notebook</string>
+    <string name="edit_notebook">Edit Notebook</string>
+    <string name="delete">Delete</string>
+
+    <!--  Content Descriptions  -->
+    <string name="cd_dialog_confirm">dialog confirm</string>
+    <string name="cd_add_notebook">Add Notebook</string>
+    <string name="cd_delete_notebook">delete notebook</string>
+
+</resources>

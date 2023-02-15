@@ -1,17 +1,3 @@
 <resources>
     <string name="app_name">Ara Note</string>
-
-    <string name="delete">Delete</string>
-    <string name="add_note">Add Note</string>
-    <string name="add_notebook">Add Notebook</string>
-    <string name="name">name</string>
-    <string name="select">Select</string>
-    <string name="cancel">Cancel</string>
-    <string name="edit_notebook">Edit Notebook</string>
-
-    <!--  Content Descriptions  -->
-    <string name="cd_add_notebook">Add Notebook</string>
-    <string name="cd_dialog_confirm">dialog confirm</string>
-    <string name="cd_delete_notebook">delete notebook</string>
-
 </resources>

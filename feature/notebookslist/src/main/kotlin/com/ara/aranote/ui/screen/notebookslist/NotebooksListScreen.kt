@@ -36,7 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.ara.aranote.R
+import aranote.feature.notebookslist.R
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.HSnackbarHost

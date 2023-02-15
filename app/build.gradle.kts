@@ -84,6 +84,7 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":feature:notedetail"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:notebookslist"))
 
     implementation(libs.kotlin.stdlib)
 
