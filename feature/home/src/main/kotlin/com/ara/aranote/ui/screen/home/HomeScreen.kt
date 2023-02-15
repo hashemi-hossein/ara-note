@@ -37,7 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.ara.aranote.R
+import aranote.feature.home.R
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.ui.component.AppBarNavButtonType

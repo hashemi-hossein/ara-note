@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.ara.aranote.R
+import aranote.feature.home.R
 import com.ara.aranote.domain.entity.Notebook
 
 @OptIn(ExperimentalMaterial3Api::class)

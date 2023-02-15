@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">Ara Note</string>
+    <string name="notebooks">Notebooks</string>
+    <string name="cd_goto_notebooks_screen">Go to notebooks screen</string>
+    <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="exit">Exit</string>
+
+    <string name="cd_add_note">Add Note</string>
+
+</resources>

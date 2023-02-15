@@ -83,6 +83,7 @@ dependencies {
     androidTestImplementation(project(":core:test"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:notedetail"))
+    implementation(project(":feature:home"))
 
     implementation(libs.kotlin.stdlib)
 
