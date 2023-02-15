@@ -67,19 +67,7 @@ class NoteDetailViewModel
                 .let { sendIntent(NoteDetailIntent.ShowNotebooks(it)) }
             is NoteDetailIntent.ShowNotebooks -> Unit
 
-            is NoteDetailIntent.UpdateNote -> {
-                val oldNote = getNoteByIdUseCase(state.note.id)
-                if (oldNote != state.note) {
-//                    Timber.tag(TAG).d("updating note")
-//                    Timber.tag(TAG).d("note = %s", state.note.toString())
-                    val note = if (oldNote.text != state.note.text) {
-                        state.note.copy(addedDateTime = HDateTime.getCurrentDateTime())
-                    } else
-                        state.note
-                    updateNoteUseCase(note)
-                    sendIntent(NoteDetailIntent.ModifyNote(note))
-                }
-            }
+            is NoteDetailIntent.UpdateNote -> updateNoteUseCase(state.note)
 
             is NoteDetailIntent.BackPressed -> {
                 val result =
