@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="cd_open_dropdown">open dropdown</string>
+    <string name="cd_close_dropdown">close dropdown</string>
+    <string name="cd_happbar_back">Back To Previous Screen</string>
+    <string name="cd_happbar_menu">Open Menu</string>
+
+</resources>

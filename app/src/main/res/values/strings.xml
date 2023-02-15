@@ -19,8 +19,6 @@
     <!--  Content Descriptions  -->
     <string name="cd_discard">Discard</string>
     <string name="cd_delete">Delete</string>
-    <string name="cd_happbar_back">Back To Previous Screen</string>
-    <string name="cd_happbar_menu">Open Menu</string>
     <string name="cd_edit_note_alarm">Edit Note Alarm</string>
     <string name="cd_add_alarm">Add Alarm</string>
     <string name="cd_delete_alarm">Delete Alarm</string>
@@ -32,7 +30,5 @@
     <string name="cd_dialog_confirm">dialog confirm</string>
     <string name="cd_save">save</string>
     <string name="cd_delete_notebook">delete notebook</string>
-    <string name="cd_open_dropdown">open dropdown</string>
-    <string name="cd_close_dropdown">close dropdown</string>
 
 </resources>

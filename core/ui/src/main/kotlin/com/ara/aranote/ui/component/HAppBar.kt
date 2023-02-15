@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.ara.aranote.R
+import aranote.core.ui.R
 
 enum class AppBarNavButtonType {
     MENU, BACK
