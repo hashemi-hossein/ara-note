@@ -10,13 +10,17 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("application") {
+            id = "ara.application"
+            implementationClass = "ApplicationPlugin"
+        }
         register("library") {
             id = "ara.library"
             implementationClass = "LibraryPlugin"
         }
-        register("application") {
-            id = "ara.application"
-            implementationClass = "ApplicationPlugin"
+        register("compose-library") {
+            id = "ara.library.compose"
+            implementationClass = "LibraryComposePlugin"
         }
         register("hilt") {
             id = "ara.hilt"
