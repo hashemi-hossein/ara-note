@@ -301,7 +301,7 @@ private fun HBody(
             placeholder = { Text(text = stringResource(id = R.string.type_here)) },
         )
 
-        LaunchedEffect(true) {
+        LaunchedEffect(isNewNote) {
             if (isNewNote) {
                 focusRequester.requestFocus()
             }

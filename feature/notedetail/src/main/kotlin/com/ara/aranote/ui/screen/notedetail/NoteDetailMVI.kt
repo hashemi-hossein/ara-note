@@ -11,7 +11,7 @@ data class NoteDetailState(
     val note: Note = Note(),
     val notebooks: List<Notebook> = emptyList(),
     val userPreferences: UserPreferences = UserPreferences(),
-    val isNewNote: Boolean = true,
+    val isNewNote: Boolean = false,
 ) : MviState
 
 sealed interface NoteDetailIntent : MviIntent {
