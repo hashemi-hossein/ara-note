@@ -121,6 +121,7 @@ internal fun HomeScreen(
 
     ModalNavigationDrawer(
         drawerState = drawerState,
+        gesturesEnabled = uiState.searchText == null,
         drawerContent = {
             AppDrawer(
                 notebooks = uiState.notebooks,
