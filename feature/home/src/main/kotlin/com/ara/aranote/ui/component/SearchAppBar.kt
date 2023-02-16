@@ -15,8 +15,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -26,12 +29,16 @@ fun SearchAppBar(
     searchText: String,
     modifySearchText: (String?) -> Unit,
 ) {
+    val focusRequester = remember { FocusRequester() }
+
     CenterAlignedTopAppBar(
         title = {
             BasicTextField(
                 value = searchText,
                 onValueChange = { modifySearchText(it) },
-                Modifier.fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
                 decorationBox = @Composable { innerTextField ->
                     TextFieldDefaults.TextFieldDecorationBox(
                         value = searchText,
@@ -61,6 +68,9 @@ fun SearchAppBar(
             )
         }
     )
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 }
 
 @Preview
