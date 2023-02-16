@@ -3,6 +3,7 @@ package com.ara.aranote.ui.screen.home
 import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -45,6 +46,7 @@ import com.ara.aranote.ui.component.AppDrawer
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.HSnackbarHost
 import com.ara.aranote.ui.component.NoteCard
+import com.ara.aranote.ui.component.SearchAppBar
 import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -67,6 +69,7 @@ fun HomeScreen(
         navigateToNotebooksScreen = navigateToNotebooksScreen,
         navigateToNoteDetailScreen = { navigateToNoteDetailScreen(it, uiState.currentNotebookId) },
         setCurrentNotebookId = { viewModel.sendIntent(HomeIntent.ChangeNotebook(it)) },
+        modifySearchText = { viewModel.sendIntent(HomeIntent.ModifySearchText(it)) }
     )
 }
 
@@ -78,6 +81,7 @@ internal fun HomeScreen(
     navigateToSettingsScreen: () -> Unit,
     navigateToNotebooksScreen: () -> Unit,
     setCurrentNotebookId: (Int) -> Unit = {},
+    modifySearchText: (String?) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -141,17 +145,29 @@ internal fun HomeScreen(
         Scaffold(
             snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
             topBar = {
-                HAppBar(
-                    title = uiState.notebooks.find { it.id == uiState.currentNotebookId }?.name
-                        ?: stringResource(id = R.string.app_name),
-                    appBarNavButtonType = AppBarNavButtonType.MENU,
-                    actions = {
-                        IconButton(onClick = { /*todo*/ }) {
-                            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                Crossfade(targetState = uiState.searchText == null) {
+                    if (it) {
+                        HAppBar(
+                            title = uiState.notebooks.find { it.id == uiState.currentNotebookId }?.name
+                                ?: stringResource(id = R.string.app_name),
+                            appBarNavButtonType = AppBarNavButtonType.MENU,
+                            actions = {
+                                IconButton(onClick = { modifySearchText("") }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = null
+                                    )
+                                }
+                            },
+                        ) {
+                            scope.launch { drawerState.open() }
                         }
-                    },
-                ) {
-                    scope.launch { drawerState.open() }
+                    } else {
+                        SearchAppBar(
+                            searchText = uiState.searchText ?: "",
+                            modifySearchText = modifySearchText,
+                        )
+                    }
                 }
             },
             floatingActionButton = {
