@@ -20,8 +20,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import aranote.feature.home.R.string
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +53,7 @@ fun SearchAppBar(
                             IconButton(onClick = { modifySearchText(null) }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = "close search"
+                                    contentDescription = stringResource(string.cd_close_search)
                                 )
                             }
                         },

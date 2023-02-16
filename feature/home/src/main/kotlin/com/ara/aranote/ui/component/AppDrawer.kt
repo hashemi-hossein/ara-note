@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import aranote.feature.home.R
+import aranote.feature.home.R.string
 import com.ara.aranote.domain.entity.Notebook
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,7 +95,7 @@ fun AppDrawer(
             ListItem(
                 headlineText = {
                     Text(
-                        text = "Settings",
+                        text = stringResource(string.settings),
                         style = MaterialTheme.typography.bodyLarge,
                     )
                 },
