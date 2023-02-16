@@ -6,6 +6,6 @@ import javax.inject.Inject
 class ObserveNotesUseCase @Inject constructor(
     private val noteRepository: NoteRepository,
 ) {
-    operator fun invoke(notebookId: Int? = null) =
-        noteRepository.observe(notebookId)
+    operator fun invoke(notebookId: Int?, searchText: String?) =
+        noteRepository.observe(notebookId, searchText)
 }
