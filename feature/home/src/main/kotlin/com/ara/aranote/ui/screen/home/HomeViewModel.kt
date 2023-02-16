@@ -29,7 +29,7 @@ class HomeViewModel
         when (intent) {
             HomeIntent.ObserveNotes -> {
                 observeFlow(taskId = "Home_observeNotes", isUnique = false) {
-                    observeNotesUseCase(state.currentNotebookId).collect {
+                    observeNotesUseCase(state.currentNotebookId, state.searchText).collect {
                         sendIntent(HomeIntent.ShowNotes(it))
                     }
                 }
@@ -55,6 +55,8 @@ class HomeViewModel
                     }
                 }
             is HomeIntent.ShowUserPreferences -> Unit
+
+            is HomeIntent.ModifySearchText -> sendIntent(HomeIntent.ObserveNotes)
         }
     }
 
@@ -76,5 +78,7 @@ internal class HomeReducer : BaseViewModel.Reducer<HomeState, HomeIntent> {
 
             is HomeIntent.ObserveUserPreferences -> state
             is HomeIntent.ShowUserPreferences -> state.copy(userPreferences = intent.userPreferences)
+
+            is HomeIntent.ModifySearchText -> state.copy(searchText = intent.searchText)
         }
 }
