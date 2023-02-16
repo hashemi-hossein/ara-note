@@ -17,6 +17,9 @@ interface NoteDao {
     @Query("SELECT * FROM tblNotes WHERE notebook_id=:notebookId ORDER BY id DESC")
     fun observe(notebookId: Int): Flow<List<NoteModel>>
 
+    @Query("SELECT * FROM tblNotes WHERE text LIKE '%' || :searchText || '%' ORDER BY id DESC")
+    fun observe(searchText: String): Flow<List<NoteModel>>
+
     @Insert
     suspend fun insert(noteModel: NoteModel): Long?
 
