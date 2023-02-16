@@ -93,6 +93,7 @@ internal fun HomeScreen(
     BackHandler(
         onBack = {
             when {
+                uiState.searchText != null -> modifySearchText(null)
                 drawerState.isOpen && !drawerState.isAnimationRunning ->
                     scope.launch { drawerState.close() }
                 uiState.currentNotebookId != DEFAULT_NOTEBOOK_ID -> {
