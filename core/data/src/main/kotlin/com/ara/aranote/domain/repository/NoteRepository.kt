@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
 
-    fun observe(notebookId: Int? = null): Flow<List<Note>>
+    fun observe(notebookId: Int? = null, searchText: String? = null): Flow<List<Note>>
 
     suspend fun insert(note: Note): Result<Int>
 

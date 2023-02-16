@@ -24,11 +24,14 @@ class NoteRepositoryImpl(
     private val noteDomainMapper: Mapper<NoteModel, Note>,
 ) : NoteRepository {
 
-    override fun observe(notebookId: Int?): Flow<List<Note>> {
-        return (if (notebookId == null) noteDao.observe() else noteDao.observe(notebookId))
-            .map {
-                noteDomainMapper.mapList(it).sortedByDescending { item -> item.addedDateTime }
-            }
+    override fun observe(notebookId: Int?, searchText: String?): Flow<List<Note>> {
+        return when {
+            searchText != null -> noteDao.observe(searchText)
+            notebookId != null -> noteDao.observe(notebookId)
+            else -> noteDao.observe()
+        }.map {
+            noteDomainMapper.mapList(it).sortedByDescending { item -> item.addedDateTime }
+        }
     }
 
     override suspend fun insert(note: Note): Result<Int> {
