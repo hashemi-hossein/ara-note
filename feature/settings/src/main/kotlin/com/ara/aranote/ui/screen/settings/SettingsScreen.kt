@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.ara.aranote.data.datastore.DarkMode
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.ui.component.HAppBar
@@ -43,15 +44,37 @@ fun SettingsScreen(
     SettingsScreen(
         navigateUp = navigateUp,
         userPreferences = uiState.userPreferences,
-        setIsDark = { viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::isDark, it)) },
+        setDarkMode = {
+            viewModel.sendIntent(
+                SettingsIntent.WriteUserPreferences(
+                    UserPreferences::darkMode,
+                    it
+                )
+            )
+        },
         setIsAutoSaveMode = {
-            viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::isAutoSaveMode, it))
+            viewModel.sendIntent(
+                SettingsIntent.WriteUserPreferences(
+                    UserPreferences::isAutoSaveMode,
+                    it
+                )
+            )
         },
         setIsDoubleBackToExitMode = {
-            viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::isDoubleBackToExitMode, it))
+            viewModel.sendIntent(
+                SettingsIntent.WriteUserPreferences(
+                    UserPreferences::isDoubleBackToExitMode,
+                    it
+                )
+            )
         },
         setNoteViewMode = {
-            viewModel.sendIntent(SettingsIntent.WriteUserPreferences(UserPreferences::noteViewMode, it))
+            viewModel.sendIntent(
+                SettingsIntent.WriteUserPreferences(
+                    UserPreferences::noteViewMode,
+                    it
+                )
+            )
         },
         exportData = { uri, onComplete ->
             viewModel.sendIntent(SettingsIntent.ExportData(uri, onComplete))
@@ -68,7 +91,7 @@ fun SettingsScreen(
 internal fun SettingsScreen(
     navigateUp: () -> Unit,
     userPreferences: UserPreferences,
-    setIsDark: (Boolean) -> Unit,
+    setDarkMode: (DarkMode) -> Unit,
     setIsAutoSaveMode: (Boolean) -> Unit,
     setIsDoubleBackToExitMode: (Boolean) -> Unit,
     setNoteViewMode: (NoteViewMode) -> Unit,
@@ -89,7 +112,11 @@ internal fun SettingsScreen(
             ListItem(
                 headlineText = { Text(text = "Dark Theme") },
                 trailingContent = {
-                    Switch(checked = userPreferences.isDark, onCheckedChange = setIsDark)
+                    HDropdown(
+                        items = DarkMode.values().associate { it.ordinal to it.name },
+                        selectedKey = userPreferences.darkMode.ordinal,
+                        onItemClick = { setDarkMode(DarkMode.values()[it]) },
+                    )
                 },
             )
             ListItem(

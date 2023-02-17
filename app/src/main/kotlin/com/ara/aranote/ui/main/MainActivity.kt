@@ -3,17 +3,34 @@ package com.ara.aranote.ui.main
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.ara.aranote.data.datastore.DarkMode
+import com.ara.aranote.data.datastore.UserPreferences
+import com.ara.aranote.data.repository.UserPreferencesRepository
 import com.ara.aranote.ui.navigation.NavigationGraph
 import com.ara.aranote.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var userPreferencesRepository: UserPreferencesRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme {
+            val userPreferences by userPreferencesRepository.observe()
+                .collectAsState(initial = UserPreferences())
+            val isDark = when (userPreferences.darkMode) {
+                DarkMode.LIGHT -> false
+                DarkMode.DARK -> true
+                DarkMode.SYSTEM -> isSystemInDarkTheme()
+            }
+            AppTheme(darkTheme = isDark) {
                 NavigationGraph()
             }
         }

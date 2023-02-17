@@ -2,6 +2,7 @@ package com.ara.aranote.data.repository
 
 import android.util.Log
 import androidx.datastore.core.DataStore
+import com.ara.aranote.data.datastore.DarkMode
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.util.TAG
@@ -26,8 +27,8 @@ class UserPreferencesRepository
         userPreferencesStore.updateData {
             Log.d(TAG, "$kProperty-- value= $value")
             when (kProperty) {
-                UserPreferences::isDark -> {
-                    it.copy(isDark = value as Boolean)
+                UserPreferences::darkMode -> {
+                    it.copy(darkMode = value as DarkMode)
                 }
                 UserPreferences::isAutoSaveMode -> {
                     it.copy(isAutoSaveMode = value as Boolean)
