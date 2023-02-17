@@ -36,9 +36,6 @@ class UserPreferencesRepository
                 UserPreferences::isDoubleBackToExitMode -> {
                     it.copy(isDoubleBackToExitMode = value as Boolean)
                 }
-                UserPreferences::doesDefaultNotebookExist -> {
-                    it.copy(doesDefaultNotebookExist = value as Boolean)
-                }
                 UserPreferences::noteViewMode -> {
                     it.copy(noteViewMode = value as NoteViewMode)
                 }
