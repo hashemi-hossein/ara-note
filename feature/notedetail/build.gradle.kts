@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "aranote.feature.notedetail"
+    namespace = "ara.note.notedetail"
 }
 
 dependencies {

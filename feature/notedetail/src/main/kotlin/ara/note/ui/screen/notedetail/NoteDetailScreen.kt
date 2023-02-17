@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.notedetail
+package ara.note.ui.screen.notedetail
 
 import android.content.Context
 import android.widget.Toast
@@ -63,14 +63,16 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
-import aranote.feature.notedetail.R
+import ara.note.notedetail.R
+import ara.note.ui.screen.notedetail.NoteDetailIntent.ModifyNote
+import ara.note.ui.screen.notedetail.NoteDetailSingleEvent.BackPressed
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.HDropdown
 import com.ara.aranote.ui.component.HSnackbarHost
 import com.ara.aranote.ui.component.showSnackbar
-import com.ara.aranote.ui.screen.notedetail.NoteDetailViewModel.TheOperation
+import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import com.ara.aranote.util.DateTimeFormatPattern
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.alarm.hManageAlarm
@@ -151,8 +153,8 @@ fun NoteDetailScreen(
 
     NoteDetailScreen(
         uiState = uiState,
-        onNoteChanged = { viewModel.sendIntent(NoteDetailIntent.ModifyNote(it)) },
-        onBackPressed = { viewModel.triggerSingleEvent(NoteDetailSingleEvent.BackPressed(it)) },
+        onNoteChanged = { viewModel.sendIntent(ModifyNote(it)) },
+        onBackPressed = { viewModel.triggerSingleEvent(BackPressed(it)) },
         isNewNote = uiState.isNewNote,
         isAutoNoteSaving = uiState.userPreferences.isAutoSaveMode,
         modalBottomSheetState = modalBottomSheetState,

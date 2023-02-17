@@ -16,8 +16,8 @@ import com.ara.aranote.ui.screen.home.HomeScreen
 import com.ara.aranote.ui.screen.home.HomeViewModel
 import com.ara.aranote.ui.screen.notebookslist.NotebooksListScreen
 import com.ara.aranote.ui.screen.notebookslist.NotebooksListViewModel
-import com.ara.aranote.ui.screen.notedetail.NoteDetailScreen
-import com.ara.aranote.ui.screen.notedetail.NoteDetailViewModel
+import ara.note.ui.screen.notedetail.NoteDetailScreen
+import ara.note.ui.screen.notedetail.NoteDetailViewModel
 import ara.note.ui.screen.settings.SettingsScreen
 import ara.note.ui.screen.settings.SettingsViewModel
 import com.ara.aranote.util.ANIMATION_DURATION

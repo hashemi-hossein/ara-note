@@ -1,8 +1,9 @@
-package com.ara.aranote.ui.screen.notedetail
+package ara.note.ui.screen.notedetail
 
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
+import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import com.ara.aranote.util.MviIntent
 import com.ara.aranote.util.MviSingleEvent
 import com.ara.aranote.util.MviState
@@ -35,6 +36,6 @@ sealed interface NoteDetailSingleEvent : MviSingleEvent {
     object NavigateUp : NoteDetailSingleEvent
     data class DisableAlarm(val noteId: Int) : NoteDetailSingleEvent
     data class OperationError(val message: String = "") : NoteDetailSingleEvent
-    data class BackPressed(val theOperation: NoteDetailViewModel.TheOperation) :
+    data class BackPressed(val theOperation: TheOperation) :
         NoteDetailSingleEvent
 }

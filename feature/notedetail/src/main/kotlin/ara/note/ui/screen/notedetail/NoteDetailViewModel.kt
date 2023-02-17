@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.notedetail
+package ara.note.ui.screen.notedetail
 
 import androidx.lifecycle.SavedStateHandle
 import com.ara.aranote.domain.entity.Note
@@ -11,7 +11,6 @@ import com.ara.aranote.domain.usecase.notedetail.UpdateNoteUseCase
 import com.ara.aranote.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
 import com.ara.aranote.util.BaseViewModel
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
-import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
 import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID

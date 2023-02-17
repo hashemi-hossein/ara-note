@@ -19,9 +19,11 @@ import androidx.compose.ui.test.performTextReplacement
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.ara.aranote.R
+import ara.note.ui.screen.notedetail.NoteDetailState
+import ara.note.R
+import ara.note.ui.screen.notedetail.NoteDetailScreen
 import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.ui.screen.notedetail.NoteDetailViewModel.TheOperation
+import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import com.ara.aranote.util.DateTimeFormatPattern
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.plus
