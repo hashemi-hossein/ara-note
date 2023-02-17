@@ -1,4 +1,4 @@
-package com.ara.aranote.util
+package ara.note.backup
 
 import android.content.Context
 import android.net.Uri
@@ -6,6 +6,9 @@ import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.repository.NotebookRepository
+import com.ara.aranote.util.CoroutineDispatcherProvider
+import com.ara.aranote.util.Result.Error
+import com.ara.aranote.util.Result.Success
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -65,8 +68,8 @@ class HDataBackup
                     if (!notebooks.contains(notebook)) {
                         notebookRepository.insert(notebook).let {
                             when (it) {
-                                is Result.Success -> it.data
-                                is Result.Error -> error("INVALID_NOTEBOOK_ID")
+                                is Success -> it.data
+                                is Error -> error("INVALID_NOTEBOOK_ID")
                             }
                         }
                     }
@@ -76,8 +79,8 @@ class HDataBackup
                     if (!notes.contains(note)) {
                         noteRepository.insert(note).let {
                             when (it) {
-                                is Result.Success -> it.data
-                                is Result.Error -> error("INVALID_NOTE_ID")
+                                is Success -> it.data
+                                is Error -> error("INVALID_NOTE_ID")
                             }
                         }
                     }

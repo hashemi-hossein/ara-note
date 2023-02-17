@@ -3,7 +3,7 @@ package com.ara.aranote.ui.screen.settings
 import com.ara.aranote.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
 import com.ara.aranote.domain.usecase.userpreferences.WriteUserPreferencesUseCase
 import com.ara.aranote.util.BaseViewModel
-import com.ara.aranote.util.HDataBackup
+import ara.note.backup.HDataBackup
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

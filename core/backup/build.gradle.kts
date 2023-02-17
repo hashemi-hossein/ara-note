@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "aranote.core.backup"
+    namespace = "ara.note.backup"
 }
 
 dependencies {
