@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.component
+package ara.note.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,7 +23,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import aranote.feature.home.R.string
+import ara.note.home.R.string
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

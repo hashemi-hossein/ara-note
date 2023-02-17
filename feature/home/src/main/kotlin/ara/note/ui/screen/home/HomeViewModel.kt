@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.home
+package ara.note.ui.screen.home
 
 import com.ara.aranote.domain.usecase.home.CreateDefaultNotebookUseCase
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "aranote.feature.home"
+    namespace = "ara.note.home"
 }
 
 dependencies {

@@ -12,14 +12,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.ara.aranote.ui.screen.home.HomeScreen
-import com.ara.aranote.ui.screen.home.HomeViewModel
+import ara.note.ui.screen.home.HomeScreen
+import ara.note.ui.screen.home.HomeViewModel
 import ara.note.ui.screen.notebookslist.NotebooksListScreen
 import ara.note.ui.screen.notebookslist.NotebooksListViewModel
 import ara.note.ui.screen.notedetail.NoteDetailScreen
 import ara.note.ui.screen.notedetail.NoteDetailViewModel
 import ara.note.ui.screen.settings.SettingsScreen
 import ara.note.ui.screen.settings.SettingsViewModel
+import com.ara.aranote.ui.navigation.NavScreen.NoteDetail
+import com.ara.aranote.ui.navigation.NavScreen.NotebooksList
+import com.ara.aranote.ui.navigation.NavScreen.Settings
 import com.ara.aranote.util.ANIMATION_DURATION
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -71,10 +74,10 @@ fun NavigationGraph(
                 HomeScreen(
                     viewModel = viewModel,
                     navigateToNoteDetailScreen = { noteId, notebookId ->
-                        navController.navigate(NavScreen.NoteDetail(noteId, notebookId).route)
+                        navController.navigate(NoteDetail(noteId, notebookId).route)
                     },
-                    navigateToSettingsScreen = { navController.navigate(NavScreen.Settings.route) },
-                    navigateToNotebooksScreen = { navController.navigate(NavScreen.NotebooksList.route) },
+                    navigateToSettingsScreen = { navController.navigate(Settings.route) },
+                    navigateToNotebooksScreen = { navController.navigate(NotebooksList.route) },
                 )
             }
 

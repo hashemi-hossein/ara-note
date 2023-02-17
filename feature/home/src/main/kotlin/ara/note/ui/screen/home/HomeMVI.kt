@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.home
+package ara.note.ui.screen.home
 
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.domain.entity.Note

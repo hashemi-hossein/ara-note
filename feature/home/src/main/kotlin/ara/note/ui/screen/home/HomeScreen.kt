@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.home
+package ara.note.ui.screen.home
 
 import android.content.Context
 import androidx.activity.compose.BackHandler
@@ -38,15 +38,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import aranote.feature.home.R
+import ara.note.home.R
+import ara.note.ui.screen.home.HomeIntent.ChangeNotebook
+import ara.note.ui.screen.home.HomeIntent.ModifySearchText
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.ui.component.AppBarNavButtonType
-import com.ara.aranote.ui.component.AppDrawer
+import ara.note.ui.component.AppDrawer
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.HSnackbarHost
-import com.ara.aranote.ui.component.NoteCard
-import com.ara.aranote.ui.component.SearchAppBar
+import ara.note.ui.component.NoteCard
+import ara.note.ui.component.SearchAppBar
 import com.ara.aranote.ui.component.showSnackbar
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID
@@ -68,8 +70,8 @@ fun HomeScreen(
         navigateToSettingsScreen = navigateToSettingsScreen,
         navigateToNotebooksScreen = navigateToNotebooksScreen,
         navigateToNoteDetailScreen = { navigateToNoteDetailScreen(it, uiState.currentNotebookId) },
-        setCurrentNotebookId = { viewModel.sendIntent(HomeIntent.ChangeNotebook(it)) },
-        modifySearchText = { viewModel.sendIntent(HomeIntent.ModifySearchText(it)) }
+        setCurrentNotebookId = { viewModel.sendIntent(ChangeNotebook(it)) },
+        modifySearchText = { viewModel.sendIntent(ModifySearchText(it)) }
     )
 }
 

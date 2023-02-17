@@ -16,7 +16,9 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.ara.aranote.R
+import ara.note.ui.screen.home.HomeScreen
+import ara.note.ui.screen.home.HomeState
+import ara.note.R
 import com.ara.aranote.util.HDateTime
 import com.ara.aranote.util.INVALID_NOTE_ID
 import com.ara.test.TestUtil
