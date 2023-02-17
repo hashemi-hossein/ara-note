@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserPreferences(
     val darkMode: DarkMode = DarkMode.SYSTEM,
+    val noteViewMode: NoteViewMode = NoteViewMode.GRID,
     val isAutoSaveMode: Boolean = true,
     val isDoubleBackToExitMode: Boolean = false,
-    val noteViewMode: NoteViewMode = NoteViewMode.GRID,
 )
 
 enum class NoteViewMode { LIST, GRID }

@@ -120,6 +120,16 @@ internal fun SettingsScreen(
                 },
             )
             ListItem(
+                headlineText = { Text(text = "Note View Mode") },
+                trailingContent = {
+                    HDropdown(
+                        items = NoteViewMode.values().associate { it.ordinal to it.name },
+                        selectedKey = userPreferences.noteViewMode.ordinal,
+                        onItemClick = { setNoteViewMode(NoteViewMode.values()[it]) },
+                    )
+                },
+            )
+            ListItem(
                 headlineText = { Text(text = "Auto save Mode") },
                 trailingContent = {
                     Switch(
@@ -134,16 +144,6 @@ internal fun SettingsScreen(
                     Switch(
                         checked = userPreferences.isDoubleBackToExitMode,
                         onCheckedChange = setIsDoubleBackToExitMode,
-                    )
-                },
-            )
-            ListItem(
-                headlineText = { Text(text = "Note View Mode") },
-                trailingContent = {
-                    HDropdown(
-                        items = NoteViewMode.values().associate { it.ordinal to it.name },
-                        selectedKey = userPreferences.noteViewMode.ordinal,
-                        onItemClick = { setNoteViewMode(NoteViewMode.values()[it]) },
                     )
                 },
             )

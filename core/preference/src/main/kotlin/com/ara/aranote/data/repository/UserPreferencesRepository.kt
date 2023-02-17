@@ -30,14 +30,14 @@ class UserPreferencesRepository
                 UserPreferences::darkMode -> {
                     it.copy(darkMode = value as DarkMode)
                 }
+                UserPreferences::noteViewMode -> {
+                    it.copy(noteViewMode = value as NoteViewMode)
+                }
                 UserPreferences::isAutoSaveMode -> {
                     it.copy(isAutoSaveMode = value as Boolean)
                 }
                 UserPreferences::isDoubleBackToExitMode -> {
                     it.copy(isDoubleBackToExitMode = value as Boolean)
-                }
-                UserPreferences::noteViewMode -> {
-                    it.copy(noteViewMode = value as NoteViewMode)
                 }
                 else -> {
                     error("wrong input")
