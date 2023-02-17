@@ -1,7 +1,7 @@
 package com.ara.aranote.ui.navigation
 
-import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
-import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID
+import ara.note.util.NAV_ARGUMENT_NOTEBOOK_ID
+import ara.note.util.NAV_ARGUMENT_NOTE_ID
 
 sealed class NavScreen(val route: String) {
 

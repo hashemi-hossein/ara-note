@@ -1,6 +1,6 @@
 package com.ara.test
 
-import com.ara.aranote.util.CoroutineDispatcherProvider
+import ara.note.util.CoroutineDispatcherProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher

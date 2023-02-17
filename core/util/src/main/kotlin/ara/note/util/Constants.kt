@@ -1,4 +1,4 @@
-package com.ara.aranote.util
+package ara.note.util
 
 const val TAG = "#####HDebug#####"
 const val INVALID_NOTE_ID = -100

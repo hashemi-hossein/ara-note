@@ -5,7 +5,7 @@ import androidx.datastore.core.DataStore
 import com.ara.aranote.data.datastore.DarkMode
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.data.datastore.UserPreferences
-import com.ara.aranote.util.TAG
+import ara.note.util.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first

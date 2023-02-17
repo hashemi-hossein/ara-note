@@ -23,11 +23,11 @@ import ara.note.ui.screen.settings.SettingsViewModel
 import com.ara.aranote.ui.navigation.NavScreen.NoteDetail
 import com.ara.aranote.ui.navigation.NavScreen.NotebooksList
 import com.ara.aranote.ui.navigation.NavScreen.Settings
-import com.ara.aranote.util.ANIMATION_DURATION
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
-import com.ara.aranote.util.INVALID_NOTE_ID
-import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
-import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID
+import ara.note.util.ANIMATION_DURATION
+import ara.note.util.DEFAULT_NOTEBOOK_ID
+import ara.note.util.INVALID_NOTE_ID
+import ara.note.util.NAV_ARGUMENT_NOTEBOOK_ID
+import ara.note.util.NAV_ARGUMENT_NOTE_ID
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController

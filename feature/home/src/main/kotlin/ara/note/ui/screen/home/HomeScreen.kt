@@ -50,8 +50,8 @@ import com.ara.aranote.ui.component.HSnackbarHost
 import ara.note.ui.component.NoteCard
 import ara.note.ui.component.SearchAppBar
 import com.ara.aranote.ui.component.showSnackbar
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
-import com.ara.aranote.util.INVALID_NOTE_ID
+import ara.note.util.DEFAULT_NOTEBOOK_ID
+import ara.note.util.INVALID_NOTE_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

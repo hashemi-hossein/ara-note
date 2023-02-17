@@ -6,9 +6,9 @@ import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.repository.NotebookRepository
-import com.ara.aranote.util.CoroutineDispatcherProvider
-import com.ara.aranote.util.Result.Error
-import com.ara.aranote.util.Result.Success
+import ara.note.util.CoroutineDispatcherProvider
+import ara.note.util.Result.Error
+import ara.note.util.Result.Success
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext

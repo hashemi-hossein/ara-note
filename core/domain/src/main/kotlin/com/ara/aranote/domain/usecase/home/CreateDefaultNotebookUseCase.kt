@@ -2,8 +2,8 @@ package com.ara.aranote.domain.usecase.home
 
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NotebookRepository
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_NAME
+import ara.note.util.DEFAULT_NOTEBOOK_ID
+import ara.note.util.DEFAULT_NOTEBOOK_NAME
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

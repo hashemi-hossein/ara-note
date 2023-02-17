@@ -1,7 +1,7 @@
 package com.ara.aranote.domain.entity
 
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
-import com.ara.aranote.util.HDateTime
+import ara.note.util.DEFAULT_NOTEBOOK_ID
+import ara.note.util.HDateTime
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 

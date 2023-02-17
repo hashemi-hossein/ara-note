@@ -19,8 +19,8 @@ import androidx.test.filters.SmallTest
 import ara.note.ui.screen.home.HomeScreen
 import ara.note.ui.screen.home.HomeState
 import ara.note.R
-import com.ara.aranote.util.HDateTime
-import com.ara.aranote.util.INVALID_NOTE_ID
+import ara.note.util.HDateTime
+import ara.note.util.INVALID_NOTE_ID
 import com.ara.test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before

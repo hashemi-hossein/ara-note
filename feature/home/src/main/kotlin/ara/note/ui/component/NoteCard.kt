@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.util.HDateTime
+import ara.note.util.HDateTime
 
 @Composable
 fun NoteCard(

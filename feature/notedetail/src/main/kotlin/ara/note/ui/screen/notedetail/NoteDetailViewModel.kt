@@ -9,11 +9,11 @@ import com.ara.aranote.domain.usecase.notedetail.GetLastNoteIdUseCase
 import com.ara.aranote.domain.usecase.notedetail.GetNoteByIdUseCase
 import com.ara.aranote.domain.usecase.notedetail.UpdateNoteUseCase
 import com.ara.aranote.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
-import com.ara.aranote.util.BaseViewModel
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
-import com.ara.aranote.util.INVALID_NOTE_ID
-import com.ara.aranote.util.NAV_ARGUMENT_NOTEBOOK_ID
-import com.ara.aranote.util.NAV_ARGUMENT_NOTE_ID
+import ara.note.util.BaseViewModel
+import ara.note.util.DEFAULT_NOTEBOOK_ID
+import ara.note.util.INVALID_NOTE_ID
+import ara.note.util.NAV_ARGUMENT_NOTEBOOK_ID
+import ara.note.util.NAV_ARGUMENT_NOTE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject

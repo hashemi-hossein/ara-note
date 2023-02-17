@@ -1,4 +1,4 @@
-package com.ara.aranote.util
+package ara.note.util
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

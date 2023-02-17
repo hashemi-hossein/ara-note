@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import aranote.core.alarm.R
 import com.ara.aranote.domain.repository.NoteRepository
-import com.ara.aranote.util.CoroutineDispatcherProvider
-import com.ara.aranote.util.Result
+import ara.note.util.CoroutineDispatcherProvider
+import ara.note.util.Result
 import dagger.hilt.android.AndroidEntryPoint
 import io.karn.notify.Notify
 import kotlinx.coroutines.CoroutineScope

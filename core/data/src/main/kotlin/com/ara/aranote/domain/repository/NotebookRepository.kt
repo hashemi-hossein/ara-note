@@ -1,7 +1,7 @@
 package com.ara.aranote.domain.repository
 
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.util.Result
+import ara.note.util.Result
 import kotlinx.coroutines.flow.Flow
 
 interface NotebookRepository {

@@ -4,7 +4,7 @@ import com.ara.aranote.data.localdatasource.NotebookDao
 import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.util.Mapper
-import com.ara.aranote.util.Result
+import ara.note.util.Result
 import com.ara.test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery

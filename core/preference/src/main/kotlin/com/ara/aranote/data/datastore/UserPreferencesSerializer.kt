@@ -1,7 +1,7 @@
 package com.ara.aranote.data.datastore
 
 import androidx.datastore.core.Serializer
-import com.ara.aranote.util.CoroutineDispatcherProvider
+import ara.note.util.CoroutineDispatcherProvider
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException

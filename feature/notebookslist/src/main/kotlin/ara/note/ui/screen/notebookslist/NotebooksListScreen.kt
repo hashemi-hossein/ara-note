@@ -47,7 +47,7 @@ import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.HSnackbarHost
 import com.ara.aranote.ui.component.showSnackbar
-import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
+import ara.note.util.DEFAULT_NOTEBOOK_ID
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

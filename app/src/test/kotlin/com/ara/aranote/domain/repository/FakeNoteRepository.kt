@@ -1,7 +1,7 @@
 package com.ara.aranote.domain.repository
 
 import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.util.Result
+import ara.note.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow

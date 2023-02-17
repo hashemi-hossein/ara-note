@@ -1,4 +1,4 @@
-package com.ara.aranote.util
+package ara.note.util
 
 /**
  * A Result implementation class.

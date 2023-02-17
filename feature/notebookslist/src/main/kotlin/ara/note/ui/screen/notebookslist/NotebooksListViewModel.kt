@@ -5,7 +5,7 @@ import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
 import com.ara.aranote.domain.usecase.notebookslist.CreateNotebookUseCase
 import com.ara.aranote.domain.usecase.notebookslist.DeleteNotebookUseCase
 import com.ara.aranote.domain.usecase.notebookslist.UpdateNotebookUseCase
-import com.ara.aranote.util.BaseViewModel
+import ara.note.util.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

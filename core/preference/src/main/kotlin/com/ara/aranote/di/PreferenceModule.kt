@@ -7,8 +7,8 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
 import com.ara.aranote.data.datastore.UserPreferences
 import com.ara.aranote.data.datastore.UserPreferencesSerializer
-import com.ara.aranote.util.CoroutineDispatcherProvider
-import com.ara.aranote.util.USER_PREFERENCES_FILE_NAME
+import ara.note.util.CoroutineDispatcherProvider
+import ara.note.util.USER_PREFERENCES_FILE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

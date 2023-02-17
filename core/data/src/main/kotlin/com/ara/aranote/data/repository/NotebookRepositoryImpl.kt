@@ -5,7 +5,7 @@ import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NotebookRepository
 import com.ara.aranote.domain.util.Mapper
-import com.ara.aranote.util.Result
+import ara.note.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
