@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ara.aranote"
+    namespace = "ara.note"
 
     defaultConfig {
         applicationId = "com.ara.aranote"

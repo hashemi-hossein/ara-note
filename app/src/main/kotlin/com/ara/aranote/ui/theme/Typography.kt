@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.ara.aranote.R
+import ara.note.R
 
 val VazirmatnFontFamily = FontFamily(
     Font(resId = R.font.vazirmatn_black, weight = FontWeight.Black),

@@ -1,7 +1,7 @@
 package com.ara.aranote.ui.main
 
 import android.app.Application
-import com.ara.aranote.BuildConfig
+import ara.note.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
