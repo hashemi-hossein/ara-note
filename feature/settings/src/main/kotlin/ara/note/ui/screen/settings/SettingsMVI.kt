@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.settings
+package ara.note.ui.screen.settings
 
 import android.net.Uri
 import com.ara.aranote.data.datastore.UserPreferences

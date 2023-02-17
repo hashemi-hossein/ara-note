@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.settings
+package ara.note.ui.screen.settings
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -25,6 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import ara.note.ui.screen.settings.SettingsIntent.ExportData
+import ara.note.ui.screen.settings.SettingsIntent.ImportData
+import ara.note.ui.screen.settings.SettingsIntent.WriteUserPreferences
 import com.ara.aranote.data.datastore.DarkMode
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.data.datastore.UserPreferences
@@ -46,7 +49,7 @@ fun SettingsScreen(
         userPreferences = uiState.userPreferences,
         setDarkMode = {
             viewModel.sendIntent(
-                SettingsIntent.WriteUserPreferences(
+                WriteUserPreferences(
                     UserPreferences::darkMode,
                     it
                 )
@@ -54,7 +57,7 @@ fun SettingsScreen(
         },
         setIsAutoSaveMode = {
             viewModel.sendIntent(
-                SettingsIntent.WriteUserPreferences(
+                WriteUserPreferences(
                     UserPreferences::isAutoSaveMode,
                     it
                 )
@@ -62,7 +65,7 @@ fun SettingsScreen(
         },
         setIsDoubleBackToExitMode = {
             viewModel.sendIntent(
-                SettingsIntent.WriteUserPreferences(
+                WriteUserPreferences(
                     UserPreferences::isDoubleBackToExitMode,
                     it
                 )
@@ -70,17 +73,17 @@ fun SettingsScreen(
         },
         setNoteViewMode = {
             viewModel.sendIntent(
-                SettingsIntent.WriteUserPreferences(
+                WriteUserPreferences(
                     UserPreferences::noteViewMode,
                     it
                 )
             )
         },
         exportData = { uri, onComplete ->
-            viewModel.sendIntent(SettingsIntent.ExportData(uri, onComplete))
+            viewModel.sendIntent(ExportData(uri, onComplete))
         },
         importData = { uri, onComplete ->
-            viewModel.sendIntent(SettingsIntent.ImportData(uri, onComplete))
+            viewModel.sendIntent(ImportData(uri, onComplete))
         },
     )
 }

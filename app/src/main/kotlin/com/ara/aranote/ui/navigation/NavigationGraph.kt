@@ -18,8 +18,8 @@ import com.ara.aranote.ui.screen.notebookslist.NotebooksListScreen
 import com.ara.aranote.ui.screen.notebookslist.NotebooksListViewModel
 import com.ara.aranote.ui.screen.notedetail.NoteDetailScreen
 import com.ara.aranote.ui.screen.notedetail.NoteDetailViewModel
-import com.ara.aranote.ui.screen.settings.SettingsScreen
-import com.ara.aranote.ui.screen.settings.SettingsViewModel
+import ara.note.ui.screen.settings.SettingsScreen
+import ara.note.ui.screen.settings.SettingsViewModel
 import com.ara.aranote.util.ANIMATION_DURATION
 import com.ara.aranote.util.DEFAULT_NOTEBOOK_ID
 import com.ara.aranote.util.INVALID_NOTE_ID

@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.settings
+package ara.note.ui.screen.settings
 
 import com.ara.aranote.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
 import com.ara.aranote.domain.usecase.userpreferences.WriteUserPreferencesUseCase
