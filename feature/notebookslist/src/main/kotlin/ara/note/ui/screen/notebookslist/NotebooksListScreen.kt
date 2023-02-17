@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.notebookslist
+package ara.note.ui.screen.notebookslist
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +36,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import aranote.feature.notebookslist.R
+import ara.note.ui.screen.notebookslist.DialogType.ADD_NOTEBOOK
+import ara.note.ui.screen.notebookslist.DialogType.EDIT_NOTEBOOK
+import ara.note.ui.screen.notebookslist.DialogType.HIDE
+import ara.note.ui.screen.notebookslist.NotebooksListIntent.AddNotebook
+import ara.note.ui.screen.notebookslist.NotebooksListIntent.DeleteNotebook
+import ara.note.ui.screen.notebookslist.NotebooksListIntent.ModifyNotebook
+import ara.note.notebookslist.R
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.ui.component.HAppBar
 import com.ara.aranote.ui.component.HSnackbarHost
@@ -54,9 +60,9 @@ fun NotebooksListScreen(
     NotebooksListScreen(
         navigateUp = navigateUp,
         uiState = uiState,
-        addNotebook = { viewModel.sendIntent(NotebooksListIntent.AddNotebook(name = it)) },
-        modifyNotebook = { viewModel.sendIntent(NotebooksListIntent.ModifyNotebook(it)) },
-        deleteNotebook = { viewModel.sendIntent(NotebooksListIntent.DeleteNotebook(it)) },
+        addNotebook = { viewModel.sendIntent(AddNotebook(name = it)) },
+        modifyNotebook = { viewModel.sendIntent(ModifyNotebook(it)) },
+        deleteNotebook = { viewModel.sendIntent(DeleteNotebook(it)) },
     )
 }
 
@@ -73,14 +79,14 @@ fun NotebooksListScreen(
     context: Context = LocalContext.current,
 ) {
     var selectedNotebook by remember { mutableStateOf<Notebook?>(null) }
-    var dialogType by remember { mutableStateOf(DialogType.HIDE) }
+    var dialogType by remember { mutableStateOf(HIDE) }
     val setDialogType: (DialogType) -> Unit = { dialogType = it }
 
     Scaffold(
         snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
         topBar = {
             HAppBar(title = "Notebooks", onNavButtonClick = navigateUp, actions = {
-                IconButton(onClick = { setDialogType(DialogType.ADD_NOTEBOOK) }) {
+                IconButton(onClick = { setDialogType(ADD_NOTEBOOK) }) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = stringResource(R.string.cd_add_notebook),
@@ -99,7 +105,7 @@ fun NotebooksListScreen(
                         Row {
                             IconButton(onClick = {
                                 selectedNotebook = notebook
-                                setDialogType(DialogType.EDIT_NOTEBOOK)
+                                setDialogType(EDIT_NOTEBOOK)
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Edit,
@@ -153,10 +159,10 @@ private fun HDialog(
     selectedNotebook: Notebook?,
     modifyNotebook: (Notebook) -> Unit,
 ) {
-    if (dialogType != DialogType.HIDE) {
+    if (dialogType != HIDE) {
         var text by rememberSaveable {
             mutableStateOf(
-                if (dialogType == DialogType.ADD_NOTEBOOK || selectedNotebook == null) {
+                if (dialogType == ADD_NOTEBOOK || selectedNotebook == null) {
                     ""
                 } else {
                     selectedNotebook.name
@@ -164,11 +170,11 @@ private fun HDialog(
             )
         }
         AlertDialog(
-            onDismissRequest = { setDialogType(DialogType.HIDE) },
+            onDismissRequest = { setDialogType(HIDE) },
             confirmButton = {
                 IconButton(onClick = {
-                    setDialogType(DialogType.HIDE)
-                    if (dialogType == DialogType.ADD_NOTEBOOK) {
+                    setDialogType(HIDE)
+                    if (dialogType == ADD_NOTEBOOK) {
                         addNotebook(text)
                     } else if (selectedNotebook != null) modifyNotebook(selectedNotebook.copy(name = text))
                 }) {
@@ -181,7 +187,7 @@ private fun HDialog(
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text(
-                        text = if (dialogType == DialogType.ADD_NOTEBOOK) {
+                        text = if (dialogType == ADD_NOTEBOOK) {
                             stringResource(R.string.add_notebook)
                         } else {
                             stringResource(R.string.edit_notebook)
