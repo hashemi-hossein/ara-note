@@ -63,16 +63,18 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
-import ara.note.notedetail.R
+import ara.note.notedetail.R.string
 import ara.note.ui.screen.notedetail.NoteDetailIntent.ModifyNote
 import ara.note.ui.screen.notedetail.NoteDetailSingleEvent.BackPressed
 import com.ara.aranote.domain.entity.Note
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.ui.component.HAppBar
-import com.ara.aranote.ui.component.HDropdown
-import com.ara.aranote.ui.component.HSnackbarHost
-import com.ara.aranote.ui.component.showSnackbar
+import ara.note.ui.component.HAppBar
+import ara.note.ui.component.HDropdown
+import ara.note.ui.component.HSnackbarHost
+import ara.note.ui.component.showSnackbar
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
+import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DISCARD
+import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.SAVE
 import ara.note.util.DateTimeFormatPattern
 import ara.note.util.HDateTime
 import com.ara.aranote.util.alarm.hManageAlarm
@@ -118,7 +120,7 @@ fun NoteDetailScreen(
                         showSnackbar(
                             scope = scope,
                             snackbarHostState = snackbarHostState,
-                            actionLabel = context.getString(R.string.discard),
+                            actionLabel = context.getString(string.discard),
                         ) {
                             navigateUp()
                         }
@@ -130,7 +132,7 @@ fun NoteDetailScreen(
                             showSnackbar(
                                 scope = scope,
                                 snackbarHostState = snackbarHostState,
-                                actionLabel = context.getString(R.string.delete),
+                                actionLabel = context.getString(string.delete),
                             ) {
                                 deleteOrSaveOperation()
                             }
@@ -207,7 +209,7 @@ internal fun NoteDetailScreen(
             snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
             topBar = {
                 HAppBar(
-                    title = /*if (isNewNote) stringResource(R.string.add_note) else*/ "",
+                    title = /*if (isNewNote) stringResource(string.add_note) else*/ "",
                     icon = if (isAutoNoteSaving) Icons.Default.Done else Icons.Default.ArrowBack,
                     actions = {
                         HAppBarActions(
@@ -224,7 +226,7 @@ internal fun NoteDetailScreen(
                     },
                     onNavButtonClick = {
                         keyboardController?.hide()
-                        onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD)
+                        onBackPressed(if (isAutoNoteSaving) SAVE else DISCARD)
                     },
                 )
             },
@@ -235,7 +237,7 @@ internal fun NoteDetailScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Default.Save,
-                            contentDescription = stringResource(R.string.cd_save),
+                            contentDescription = stringResource(string.cd_save),
                         )
                     }
                 }
@@ -300,7 +302,7 @@ private fun HBody(
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = MaterialTheme.colorScheme.background,
             ),
-            placeholder = { Text(text = stringResource(id = R.string.type_here)) },
+            placeholder = { Text(text = stringResource(id = string.type_here)) },
         )
 
         LaunchedEffect(isNewNote) {
@@ -333,9 +335,9 @@ private fun HAppBarActions(
         Icon(
             imageVector = Icons.Default.Delete,
             contentDescription = if (!isNewNote) {
-                stringResource(R.string.cd_delete)
+                stringResource(string.cd_delete)
             } else {
-                stringResource(R.string.cd_discard)
+                stringResource(string.cd_discard)
             },
         )
     }
@@ -346,9 +348,9 @@ private fun HAppBarActions(
         Icon(
             imageVector = if (doesHasAlarm) Icons.Default.Alarm else Icons.Default.AlarmAdd,
             contentDescription = if (doesHasAlarm) {
-                stringResource(R.string.cd_edit_note_alarm)
+                stringResource(string.cd_edit_note_alarm)
             } else {
-                stringResource(R.string.cd_add_alarm)
+                stringResource(string.cd_add_alarm)
             },
         )
     }
@@ -363,7 +365,7 @@ private fun HAppBarActions(
         }) {
             Icon(
                 imageVector = Icons.Default.AlarmOff,
-                contentDescription = stringResource(R.string.cd_delete_alarm),
+                contentDescription = stringResource(string.cd_delete_alarm),
             )
         }
     }
@@ -501,7 +503,7 @@ private fun HBottomSheet(
             }) {
                 Icon(
                     imageVector = Icons.Default.Undo,
-                    contentDescription = stringResource(R.string.cd_reset_date_and_time),
+                    contentDescription = stringResource(string.cd_reset_date_and_time),
                 )
             }
             OutlinedButton(
@@ -518,8 +520,8 @@ private fun HBottomSheet(
                         showSnackbar(
                             scope = scope,
                             snackbarHostState = snackbarHostState,
-                            message = context.getString(R.string.invalid_date_and_time),
-                            actionLabel = context.getString(R.string.ok),
+                            message = context.getString(string.invalid_date_and_time),
+                            actionLabel = context.getString(string.ok),
                         )
                     }
                     scope.launch { modalBottomSheetState.hide() }
@@ -527,7 +529,7 @@ private fun HBottomSheet(
             ) {
                 Icon(
                     imageVector = Icons.Default.Done,
-                    contentDescription = stringResource(R.string.cd_set_alarm),
+                    contentDescription = stringResource(string.cd_set_alarm),
                 )
             }
         }

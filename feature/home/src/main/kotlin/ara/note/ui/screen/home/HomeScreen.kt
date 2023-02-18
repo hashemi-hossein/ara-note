@@ -38,18 +38,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import ara.note.home.R
+import ara.note.home.R.string
 import ara.note.ui.screen.home.HomeIntent.ChangeNotebook
 import ara.note.ui.screen.home.HomeIntent.ModifySearchText
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.ui.component.AppBarNavButtonType
+import ara.note.ui.component.AppBarNavButtonType.MENU
 import ara.note.ui.component.AppDrawer
-import com.ara.aranote.ui.component.HAppBar
-import com.ara.aranote.ui.component.HSnackbarHost
+import ara.note.ui.component.HAppBar
+import ara.note.ui.component.HSnackbarHost
 import ara.note.ui.component.NoteCard
 import ara.note.ui.component.SearchAppBar
-import com.ara.aranote.ui.component.showSnackbar
+import ara.note.ui.component.showSnackbar
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.INVALID_NOTE_ID
 import kotlinx.coroutines.CoroutineScope
@@ -111,8 +111,8 @@ internal fun HomeScreen(
                     showSnackbar(
                         scope = scope,
                         snackbarHostState = snackbarHostState,
-                        message = context.getString(R.string.press_back_again_to_exit),
-                        actionLabel = context.getString(R.string.exit),
+                        message = context.getString(string.press_back_again_to_exit),
+                        actionLabel = context.getString(string.exit),
                         timeout = 2000,
                     ) {
                         (context as AppCompatActivity).finish()
@@ -153,8 +153,8 @@ internal fun HomeScreen(
                     if (it) {
                         HAppBar(
                             title = uiState.notebooks.find { it.id == uiState.currentNotebookId }?.name
-                                ?: stringResource(id = R.string.app_name),
-                            appBarNavButtonType = AppBarNavButtonType.MENU,
+                                ?: stringResource(id = string.app_name),
+                            appBarNavButtonType = MENU,
                             actions = {
                                 IconButton(onClick = { modifySearchText("") }) {
                                     Icon(
@@ -180,7 +180,7 @@ internal fun HomeScreen(
                 }) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.cd_add_note),
+                        contentDescription = stringResource(string.cd_add_note),
                     )
                 }
             },

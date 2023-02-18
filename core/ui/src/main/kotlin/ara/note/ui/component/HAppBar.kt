@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.component
+package ara.note.ui.component
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.RowScope
@@ -14,7 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import aranote.core.ui.R
+import ara.note.ui.R.string
+import ara.note.ui.component.AppBarNavButtonType.BACK
 
 enum class AppBarNavButtonType {
     MENU, BACK
@@ -24,8 +25,8 @@ enum class AppBarNavButtonType {
 @Composable
 fun HAppBar(
     title: String = "",
-    appBarNavButtonType: AppBarNavButtonType = AppBarNavButtonType.BACK,
-    icon: ImageVector = if (appBarNavButtonType == AppBarNavButtonType.BACK) {
+    appBarNavButtonType: AppBarNavButtonType = BACK,
+    icon: ImageVector = if (appBarNavButtonType == BACK) {
         Icons.Filled.ArrowBack
     } else {
         Icons.Filled.Menu
@@ -48,10 +49,10 @@ fun HAppBar(
                 Icon(
                     imageVector = icon,
                     contentDescription =
-                    if (appBarNavButtonType == AppBarNavButtonType.BACK) {
-                        stringResource(R.string.cd_happbar_back)
+                    if (appBarNavButtonType == BACK) {
+                        stringResource(string.cd_happbar_back)
                     } else {
-                        stringResource(R.string.cd_happbar_menu)
+                        stringResource(string.cd_happbar_menu)
                     },
                 )
             }

@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.component
+package ara.note.ui.component
 
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn

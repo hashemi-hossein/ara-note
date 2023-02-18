@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import ara.note.home.R
 import ara.note.home.R.string
 import com.ara.aranote.domain.entity.Notebook
 
@@ -52,13 +51,13 @@ fun AppDrawer(
                     .padding(top = 15.dp),
             ) {
                 Text(
-                    text = stringResource(R.string.notebooks),
+                    text = stringResource(string.notebooks),
                     style = MaterialTheme.typography.titleMedium,
                 )
                 IconButton(onClick = { navigateToNotebooksScreen() }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.cd_goto_notebooks_screen),
+                        contentDescription = stringResource(string.cd_goto_notebooks_screen),
                     )
                 }
             }

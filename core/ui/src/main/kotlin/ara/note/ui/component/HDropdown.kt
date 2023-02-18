@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.component
+package ara.note.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import aranote.core.ui.R
+import ara.note.ui.R.string
 
 @Composable
 fun HDropdown(
@@ -43,9 +43,9 @@ fun HDropdown(
             Icon(
                 imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
                 contentDescription = if (expanded) {
-                    stringResource(R.string.cd_close_dropdown)
+                    stringResource(string.cd_close_dropdown)
                 } else {
-                    stringResource(R.string.cd_open_dropdown)
+                    stringResource(string.cd_open_dropdown)
                 },
             )
         }

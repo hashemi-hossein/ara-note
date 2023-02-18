@@ -42,11 +42,11 @@ import ara.note.ui.screen.notebookslist.DialogType.HIDE
 import ara.note.ui.screen.notebookslist.NotebooksListIntent.AddNotebook
 import ara.note.ui.screen.notebookslist.NotebooksListIntent.DeleteNotebook
 import ara.note.ui.screen.notebookslist.NotebooksListIntent.ModifyNotebook
-import ara.note.notebookslist.R
+import ara.note.notebookslist.R.string
 import com.ara.aranote.domain.entity.Notebook
-import com.ara.aranote.ui.component.HAppBar
-import com.ara.aranote.ui.component.HSnackbarHost
-import com.ara.aranote.ui.component.showSnackbar
+import ara.note.ui.component.HAppBar
+import ara.note.ui.component.HSnackbarHost
+import ara.note.ui.component.showSnackbar
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import kotlinx.coroutines.CoroutineScope
 
@@ -89,7 +89,7 @@ fun NotebooksListScreen(
                 IconButton(onClick = { setDialogType(ADD_NOTEBOOK) }) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.cd_add_notebook),
+                        contentDescription = stringResource(string.cd_add_notebook),
                     )
                 }
             })
@@ -109,7 +109,7 @@ fun NotebooksListScreen(
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Edit,
-                                    contentDescription = stringResource(R.string.edit_notebook),
+                                    contentDescription = stringResource(string.edit_notebook),
                                     modifier = Modifier.alpha(0.3f),
                                 )
                             }
@@ -119,14 +119,14 @@ fun NotebooksListScreen(
                                         scope,
                                         snackbarHostState,
                                         message = "Do you confirm deleting ${notebook.name} notebook and all its notes?",
-                                        actionLabel = context.getString(R.string.delete),
+                                        actionLabel = context.getString(string.delete),
                                     ) {
                                         deleteNotebook(notebook)
                                     }
                                 }) {
                                     Icon(
                                         imageVector = Icons.Default.Delete,
-                                        contentDescription = stringResource(R.string.cd_delete_notebook),
+                                        contentDescription = stringResource(string.cd_delete_notebook),
                                         modifier = Modifier.alpha(0.3f),
                                     )
                                 }
@@ -180,7 +180,7 @@ private fun HDialog(
                 }) {
                     Icon(
                         imageVector = Icons.Default.Done,
-                        contentDescription = stringResource(R.string.cd_dialog_confirm),
+                        contentDescription = stringResource(string.cd_dialog_confirm),
                     )
                 }
             },
@@ -188,9 +188,9 @@ private fun HDialog(
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text(
                         text = if (dialogType == ADD_NOTEBOOK) {
-                            stringResource(R.string.add_notebook)
+                            stringResource(string.add_notebook)
                         } else {
-                            stringResource(R.string.edit_notebook)
+                            stringResource(string.edit_notebook)
                         },
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,

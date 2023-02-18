@@ -31,10 +31,10 @@ import ara.note.ui.screen.settings.SettingsIntent.WriteUserPreferences
 import com.ara.aranote.data.datastore.DarkMode
 import com.ara.aranote.data.datastore.NoteViewMode
 import com.ara.aranote.data.datastore.UserPreferences
-import com.ara.aranote.ui.component.HAppBar
-import com.ara.aranote.ui.component.HDropdown
-import com.ara.aranote.ui.component.HSnackbarHost
-import com.ara.aranote.ui.component.showSnackbar
+import ara.note.ui.component.HAppBar
+import ara.note.ui.component.HDropdown
+import ara.note.ui.component.HSnackbarHost
+import ara.note.ui.component.showSnackbar
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
