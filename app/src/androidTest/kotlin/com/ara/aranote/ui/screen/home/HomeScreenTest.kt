@@ -16,12 +16,12 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import ara.note.R
+import ara.note.test.TestUtil
 import ara.note.ui.screen.home.HomeScreen
 import ara.note.ui.screen.home.HomeState
-import ara.note.R
 import ara.note.util.HDateTime
 import ara.note.util.INVALID_NOTE_ID
-import ara.note.test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule

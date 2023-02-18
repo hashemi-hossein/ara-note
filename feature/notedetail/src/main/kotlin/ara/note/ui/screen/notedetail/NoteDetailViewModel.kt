@@ -2,12 +2,12 @@ package ara.note.ui.screen.notedetail
 
 import androidx.lifecycle.SavedStateHandle
 import ara.note.domain.entity.Note
-import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
 import ara.note.domain.usecase.note.CreateNoteUseCase
 import ara.note.domain.usecase.note.DeleteNoteUseCase
 import ara.note.domain.usecase.note.GetLastNoteIdUseCase
 import ara.note.domain.usecase.note.GetNoteByIdUseCase
 import ara.note.domain.usecase.note.UpdateNoteUseCase
+import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
 import ara.note.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
 import ara.note.util.BaseViewModel
 import ara.note.util.DEFAULT_NOTEBOOK_ID

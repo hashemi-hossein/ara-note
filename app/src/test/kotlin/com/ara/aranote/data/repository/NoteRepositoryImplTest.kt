@@ -5,8 +5,8 @@ import ara.note.data.model.NoteModel
 import ara.note.data.repository.NoteRepositoryImpl
 import ara.note.domain.entity.Note
 import ara.note.domain.util.Mapper
-import ara.note.util.Result
 import ara.note.test.TestUtil
+import ara.note.util.Result
 import com.google.common.truth.Truth.assertThat
 import io.mockk.Called
 import io.mockk.coEvery

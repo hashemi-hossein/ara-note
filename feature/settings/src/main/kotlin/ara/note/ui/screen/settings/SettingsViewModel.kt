@@ -1,9 +1,9 @@
 package ara.note.ui.screen.settings
 
+import ara.note.backup.HDataBackup
 import ara.note.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
 import ara.note.domain.usecase.userpreferences.WriteUserPreferencesUseCase
 import ara.note.util.BaseViewModel
-import ara.note.backup.HDataBackup
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

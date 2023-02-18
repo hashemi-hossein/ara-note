@@ -36,17 +36,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ara.note.domain.entity.Notebook
+import ara.note.notebookslist.R.string
+import ara.note.ui.component.HAppBar
+import ara.note.ui.component.HSnackbarHost
+import ara.note.ui.component.showSnackbar
 import ara.note.ui.screen.notebookslist.DialogType.ADD_NOTEBOOK
 import ara.note.ui.screen.notebookslist.DialogType.EDIT_NOTEBOOK
 import ara.note.ui.screen.notebookslist.DialogType.HIDE
 import ara.note.ui.screen.notebookslist.NotebooksListIntent.AddNotebook
 import ara.note.ui.screen.notebookslist.NotebooksListIntent.DeleteNotebook
 import ara.note.ui.screen.notebookslist.NotebooksListIntent.ModifyNotebook
-import ara.note.notebookslist.R.string
-import ara.note.domain.entity.Notebook
-import ara.note.ui.component.HAppBar
-import ara.note.ui.component.HSnackbarHost
-import ara.note.ui.component.showSnackbar
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import kotlinx.coroutines.CoroutineScope
 

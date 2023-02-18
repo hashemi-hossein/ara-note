@@ -25,9 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import ara.note.ui.screen.settings.SettingsIntent.ExportData
-import ara.note.ui.screen.settings.SettingsIntent.ImportData
-import ara.note.ui.screen.settings.SettingsIntent.WriteUserPreferences
 import ara.note.data.datastore.DarkMode
 import ara.note.data.datastore.NoteViewMode
 import ara.note.data.datastore.UserPreferences
@@ -35,6 +32,9 @@ import ara.note.ui.component.HAppBar
 import ara.note.ui.component.HDropdown
 import ara.note.ui.component.HSnackbarHost
 import ara.note.ui.component.showSnackbar
+import ara.note.ui.screen.settings.SettingsIntent.ExportData
+import ara.note.ui.screen.settings.SettingsIntent.ImportData
+import ara.note.ui.screen.settings.SettingsIntent.WriteUserPreferences
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -51,32 +51,32 @@ fun SettingsScreen(
             viewModel.sendIntent(
                 WriteUserPreferences(
                     UserPreferences::darkMode,
-                    it
-                )
+                    it,
+                ),
             )
         },
         setIsAutoSaveMode = {
             viewModel.sendIntent(
                 WriteUserPreferences(
                     UserPreferences::isAutoSaveMode,
-                    it
-                )
+                    it,
+                ),
             )
         },
         setIsDoubleBackToExitMode = {
             viewModel.sendIntent(
                 WriteUserPreferences(
                     UserPreferences::isDoubleBackToExitMode,
-                    it
-                )
+                    it,
+                ),
             )
         },
         setNoteViewMode = {
             viewModel.sendIntent(
                 WriteUserPreferences(
                     UserPreferences::noteViewMode,
-                    it
-                )
+                    it,
+                ),
             )
         },
         exportData = { uri, onComplete ->

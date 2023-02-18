@@ -17,8 +17,9 @@ class UpdateNoteUseCase @Inject constructor(
 //            Timber.tag(TAG).d("note = %s", state.note.toString())
             val noteToUpdate = if (oldNote.text != note.text) {
                 note.copy(addedDateTime = HDateTime.getCurrentDateTime())
-            } else
+            } else {
                 note
+            }
             noteRepository.update(noteToUpdate) is Result.Success
         }
     }

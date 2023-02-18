@@ -53,7 +53,7 @@ fun SearchAppBar(
                             IconButton(onClick = { modifySearchText(null) }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(string.cd_close_search)
+                                    contentDescription = stringResource(string.cd_close_search),
                                 )
                             }
                         },
@@ -61,14 +61,14 @@ fun SearchAppBar(
                             Box(
                                 Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceVariant,
-                                    shape = CircleShape
-                                )
+                                    shape = CircleShape,
+                                ),
                             )
-                        }
+                        },
                     )
-                }
+                },
             )
-        }
+        },
     )
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()

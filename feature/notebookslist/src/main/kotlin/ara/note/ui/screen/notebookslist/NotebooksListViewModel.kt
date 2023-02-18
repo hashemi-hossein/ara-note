@@ -1,9 +1,9 @@
 package ara.note.ui.screen.notebookslist
 
 import ara.note.domain.entity.Notebook
-import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
 import ara.note.domain.usecase.notebook.CreateNotebookUseCase
 import ara.note.domain.usecase.notebook.DeleteNotebookUseCase
+import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
 import ara.note.domain.usecase.notebook.UpdateNotebookUseCase
 import ara.note.util.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
