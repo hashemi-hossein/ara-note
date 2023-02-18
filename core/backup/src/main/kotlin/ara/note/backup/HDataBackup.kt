@@ -34,8 +34,9 @@ class HDataBackup
     @Serializable
     data class HBackup(val notebooks: List<Notebook>, val notes: List<Note>)
 
-    suspend fun exportData(uri: Uri, onComplete: () -> Unit) =
+    suspend fun exportData(uri: Uri, onComplete: (result: String) -> Unit) =
         withContext(coroutineDispatcherProvider.io) {
+            var result: String
             try {
                 val notebooks = notebookRepository.observe().first()
                 val notes = noteRepository.observe().first()
@@ -47,29 +48,32 @@ class HDataBackup
                         outputStream.write(exportedData.toByteArray())
                     }
                 }
+                result = "Success"
             } catch (e: IOException) {
                 e.printStackTrace()
+                result = "Error\n${e.localizedMessage}"
             }
-            onComplete()
+            onComplete(result)
         }
 
-    suspend fun importData(uri: Uri, onComplete: () -> Unit) =
+    suspend fun importData(uri: Uri, onComplete: (result: String) -> Unit) =
         withContext(coroutineDispatcherProvider.io) {
+            var result: String
             try {
-                var string = ""
+                var stringBackup = ""
                 context.contentResolver.openInputStream(uri)?.use { inputStream ->
                     BufferedReader(InputStreamReader(inputStream)).use { reader ->
-                        string = reader.readText()
+                        stringBackup = reader.readText()
                     }
                 }
-                val backup = Json.decodeFromString<HBackup>(string)
+                val backup = Json.decodeFromString<HBackup>(stringBackup)
                 val notebooks = notebookRepository.observe().first()
                 for (notebook in backup.notebooks) {
                     if (!notebooks.contains(notebook)) {
                         notebookRepository.insert(notebook).let {
                             when (it) {
                                 is Success -> it.data
-                                is Error -> error("INVALID_NOTEBOOK_ID")
+                                is Error -> error("Error in importing one notebook\n" + it.errorMessage)
                             }
                         }
                     }
@@ -80,16 +84,22 @@ class HDataBackup
                         noteRepository.insert(note).let {
                             when (it) {
                                 is Success -> it.data
-                                is Error -> error("INVALID_NOTE_ID")
+                                is Error -> error("Error in importing one note\n" + it.errorMessage)
                             }
                         }
                     }
                 }
+                result = "Success"
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
+                result = "Error\n${e.localizedMessage}"
             } catch (e: IOException) {
                 e.printStackTrace()
+                result = "Error\n${e.localizedMessage}"
+            } catch (e: Exception) {
+                e.printStackTrace()
+                result = "Error\n${e.localizedMessage}"
             }
-            onComplete()
+            onComplete(result)
         }
 }

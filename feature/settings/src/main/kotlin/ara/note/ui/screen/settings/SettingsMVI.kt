@@ -20,8 +20,8 @@ sealed interface SettingsIntent : MviIntent {
         val value: T,
     ) : SettingsIntent
 
-    data class ImportData(val uri: Uri, val onComplete: () -> Unit) : SettingsIntent
-    data class ExportData(val uri: Uri, val onComplete: () -> Unit) : SettingsIntent
+    data class ImportData(val uri: Uri, val onComplete: (result: String) -> Unit) : SettingsIntent
+    data class ExportData(val uri: Uri, val onComplete: (result: String) -> Unit) : SettingsIntent
 }
 
 sealed interface SettingsSingleEvent : MviSingleEvent

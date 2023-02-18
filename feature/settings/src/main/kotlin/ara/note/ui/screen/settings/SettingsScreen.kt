@@ -98,8 +98,8 @@ internal fun SettingsScreen(
     setIsAutoSaveMode: (Boolean) -> Unit,
     setIsDoubleBackToExitMode: (Boolean) -> Unit,
     setNoteViewMode: (NoteViewMode) -> Unit,
-    exportData: (Uri, () -> Unit) -> Unit,
-    importData: (Uri, () -> Unit) -> Unit,
+    exportData: (Uri, (result: String) -> Unit) -> Unit,
+    importData: (Uri, (result: String) -> Unit) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
 ) {
@@ -159,7 +159,7 @@ internal fun SettingsScreen(
                             showSnackbar(
                                 scope = scope,
                                 snackbarHostState = snackbarHostState,
-                                message = "Operation was done",
+                                message = it,
                                 actionLabel = "OK",
                             )
                         }
@@ -186,7 +186,7 @@ internal fun SettingsScreen(
                             showSnackbar(
                                 scope = scope,
                                 snackbarHostState = snackbarHostState,
-                                message = "Operation was done",
+                                message = it,
                                 actionLabel = "OK",
                             )
                         }
