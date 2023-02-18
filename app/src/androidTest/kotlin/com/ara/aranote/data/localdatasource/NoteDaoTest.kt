@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import ara.note.data.localdatasource.NoteDao
-import ara.note.data.localdatasource.NoteDatabase
+import ara.note.data.localdatasource.AppDatabase
 import ara.note.data.model.NoteModel
 import ara.note.test.TestUtil
 import com.google.common.truth.Truth.assertThat
@@ -22,7 +22,7 @@ import java.io.IOException
 @SmallTest
 class NoteDaoTest {
 
-    private lateinit var database: NoteDatabase
+    private lateinit var database: AppDatabase
     private lateinit var systemUnderTest: NoteDao
 
     @Before
@@ -30,7 +30,7 @@ class NoteDaoTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(
             context,
-            NoteDatabase::class.java,
+            AppDatabase::class.java,
         ).allowMainThreadQueries().build()
         systemUnderTest = database.getNoteDao()
     }

@@ -3,7 +3,7 @@ package com.ara.aranote.di
 import android.content.Context
 import androidx.room.Room
 import ara.note.data.localdatasource.NoteDao
-import ara.note.data.localdatasource.NoteDatabase
+import ara.note.data.localdatasource.AppDatabase
 import ara.note.di.DatabaseModule
 import dagger.Module
 import dagger.Provides
@@ -21,13 +21,13 @@ object TestDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): NoteDatabase =
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
         Room.inMemoryDatabaseBuilder(
             context,
-            NoteDatabase::class.java,
+            AppDatabase::class.java,
         ).build()
 
     @Singleton
     @Provides
-    fun provideDao(database: NoteDatabase): NoteDao = database.getNoteDao()
+    fun provideDao(database: AppDatabase): NoteDao = database.getNoteDao()
 }

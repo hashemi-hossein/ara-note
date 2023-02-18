@@ -12,13 +12,13 @@ import ara.note.data.model.NotebookModel
     exportSchema = true,
 )
 @TypeConverters(DatabaseTypeConverters::class)
-abstract class NoteDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getNoteDao(): NoteDao
 
     abstract fun getNotebookDao(): NotebookDao
 
     companion object {
-        const val DATABASE_NAME = "note_database"
+        const val DATABASE_NAME = "app_database.sqlite"
     }
 }
