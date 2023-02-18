@@ -4,8 +4,8 @@ import android.content.Context
 import android.net.Uri
 import ara.note.domain.entity.Note
 import ara.note.domain.entity.Notebook
-import com.ara.aranote.domain.repository.NoteRepository
-import com.ara.aranote.domain.repository.NotebookRepository
+import ara.note.domain.repository.NoteRepository
+import ara.note.domain.repository.NotebookRepository
 import ara.note.util.CoroutineDispatcherProvider
 import ara.note.util.Result.Error
 import ara.note.util.Result.Success

@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import aranote.core.alarm.R
-import com.ara.aranote.domain.repository.NoteRepository
+import ara.note.domain.repository.NoteRepository
 import ara.note.util.CoroutineDispatcherProvider
 import ara.note.util.Result
 import dagger.hilt.android.AndroidEntryPoint

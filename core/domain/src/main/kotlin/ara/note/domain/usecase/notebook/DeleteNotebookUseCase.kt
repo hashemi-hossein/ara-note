@@ -1,8 +1,8 @@
 package ara.note.domain.usecase.notebook
 
 import ara.note.domain.entity.Notebook
-import com.ara.aranote.domain.repository.NoteRepository
-import com.ara.aranote.domain.repository.NotebookRepository
+import ara.note.domain.repository.NoteRepository
+import ara.note.domain.repository.NotebookRepository
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

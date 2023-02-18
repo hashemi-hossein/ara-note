@@ -1,8 +1,8 @@
-package com.ara.aranote.data.util
+package ara.note.data.util
 
 import ara.note.data.model.NotebookModel
 import ara.note.domain.entity.Notebook
-import com.ara.aranote.domain.util.Mapper
+import ara.note.domain.util.Mapper
 
 /**
  * Based on CLEAN Architecture:

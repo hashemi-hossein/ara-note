@@ -2,8 +2,9 @@ package com.ara.aranote.data.repository
 
 import ara.note.data.localdatasource.NoteDao
 import ara.note.data.model.NoteModel
+import ara.note.data.repository.NoteRepositoryImpl
 import ara.note.domain.entity.Note
-import com.ara.aranote.domain.util.Mapper
+import ara.note.domain.util.Mapper
 import ara.note.util.Result
 import ara.note.test.TestUtil
 import com.google.common.truth.Truth.assertThat

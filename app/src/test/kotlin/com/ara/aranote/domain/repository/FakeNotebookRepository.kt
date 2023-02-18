@@ -1,6 +1,7 @@
 package com.ara.aranote.domain.repository
 
 import ara.note.domain.entity.Notebook
+import ara.note.domain.repository.NotebookRepository
 import ara.note.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

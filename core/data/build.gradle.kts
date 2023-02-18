@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "aranote.core.data"
+    namespace = "ara.note.repository"
 }
 
 dependencies {

@@ -1,7 +1,7 @@
 package ara.note.domain.usecase.notebook
 
 import ara.note.domain.entity.Notebook
-import com.ara.aranote.domain.repository.NotebookRepository
+import ara.note.domain.repository.NotebookRepository
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.DEFAULT_NOTEBOOK_NAME
 import kotlinx.coroutines.flow.first

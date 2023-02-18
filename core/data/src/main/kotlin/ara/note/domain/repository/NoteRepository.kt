@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.repository
+package ara.note.domain.repository
 
 import ara.note.domain.entity.Note
 import ara.note.util.Result

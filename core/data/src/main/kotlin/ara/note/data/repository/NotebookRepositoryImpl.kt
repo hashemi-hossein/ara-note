@@ -1,10 +1,10 @@
-package com.ara.aranote.data.repository
+package ara.note.data.repository
 
 import ara.note.data.localdatasource.NotebookDao
 import ara.note.data.model.NotebookModel
 import ara.note.domain.entity.Notebook
-import com.ara.aranote.domain.repository.NotebookRepository
-import com.ara.aranote.domain.util.Mapper
+import ara.note.domain.repository.NotebookRepository
+import ara.note.domain.util.Mapper
 import ara.note.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

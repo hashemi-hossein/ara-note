@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.util
+package ara.note.domain.util
 
 interface Mapper<T, R> {
 

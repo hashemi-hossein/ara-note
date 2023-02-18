@@ -1,6 +1,6 @@
 package ara.note.domain.usecase.note
 
-import com.ara.aranote.domain.repository.NoteRepository
+import ara.note.domain.repository.NoteRepository
 import ara.note.util.Result
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package ara.note.domain.usecase.notebook
 
-import com.ara.aranote.domain.repository.NotebookRepository
+import ara.note.domain.repository.NotebookRepository
 import javax.inject.Inject
 
 class ObserveNotebooksUseCase @Inject constructor(

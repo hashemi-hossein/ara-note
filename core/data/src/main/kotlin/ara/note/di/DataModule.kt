@@ -1,18 +1,18 @@
-package com.ara.aranote.di
+package ara.note.di
 
 import ara.note.data.localdatasource.NoteDao
 import ara.note.data.localdatasource.NotebookDao
 import ara.note.data.model.NoteModel
 import ara.note.data.model.NotebookModel
-import com.ara.aranote.data.repository.NoteRepositoryImpl
-import com.ara.aranote.data.repository.NotebookRepositoryImpl
-import com.ara.aranote.data.util.NoteDomainMapper
-import com.ara.aranote.data.util.NotebookDomainMapper
+import ara.note.data.repository.NoteRepositoryImpl
+import ara.note.data.repository.NotebookRepositoryImpl
+import ara.note.data.util.NoteDomainMapper
+import ara.note.data.util.NotebookDomainMapper
 import ara.note.domain.entity.Note
 import ara.note.domain.entity.Notebook
-import com.ara.aranote.domain.repository.NoteRepository
-import com.ara.aranote.domain.repository.NotebookRepository
-import com.ara.aranote.domain.util.Mapper
+import ara.note.domain.repository.NoteRepository
+import ara.note.domain.repository.NotebookRepository
+import ara.note.domain.util.Mapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
