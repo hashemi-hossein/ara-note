@@ -67,28 +67,27 @@ class HDataBackup
                     }
                 }
                 val backup = Json.decodeFromString<HBackup>(stringBackup)
-                val notebooks = notebookRepository.observe().first()
+
+                notebookRepository.observe().first().forEach { notebookRepository.delete(it) }
                 for (notebook in backup.notebooks) {
-                    if (!notebooks.contains(notebook)) {
-                        notebookRepository.insert(notebook).let {
-                            when (it) {
-                                is Success -> it.data
-                                is Error -> error("Error in importing one notebook\n" + it.errorMessage)
-                            }
+                    notebookRepository.insert(notebook).let {
+                        when (it) {
+                            is Success -> it.data
+                            is Error -> error("Error in importing one notebook\n" + it.errorMessage)
                         }
                     }
                 }
-                val notes = noteRepository.observe().first()
+
+                noteRepository.observe().first().forEach { noteRepository.delete(it) }
                 for (note in backup.notes) {
-                    if (!notes.contains(note)) {
-                        noteRepository.insert(note).let {
-                            when (it) {
-                                is Success -> it.data
-                                is Error -> error("Error in importing one note\n" + it.errorMessage)
-                            }
+                    noteRepository.insert(note).let {
+                        when (it) {
+                            is Success -> it.data
+                            is Error -> error("Error in importing one note\n" + it.errorMessage)
                         }
                     }
                 }
+
                 result = "Success"
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
