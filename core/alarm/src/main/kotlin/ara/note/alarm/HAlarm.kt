@@ -1,4 +1,4 @@
-package com.ara.aranote.util.alarm
+package ara.note.alarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent

@@ -77,7 +77,7 @@ import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DISCARD
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.SAVE
 import ara.note.util.DateTimeFormatPattern
 import ara.note.util.HDateTime
-import com.ara.aranote.util.alarm.hManageAlarm
+import ara.note.alarm.hManageAlarm
 import ara.note.util.change
 import ara.note.util.millis
 import ara.note.util.minus

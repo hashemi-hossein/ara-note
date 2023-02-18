@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "aranote.core.alarm"
+    namespace = "ara.note.alarm"
 }
 
 dependencies {

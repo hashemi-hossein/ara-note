@@ -6,10 +6,10 @@
 
     <application>
         <receiver
-            android:name="com.ara.aranote.util.alarm.AlarmReceiver"
+            android:name="ara.note.alarm.AlarmReceiver"
             android:enabled="true" />
         <receiver
-            android:name="com.ara.aranote.util.alarm.BootReceiver"
+            android:name="ara.note.alarm.BootReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
