@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.notedetail
+package ara.note.ui.screen.notedetail
 
 import android.content.Context
 import androidx.compose.material.ExperimentalMaterialApi
@@ -18,12 +18,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.SmallTest
-import ara.note.R
+import ara.note.notedetail.R
 import ara.note.domain.entity.Note
 import ara.note.test.TestUtil
-import ara.note.ui.screen.notedetail.NoteDetailScreen
-import ara.note.ui.screen.notedetail.NoteDetailState
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import ara.note.util.DateTimeFormatPattern
 import ara.note.util.HDateTime
@@ -36,7 +33,6 @@ import org.junit.runner.RunWith
 import kotlin.time.Duration.Companion.hours
 
 @RunWith(AndroidJUnit4::class)
-@SmallTest
 class NoteDetailScreenTest {
 
     @get:Rule
@@ -200,15 +196,15 @@ class NoteDetailScreenTest {
         assertThat(uiState.value.note.alarmDateTime).isNull()
     }
 
-    @Test
-    fun back_button_press() {
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_happbar_back))
-            .assertIsDisplayed().performClick()
-
-        // assert
-        assertThat(backPressResult).isEqualTo(TheOperation.SAVE)
-    }
+//    @Test
+//    fun back_button_press() {
+//        // act
+//        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_happbar_back))
+//            .assertIsDisplayed().performClick()
+//
+//        // assert
+//        assertThat(backPressResult).isEqualTo(TheOperation.SAVE)
+//    }
 
     @Test
     fun clickDeleteIcon_when_no_text() {

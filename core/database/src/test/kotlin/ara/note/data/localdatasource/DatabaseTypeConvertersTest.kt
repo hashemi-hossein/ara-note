@@ -1,6 +1,5 @@
-package com.ara.aranote.data.localdatasource
+package ara.note.data.localdatasource
 
-import ara.note.data.localdatasource.DatabaseTypeConverters
 import com.google.common.truth.Truth.assertThat
 import kotlinx.datetime.LocalDateTime
 import org.junit.Test

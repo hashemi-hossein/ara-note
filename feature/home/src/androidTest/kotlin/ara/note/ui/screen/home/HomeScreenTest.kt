@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.screen.home
+package ara.note.ui.screen.home
 
 import android.content.Context
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,11 +15,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.SmallTest
-import ara.note.R
+import ara.note.home.R
 import ara.note.test.TestUtil
-import ara.note.ui.screen.home.HomeScreen
-import ara.note.ui.screen.home.HomeState
 import ara.note.util.HDateTime
 import ara.note.util.INVALID_NOTE_ID
 import com.google.common.truth.Truth.assertThat
@@ -29,7 +26,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-@SmallTest
 class HomeScreenTest {
 
     @get:Rule
@@ -72,6 +68,8 @@ class HomeScreenTest {
                     uiState.value = uiState.value.copy(currentNotebookId = notebookId)
                     filterNotes()
                 },
+                modifySearchText = {
+                }
             )
         }
     }

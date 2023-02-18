@@ -14,7 +14,10 @@ dependencies {
     implementation(project(":core:util"))
     implementation(project(":core:ui"))
     implementation(project(":core:preference"))
+    androidTestImplementation(project(":core:test"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.datetime)
+
+    androidTestImplementation(libs.google.truth)
 }

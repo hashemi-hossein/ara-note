@@ -13,7 +13,7 @@ class FakeNoteRepository : NoteRepository {
     private val notes = mutableMapOf<Int, Note>()
     private val notesFlow = MutableStateFlow(notes.values.toList())
 
-    override fun observe(notebookId: Int?): Flow<List<Note>> {
+    override fun observe(notebookId: Int?, searchText: String?): Flow<List<Note>> {
         return flow { notesFlow.collect { emit(it.filter { it.notebookId == notebookId }) } }
     }
 

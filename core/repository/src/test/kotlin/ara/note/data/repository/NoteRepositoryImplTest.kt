@@ -1,8 +1,7 @@
-package com.ara.aranote.data.repository
+package ara.note.data.repository
 
 import ara.note.data.localdatasource.NoteDao
 import ara.note.data.model.NoteModel
-import ara.note.data.repository.NoteRepositoryImpl
 import ara.note.domain.entity.Note
 import ara.note.domain.util.Mapper
 import ara.note.test.TestUtil
@@ -68,7 +67,7 @@ class NoteRepositoryImplTest {
     @Test
     fun observeNotes() = runTest {
         // arrange
-        every { noteDaoMock.observe(any()) } returns flowOf(
+        every { noteDaoMock.observe(any<Int>()) } returns flowOf(
             TestUtil.tNoteModelList,
             TestUtil.tNoteModelList,
         )
@@ -80,7 +79,7 @@ class NoteRepositoryImplTest {
 
         // assert
         verify { noteDomainMapperMock.mapList(TestUtil.tNoteModelList) }
-        verify { noteDaoMock.observe(any()) }
+        verify { noteDaoMock.observe(any<Int>()) }
         assertThat(r2).containsExactly(reorderedList, reorderedList).inOrder()
     }
 
