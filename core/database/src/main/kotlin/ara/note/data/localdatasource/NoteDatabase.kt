@@ -1,4 +1,4 @@
-package com.ara.aranote.data.localdatasource
+package ara.note.data.localdatasource
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,7 +1,7 @@
 package com.ara.aranote.di
 
-import com.ara.aranote.data.localdatasource.NoteDao
-import com.ara.aranote.data.localdatasource.NotebookDao
+import ara.note.data.localdatasource.NoteDao
+import ara.note.data.localdatasource.NotebookDao
 import ara.note.data.model.NoteModel
 import ara.note.data.model.NotebookModel
 import com.ara.aranote.data.repository.NoteRepositoryImpl

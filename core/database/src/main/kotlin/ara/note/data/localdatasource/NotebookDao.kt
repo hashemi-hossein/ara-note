@@ -1,4 +1,4 @@
-package com.ara.aranote.data.localdatasource
+package ara.note.data.localdatasource
 
 import androidx.room.Dao
 import androidx.room.Delete

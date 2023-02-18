@@ -1,6 +1,6 @@
 package com.ara.aranote.data.repository
 
-import com.ara.aranote.data.localdatasource.NoteDao
+import ara.note.data.localdatasource.NoteDao
 import ara.note.data.model.NoteModel
 import ara.note.domain.entity.Note
 import com.ara.aranote.domain.repository.NoteRepository
