@@ -9,7 +9,7 @@ android {
 dependencies {
 
     implementation(project(":core:entity"))
-    implementation(project(":core:data"))
+    implementation(project(":core:repository"))
     implementation(project(":core:util"))
     implementation(project(":core:preference"))
 
