@@ -3,7 +3,6 @@ package ara.note.alarm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import aranote.core.alarm.R
 import ara.note.domain.repository.NoteRepository
 import ara.note.util.CoroutineDispatcherProvider
 import ara.note.util.Result
