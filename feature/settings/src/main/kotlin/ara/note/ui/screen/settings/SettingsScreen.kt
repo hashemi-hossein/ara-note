@@ -28,9 +28,9 @@ import androidx.compose.ui.Modifier
 import ara.note.ui.screen.settings.SettingsIntent.ExportData
 import ara.note.ui.screen.settings.SettingsIntent.ImportData
 import ara.note.ui.screen.settings.SettingsIntent.WriteUserPreferences
-import com.ara.aranote.data.datastore.DarkMode
-import com.ara.aranote.data.datastore.NoteViewMode
-import com.ara.aranote.data.datastore.UserPreferences
+import ara.note.data.datastore.DarkMode
+import ara.note.data.datastore.NoteViewMode
+import ara.note.data.datastore.UserPreferences
 import ara.note.ui.component.HAppBar
 import ara.note.ui.component.HDropdown
 import ara.note.ui.component.HSnackbarHost

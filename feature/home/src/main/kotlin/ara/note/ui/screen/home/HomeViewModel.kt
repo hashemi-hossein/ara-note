@@ -3,7 +3,7 @@ package ara.note.ui.screen.home
 import com.ara.aranote.domain.usecase.home.CreateDefaultNotebookUseCase
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
 import com.ara.aranote.domain.usecase.home.ObserveNotesUseCase
-import com.ara.aranote.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
+import ara.note.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
 import ara.note.util.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.ara.aranote.data.datastore.DarkMode
-import com.ara.aranote.data.datastore.UserPreferences
-import com.ara.aranote.data.repository.UserPreferencesRepository
+import ara.note.data.datastore.DarkMode
+import ara.note.data.datastore.UserPreferences
+import ara.note.data.repository.UserPreferencesRepository
 import com.ara.aranote.ui.navigation.NavigationGraph
 import com.ara.aranote.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint

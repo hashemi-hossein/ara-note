@@ -1,12 +1,12 @@
-package com.ara.aranote.di
+package ara.note.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
-import com.ara.aranote.data.datastore.UserPreferences
-import com.ara.aranote.data.datastore.UserPreferencesSerializer
+import ara.note.data.datastore.UserPreferences
+import ara.note.data.datastore.UserPreferencesSerializer
 import ara.note.util.CoroutineDispatcherProvider
 import ara.note.util.USER_PREFERENCES_FILE_NAME
 import dagger.Module

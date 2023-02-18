@@ -41,7 +41,7 @@ import androidx.compose.ui.res.stringResource
 import ara.note.home.R.string
 import ara.note.ui.screen.home.HomeIntent.ChangeNotebook
 import ara.note.ui.screen.home.HomeIntent.ModifySearchText
-import com.ara.aranote.data.datastore.NoteViewMode
+import ara.note.data.datastore.NoteViewMode
 import com.ara.aranote.domain.entity.Note
 import ara.note.ui.component.AppBarNavButtonType.MENU
 import ara.note.ui.component.AppDrawer

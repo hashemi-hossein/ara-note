@@ -8,7 +8,7 @@ import com.ara.aranote.domain.usecase.notedetail.DeleteNoteUseCase
 import com.ara.aranote.domain.usecase.notedetail.GetLastNoteIdUseCase
 import com.ara.aranote.domain.usecase.notedetail.GetNoteByIdUseCase
 import com.ara.aranote.domain.usecase.notedetail.UpdateNoteUseCase
-import com.ara.aranote.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
+import ara.note.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
 import ara.note.util.BaseViewModel
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.INVALID_NOTE_ID

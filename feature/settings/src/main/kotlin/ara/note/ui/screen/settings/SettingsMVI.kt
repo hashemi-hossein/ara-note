@@ -1,7 +1,7 @@
 package ara.note.ui.screen.settings
 
 import android.net.Uri
-import com.ara.aranote.data.datastore.UserPreferences
+import ara.note.data.datastore.UserPreferences
 import ara.note.util.MviIntent
 import ara.note.util.MviSingleEvent
 import ara.note.util.MviState

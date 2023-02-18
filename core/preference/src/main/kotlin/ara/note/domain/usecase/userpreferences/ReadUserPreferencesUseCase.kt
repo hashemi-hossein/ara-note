@@ -1,6 +1,6 @@
-package com.ara.aranote.domain.usecase.userpreferences
+package ara.note.domain.usecase.userpreferences
 
-import com.ara.aranote.data.repository.UserPreferencesRepository
+import ara.note.data.repository.UserPreferencesRepository
 import javax.inject.Inject
 
 class ReadUserPreferencesUseCase @Inject constructor(

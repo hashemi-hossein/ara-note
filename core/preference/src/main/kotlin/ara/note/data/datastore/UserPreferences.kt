@@ -1,11 +1,13 @@
-package com.ara.aranote.data.datastore
+package ara.note.data.datastore
 
+import ara.note.data.datastore.DarkMode.SYSTEM
+import ara.note.data.datastore.NoteViewMode.GRID
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserPreferences(
-    val darkMode: DarkMode = DarkMode.SYSTEM,
-    val noteViewMode: NoteViewMode = NoteViewMode.GRID,
+    val darkMode: DarkMode = SYSTEM,
+    val noteViewMode: NoteViewMode = GRID,
     val isAutoSaveMode: Boolean = true,
     val isDoubleBackToExitMode: Boolean = false,
 )

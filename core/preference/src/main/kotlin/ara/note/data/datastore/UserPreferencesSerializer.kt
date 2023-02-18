@@ -1,4 +1,4 @@
-package com.ara.aranote.data.datastore
+package ara.note.data.datastore
 
 import androidx.datastore.core.Serializer
 import ara.note.util.CoroutineDispatcherProvider
