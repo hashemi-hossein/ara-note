@@ -1,7 +1,7 @@
-package com.ara.aranote.di
+package ara.note.di
 
 import android.content.Context
-import com.ara.aranote.ui.main.BaseApplication
+import ara.note.ui.main.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

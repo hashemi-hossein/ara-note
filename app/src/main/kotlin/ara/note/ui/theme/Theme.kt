@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.theme
+package ara.note.ui.theme
 
 import android.app.Activity
 import android.os.Build

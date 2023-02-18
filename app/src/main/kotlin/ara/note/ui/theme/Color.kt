@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.theme
+package ara.note.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

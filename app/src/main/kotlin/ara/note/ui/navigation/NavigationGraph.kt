@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.navigation
+package ara.note.ui.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -12,6 +12,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import ara.note.ui.navigation.NavScreen.Home
+import ara.note.ui.navigation.NavScreen.NoteDetail
+import ara.note.ui.navigation.NavScreen.NotebooksList
+import ara.note.ui.navigation.NavScreen.Settings
 import ara.note.ui.screen.home.HomeScreen
 import ara.note.ui.screen.home.HomeViewModel
 import ara.note.ui.screen.notebookslist.NotebooksListScreen
@@ -20,9 +24,6 @@ import ara.note.ui.screen.notedetail.NoteDetailScreen
 import ara.note.ui.screen.notedetail.NoteDetailViewModel
 import ara.note.ui.screen.settings.SettingsScreen
 import ara.note.ui.screen.settings.SettingsViewModel
-import com.ara.aranote.ui.navigation.NavScreen.NoteDetail
-import com.ara.aranote.ui.navigation.NavScreen.NotebooksList
-import com.ara.aranote.ui.navigation.NavScreen.Settings
 import ara.note.util.ANIMATION_DURATION
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.INVALID_NOTE_ID
@@ -36,7 +37,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 @Composable
 fun NavigationGraph(
     navController: NavHostController = rememberAnimatedNavController(),
-    startDestination: String = NavScreen.Home.route,
+    startDestination: String = Home.route,
 ) {
     BoxWithConstraints {
         val boxWith = constraints.maxWidth / 2
@@ -69,7 +70,7 @@ fun NavigationGraph(
                 ).plus(fadeIn(animationSpec = tween(ANIMATION_DURATION)))
             },
         ) {
-            composable(route = NavScreen.Home.route) {
+            composable(route = Home.route) {
                 val viewModel = hiltViewModel<HomeViewModel>()
                 HomeScreen(
                     viewModel = viewModel,
@@ -82,7 +83,7 @@ fun NavigationGraph(
             }
 
             composable(
-                route = NavScreen.NoteDetail().route,
+                route = NoteDetail().route,
                 arguments = listOf(
                     navArgument(NAV_ARGUMENT_NOTE_ID) {
                         type = NavType.IntType
@@ -100,14 +101,14 @@ fun NavigationGraph(
                 }
             }
 
-            composable(route = NavScreen.Settings.route) {
+            composable(route = Settings.route) {
                 val viewModel = hiltViewModel<SettingsViewModel>()
                 SettingsScreen(viewModel = viewModel) {
                     navController.navigateUp()
                 }
             }
 
-            composable(route = NavScreen.NotebooksList.route) {
+            composable(route = NotebooksList.route) {
                 val viewModel = hiltViewModel<NotebooksListViewModel>()
                 NotebooksListScreen(viewModel = viewModel) {
                     navController.navigateUp()

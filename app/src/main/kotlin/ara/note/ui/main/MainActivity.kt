@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.main
+package ara.note.ui.main
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -9,8 +9,8 @@ import androidx.compose.runtime.getValue
 import ara.note.data.datastore.DarkMode
 import ara.note.data.datastore.UserPreferences
 import ara.note.data.repository.UserPreferencesRepository
-import com.ara.aranote.ui.navigation.NavigationGraph
-import com.ara.aranote.ui.theme.AppTheme
+import ara.note.ui.navigation.NavigationGraph
+import ara.note.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

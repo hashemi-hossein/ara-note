@@ -1,4 +1,4 @@
-package com.ara.aranote.ui.navigation
+package ara.note.ui.navigation
 
 import ara.note.util.NAV_ARGUMENT_NOTEBOOK_ID
 import ara.note.util.NAV_ARGUMENT_NOTE_ID
