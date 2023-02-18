@@ -5,7 +5,7 @@ import com.ara.aranote.data.model.NotebookModel
 import com.ara.aranote.domain.entity.Notebook
 import com.ara.aranote.domain.util.Mapper
 import ara.note.util.Result
-import com.ara.test.TestUtil
+import ara.note.test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify

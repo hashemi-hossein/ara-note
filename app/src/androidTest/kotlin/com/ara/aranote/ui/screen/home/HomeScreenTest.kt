@@ -21,7 +21,7 @@ import ara.note.ui.screen.home.HomeState
 import ara.note.R
 import ara.note.util.HDateTime
 import ara.note.util.INVALID_NOTE_ID
-import com.ara.test.TestUtil
+import ara.note.test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule

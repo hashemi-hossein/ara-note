@@ -27,7 +27,7 @@ import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import ara.note.util.DateTimeFormatPattern
 import ara.note.util.HDateTime
 import ara.note.util.plus
-import com.ara.test.TestUtil
+import ara.note.test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ara.core_test"
+    namespace = "ara.note.test"
 }
 
 dependencies {
