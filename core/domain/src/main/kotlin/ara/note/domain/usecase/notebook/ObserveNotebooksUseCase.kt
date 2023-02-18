@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.usecase.home
+package ara.note.domain.usecase.notebook
 
 import com.ara.aranote.domain.repository.NotebookRepository
 import javax.inject.Inject

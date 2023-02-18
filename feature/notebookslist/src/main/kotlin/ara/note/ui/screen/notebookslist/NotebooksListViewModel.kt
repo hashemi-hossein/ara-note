@@ -1,10 +1,10 @@
 package ara.note.ui.screen.notebookslist
 
 import ara.note.domain.entity.Notebook
-import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
-import com.ara.aranote.domain.usecase.notebookslist.CreateNotebookUseCase
-import com.ara.aranote.domain.usecase.notebookslist.DeleteNotebookUseCase
-import com.ara.aranote.domain.usecase.notebookslist.UpdateNotebookUseCase
+import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
+import ara.note.domain.usecase.notebook.CreateNotebookUseCase
+import ara.note.domain.usecase.notebook.DeleteNotebookUseCase
+import ara.note.domain.usecase.notebook.UpdateNotebookUseCase
 import ara.note.util.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.usecase.notebookslist
+package ara.note.domain.usecase.notebook
 
 import ara.note.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NotebookRepository

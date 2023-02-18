@@ -1,13 +1,13 @@
-package com.ara.aranote.domain.usecase.notedetail
+package ara.note.domain.usecase.note
 
 import ara.note.domain.entity.Note
 import com.ara.aranote.domain.repository.NoteRepository
 import ara.note.util.Result
 import javax.inject.Inject
 
-class DeleteNoteUseCase @Inject constructor(
+class CreateNoteUseCase @Inject constructor(
     private val noteRepository: NoteRepository,
 ) {
     suspend operator fun invoke(note: Note) =
-        noteRepository.delete(note) is Result.Success
+        noteRepository.insert(note) is Result.Success
 }

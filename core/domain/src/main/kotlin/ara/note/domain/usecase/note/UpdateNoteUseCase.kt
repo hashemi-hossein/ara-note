@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.usecase.notedetail
+package ara.note.domain.usecase.note
 
 import ara.note.domain.entity.Note
 import com.ara.aranote.domain.repository.NoteRepository
