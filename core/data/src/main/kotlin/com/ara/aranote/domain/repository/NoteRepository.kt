@@ -1,6 +1,6 @@
 package com.ara.aranote.domain.repository
 
-import com.ara.aranote.domain.entity.Note
+import ara.note.domain.entity.Note
 import ara.note.util.Result
 import kotlinx.coroutines.flow.Flow
 

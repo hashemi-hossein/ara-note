@@ -1,8 +1,8 @@
 package com.ara.aranote.data.repository
 
 import com.ara.aranote.data.localdatasource.NotebookDao
-import com.ara.aranote.data.model.NotebookModel
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.data.model.NotebookModel
+import ara.note.domain.entity.Notebook
 import com.ara.aranote.domain.util.Mapper
 import ara.note.util.Result
 import ara.note.test.TestUtil

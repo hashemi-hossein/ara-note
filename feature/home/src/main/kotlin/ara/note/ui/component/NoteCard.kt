@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ara.aranote.domain.entity.Note
+import ara.note.domain.entity.Note
 import ara.note.util.HDateTime
 
 @Composable

@@ -43,7 +43,7 @@ import ara.note.ui.screen.notebookslist.NotebooksListIntent.AddNotebook
 import ara.note.ui.screen.notebookslist.NotebooksListIntent.DeleteNotebook
 import ara.note.ui.screen.notebookslist.NotebooksListIntent.ModifyNotebook
 import ara.note.notebookslist.R.string
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Notebook
 import ara.note.ui.component.HAppBar
 import ara.note.ui.component.HSnackbarHost
 import ara.note.ui.component.showSnackbar

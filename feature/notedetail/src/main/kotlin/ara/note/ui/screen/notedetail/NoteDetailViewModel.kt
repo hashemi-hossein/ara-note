@@ -1,7 +1,7 @@
 package ara.note.ui.screen.notedetail
 
 import androidx.lifecycle.SavedStateHandle
-import com.ara.aranote.domain.entity.Note
+import ara.note.domain.entity.Note
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
 import com.ara.aranote.domain.usecase.notedetail.CreateNoteUseCase
 import com.ara.aranote.domain.usecase.notedetail.DeleteNoteUseCase

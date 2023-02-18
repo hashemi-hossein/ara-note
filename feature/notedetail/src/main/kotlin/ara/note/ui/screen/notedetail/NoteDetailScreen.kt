@@ -66,8 +66,8 @@ import androidx.compose.ui.unit.dp
 import ara.note.notedetail.R.string
 import ara.note.ui.screen.notedetail.NoteDetailIntent.ModifyNote
 import ara.note.ui.screen.notedetail.NoteDetailSingleEvent.BackPressed
-import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Note
+import ara.note.domain.entity.Notebook
 import ara.note.ui.component.HAppBar
 import ara.note.ui.component.HDropdown
 import ara.note.ui.component.HSnackbarHost

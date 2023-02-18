@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.ara.aranote.data.model.NoteModel
+import ara.note.data.model.NoteModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

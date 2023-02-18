@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.ara.aranote.data.model.NoteModel
+import ara.note.data.model.NoteModel
 import ara.note.test.TestUtil
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first

@@ -3,8 +3,8 @@ package com.ara.aranote.data.localdatasource
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.ara.aranote.data.model.NoteModel
-import com.ara.aranote.data.model.NotebookModel
+import ara.note.data.model.NoteModel
+import ara.note.data.model.NotebookModel
 
 @Database(
     entities = [NoteModel::class, NotebookModel::class],

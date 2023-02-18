@@ -1,6 +1,6 @@
 package ara.note.ui.screen.notebookslist
 
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Notebook
 import ara.note.util.MviIntent
 import ara.note.util.MviSingleEvent
 import ara.note.util.MviState

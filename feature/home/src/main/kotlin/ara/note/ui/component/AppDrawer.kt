@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import ara.note.home.R.string
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Notebook
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

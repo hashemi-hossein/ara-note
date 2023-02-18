@@ -1,8 +1,8 @@
 package ara.note.ui.screen.home
 
 import ara.note.data.datastore.UserPreferences
-import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Note
+import ara.note.domain.entity.Notebook
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.MviIntent
 import ara.note.util.MviSingleEvent

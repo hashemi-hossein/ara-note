@@ -1,4 +1,4 @@
-package com.ara.aranote.data.model
+package ara.note.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -2,14 +2,14 @@ package com.ara.aranote.di
 
 import com.ara.aranote.data.localdatasource.NoteDao
 import com.ara.aranote.data.localdatasource.NotebookDao
-import com.ara.aranote.data.model.NoteModel
-import com.ara.aranote.data.model.NotebookModel
+import ara.note.data.model.NoteModel
+import ara.note.data.model.NotebookModel
 import com.ara.aranote.data.repository.NoteRepositoryImpl
 import com.ara.aranote.data.repository.NotebookRepositoryImpl
 import com.ara.aranote.data.util.NoteDomainMapper
 import com.ara.aranote.data.util.NotebookDomainMapper
-import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Note
+import ara.note.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.repository.NotebookRepository
 import com.ara.aranote.domain.util.Mapper

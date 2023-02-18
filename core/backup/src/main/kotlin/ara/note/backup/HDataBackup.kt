@@ -2,8 +2,8 @@ package ara.note.backup
 
 import android.content.Context
 import android.net.Uri
-import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Note
+import ara.note.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NoteRepository
 import com.ara.aranote.domain.repository.NotebookRepository
 import ara.note.util.CoroutineDispatcherProvider

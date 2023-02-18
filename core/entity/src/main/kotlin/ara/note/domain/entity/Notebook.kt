@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.entity
+package ara.note.domain.entity
 
 import kotlinx.serialization.Serializable
 

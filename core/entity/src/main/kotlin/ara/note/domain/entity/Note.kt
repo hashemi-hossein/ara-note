@@ -1,4 +1,4 @@
-package com.ara.aranote.domain.entity
+package ara.note.domain.entity
 
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.HDateTime

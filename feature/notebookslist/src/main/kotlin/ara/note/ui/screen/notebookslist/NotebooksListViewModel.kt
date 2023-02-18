@@ -1,6 +1,6 @@
 package ara.note.ui.screen.notebookslist
 
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Notebook
 import com.ara.aranote.domain.usecase.home.ObserveNotebooksUseCase
 import com.ara.aranote.domain.usecase.notebookslist.CreateNotebookUseCase
 import com.ara.aranote.domain.usecase.notebookslist.DeleteNotebookUseCase

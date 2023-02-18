@@ -1,6 +1,6 @@
 package com.ara.aranote.domain.usecase.notedetail
 
-import com.ara.aranote.domain.entity.Note
+import ara.note.domain.entity.Note
 import com.ara.aranote.domain.repository.NoteRepository
 import ara.note.util.HDateTime
 import ara.note.util.Result

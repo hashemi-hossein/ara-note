@@ -1,6 +1,6 @@
 package com.ara.aranote.domain.usecase.notebookslist
 
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NotebookRepository
 import javax.inject.Inject
 

@@ -22,7 +22,7 @@ import androidx.test.filters.SmallTest
 import ara.note.ui.screen.notedetail.NoteDetailState
 import ara.note.R
 import ara.note.ui.screen.notedetail.NoteDetailScreen
-import com.ara.aranote.domain.entity.Note
+import ara.note.domain.entity.Note
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import ara.note.util.DateTimeFormatPattern
 import ara.note.util.HDateTime

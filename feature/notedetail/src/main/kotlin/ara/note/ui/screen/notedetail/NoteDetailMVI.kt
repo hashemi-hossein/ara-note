@@ -1,8 +1,8 @@
 package ara.note.ui.screen.notedetail
 
 import ara.note.data.datastore.UserPreferences
-import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Note
+import ara.note.domain.entity.Notebook
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import ara.note.util.MviIntent
 import ara.note.util.MviSingleEvent

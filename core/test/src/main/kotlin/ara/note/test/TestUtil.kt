@@ -1,9 +1,9 @@
 package ara.note.test
 
-import com.ara.aranote.data.model.NoteModel
-import com.ara.aranote.data.model.NotebookModel
-import com.ara.aranote.domain.entity.Note
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.data.model.NoteModel
+import ara.note.data.model.NotebookModel
+import ara.note.domain.entity.Note
+import ara.note.domain.entity.Notebook
 import kotlinx.datetime.LocalDateTime
 
 object TestUtil {

@@ -1,6 +1,6 @@
 package com.ara.aranote.domain.usecase.home
 
-import com.ara.aranote.domain.entity.Notebook
+import ara.note.domain.entity.Notebook
 import com.ara.aranote.domain.repository.NotebookRepository
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.DEFAULT_NOTEBOOK_NAME

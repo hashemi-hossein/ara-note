@@ -1,7 +1,7 @@
 package com.ara.aranote.data.util
 
-import com.ara.aranote.data.model.NoteModel
-import com.ara.aranote.domain.entity.Note
+import ara.note.data.model.NoteModel
+import ara.note.domain.entity.Note
 import com.ara.aranote.domain.util.Mapper
 
 /**
