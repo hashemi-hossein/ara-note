@@ -1,7 +1,7 @@
 package ara.note.di
 
 import android.content.Context
-import ara.note.ui.main.BaseApplication
+import ara.note.HApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideApplication(@ApplicationContext context: Context): BaseApplication {
-        return context as BaseApplication
+    fun provideApplication(@ApplicationContext context: Context): HApplication {
+        return context as HApplication
     }
 }

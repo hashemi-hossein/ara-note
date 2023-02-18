@@ -1,12 +1,11 @@
-package ara.note.ui.main
+package ara.note
 
 import android.app.Application
-import ara.note.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 @HiltAndroidApp
-class BaseApplication : Application() {
+class HApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
