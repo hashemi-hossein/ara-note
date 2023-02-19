@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7a0cad76b45c5918c4e8726b48a9662d",
+    "identityHash": "3074a01d85149550a168f1c1438a4f63",
     "entities": [
       {
         "tableName": "tblNote",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `notebook_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `added_datetime` TEXT NOT NULL, `alarm_datetime` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `tblNotebook`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `notebook_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `added_datetime` TEXT NOT NULL, `alarm_datetime` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`notebook_id`) REFERENCES `tblNotebook`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT )",
         "fields": [
           {
             "fieldPath": "id",
@@ -49,10 +49,10 @@
         "foreignKeys": [
           {
             "table": "tblNotebook",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
+            "onDelete": "RESTRICT",
+            "onUpdate": "CASCADE",
             "columns": [
-              "id"
+              "notebook_id"
             ],
             "referencedColumns": [
               "id"
@@ -90,7 +90,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7a0cad76b45c5918c4e8726b48a9662d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3074a01d85149550a168f1c1438a4f63')"
     ]
   }
 }
