@@ -2,10 +2,19 @@ package ara.note.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.datetime.LocalDateTime
 
-@Entity(tableName = "tblNotes")
+@Entity(
+    tableName = "tblNotes",
+    foreignKeys = [
+        ForeignKey(
+            entity = NotebookModel::class, parentColumns = ["id"], childColumns = ["notebook_id"],
+            onUpdate = ForeignKey.CASCADE, onDelete = ForeignKey.RESTRICT,
+        )
+    ],
+)
 data class NoteModel(
 
     @PrimaryKey(autoGenerate = false)
