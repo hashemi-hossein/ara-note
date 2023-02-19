@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
@@ -27,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ara.note.domain.entity.Notebook
 import ara.note.home.R.string
@@ -62,9 +62,7 @@ fun AppDrawer(
                 }
             }
             LazyColumn(
-                modifier = Modifier
-                    .selectableGroup()
-                    .weight(1f),
+                modifier = Modifier.weight(1f),
             ) {
                 items(notebooks) { item: Notebook ->
                     Surface(
@@ -79,13 +77,17 @@ fun AppDrawer(
                                 role = Role.RadioButton,
                             ) { setCurrentNotebookId(item.id) },
                     ) {
-                        Text(
-                            text = item.name,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(15.dp),
+                        ListItem(
+                            headlineText = {
+                                Text(
+                                    text = item.name,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.primary,
+                                )
+                            },
+                            trailingContent = {
+                                Text(text = item.noteCount.toString())
+                            }
                         )
                     }
                 }
@@ -105,4 +107,19 @@ fun AppDrawer(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun HPreview() {
+    AppDrawer(
+        notebooks = listOf(
+            Notebook(id = 1, name = "first notebook", noteCount = 5),
+            Notebook(id = 2, name = "second notebook", noteCount = 2),
+        ),
+        currentNotebookId = 1,
+        setCurrentNotebookId = {},
+        navigateToNotebooksScreen = {},
+        navigateToSettingsScreen = {},
+    )
 }
