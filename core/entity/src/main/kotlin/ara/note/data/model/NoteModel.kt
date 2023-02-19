@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import kotlinx.datetime.LocalDateTime
 
 @Entity(
-    tableName = "tblNotes",
+    tableName = "tblNote",
     foreignKeys = [
         ForeignKey(
             entity = NotebookModel::class, parentColumns = ["id"], childColumns = ["notebook_id"],

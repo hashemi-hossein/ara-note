@@ -12,14 +12,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NotebookDao {
 
-    @Query("SELECT * FROM tblNotebooks ORDER BY id ASC")
+    @Query("SELECT * FROM tblNotebook ORDER BY id ASC")
     fun observe(): Flow<List<NotebookModel>>
 
-    @MapInfo(keyTable = "tblNotebooks", valueColumn = "count")
+    @MapInfo(keyTable = "tblNotebook", valueColumn = "count")
     @Query("""
-        SELECT tblNotebooks.id, tblNotebooks.name, COUNT(notebook_notes.notebook_id) AS count FROM tblNotebooks 
-        LEFT JOIN (SELECT notebook_id FROM tblNotes) AS notebook_notes ON tblNotebooks.id = notebook_notes.notebook_id 
-        GROUP BY tblNotebooks.id, tblNotebooks.name
+        SELECT tblNotebook.id, tblNotebook.name, COUNT(notebook_notes.notebook_id) AS count FROM tblNotebook 
+        LEFT JOIN (SELECT notebook_id FROM tblNote) AS notebook_notes ON tblNotebook.id = notebook_notes.notebook_id 
+        GROUP BY tblNotebook.id, tblNotebook.name
     """
     )
     fun observeWithCount(): Flow<Map<NotebookModel,Int>>

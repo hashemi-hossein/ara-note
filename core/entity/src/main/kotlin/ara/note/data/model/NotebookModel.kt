@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ara.note.domain.entity.Notebook
 
-@Entity(tableName = "tblNotebooks")
+@Entity(tableName = "tblNotebook")
 data class NotebookModel(
 
     @PrimaryKey(autoGenerate = true)

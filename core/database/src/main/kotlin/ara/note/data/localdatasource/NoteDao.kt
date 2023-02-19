@@ -11,13 +11,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteDao {
 
-    @Query("SELECT * FROM tblNotes ORDER BY id DESC")
+    @Query("SELECT * FROM tblNote ORDER BY id DESC")
     fun observe(): Flow<List<NoteModel>>
 
-    @Query("SELECT * FROM tblNotes WHERE notebook_id=:notebookId ORDER BY id DESC")
+    @Query("SELECT * FROM tblNote WHERE notebook_id=:notebookId ORDER BY id DESC")
     fun observe(notebookId: Int): Flow<List<NoteModel>>
 
-    @Query("SELECT * FROM tblNotes WHERE text LIKE '%' || :searchText || '%' ORDER BY id DESC")
+    @Query("SELECT * FROM tblNote WHERE text LIKE '%' || :searchText || '%' ORDER BY id DESC")
     fun observe(searchText: String): Flow<List<NoteModel>>
 
     @Insert
@@ -29,12 +29,12 @@ interface NoteDao {
     @Update
     suspend fun update(noteModel: NoteModel): Int?
 
-    @Query("SELECT * FROM tblNotes WHERE id = :id")
+    @Query("SELECT * FROM tblNote WHERE id = :id")
     suspend fun getById(id: Int): NoteModel?
 
-    @Query("SELECT MAX(id) FROM tblNotes")
+    @Query("SELECT MAX(id) FROM tblNote")
     suspend fun getLastId(): Int?
 
-    @Query("SELECT * FROM tblNotes WHERE alarm_datetime IS NOT NULL")
+    @Query("SELECT * FROM tblNote WHERE alarm_datetime IS NOT NULL")
     suspend fun getAllNotesWithAlarm(): List<NoteModel>?
 }

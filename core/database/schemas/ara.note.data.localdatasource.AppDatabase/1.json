@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7a77d98a212f7c477dd2688d573a56e4",
+    "identityHash": "7a0cad76b45c5918c4e8726b48a9662d",
     "entities": [
       {
-        "tableName": "tblNotes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `notebook_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `added_datetime` TEXT NOT NULL, `alarm_datetime` TEXT, PRIMARY KEY(`id`))",
+        "tableName": "tblNote",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `notebook_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `added_datetime` TEXT NOT NULL, `alarm_datetime` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `tblNotebook`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -46,10 +46,22 @@
           ]
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "tblNotebook",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
-        "tableName": "tblNotebooks",
+        "tableName": "tblNotebook",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL)",
         "fields": [
           {
@@ -78,7 +90,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7a77d98a212f7c477dd2688d573a56e4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7a0cad76b45c5918c4e8726b48a9662d')"
     ]
   }
 }
