@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class Notebook(
     val id: Int,
     val name: String,
+    val noteCount: Int = -1,
 )
