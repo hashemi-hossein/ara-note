@@ -27,8 +27,8 @@ data class NoteModel(
     @ColumnInfo(name = "text")
     val text: String,
 
-    @ColumnInfo(name = "added_datetime")
-    val addedDateTime: LocalDateTime,
+    @ColumnInfo(name = "created_datetime")
+    val createdDateTime: LocalDateTime,
 
     @ColumnInfo(name = "alarm_datetime")
     val alarmDateTime: LocalDateTime? = null,

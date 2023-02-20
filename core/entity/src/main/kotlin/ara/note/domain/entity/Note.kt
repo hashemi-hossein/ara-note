@@ -10,6 +10,6 @@ data class Note(
     val id: Int = 0,
     val notebookId: Int = DEFAULT_NOTEBOOK_ID,
     val text: String = "",
-    val addedDateTime: LocalDateTime = HDateTime.getCurrentDateTime(),
+    val createdDateTime: LocalDateTime = HDateTime.getCurrentDateTime(),
     val alarmDateTime: LocalDateTime? = null,
 )

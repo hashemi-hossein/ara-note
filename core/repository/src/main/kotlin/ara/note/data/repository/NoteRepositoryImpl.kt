@@ -30,7 +30,7 @@ class NoteRepositoryImpl(
             notebookId != null -> noteDao.observe(notebookId)
             else -> noteDao.observe()
         }.map {
-            noteDomainMapper.mapList(it).sortedByDescending { item -> item.addedDateTime }
+            noteDomainMapper.mapList(it).sortedByDescending { item -> item.createdDateTime }
         }
     }
 

@@ -18,7 +18,7 @@ class NoteDomainMapper : Mapper<NoteModel, Note> {
             id = t.id,
             notebookId = t.notebookId,
             text = t.text,
-            addedDateTime = t.addedDateTime,
+            createdDateTime = t.createdDateTime,
             alarmDateTime = t.alarmDateTime,
         )
     }
@@ -28,7 +28,7 @@ class NoteDomainMapper : Mapper<NoteModel, Note> {
             id = r.id,
             notebookId = r.notebookId,
             text = r.text,
-            addedDateTime = r.addedDateTime,
+            createdDateTime = r.createdDateTime,
             alarmDateTime = r.alarmDateTime,
         )
     }

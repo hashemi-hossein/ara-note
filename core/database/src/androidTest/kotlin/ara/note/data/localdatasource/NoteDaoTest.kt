@@ -132,14 +132,14 @@ class NoteDaoTest {
             id = 2,
             notebookId = 1,
             text = "t2",
-            addedDateTime = TestUtil.tDateTime,
+            createdDateTime = TestUtil.tDateTime,
             alarmDateTime = null,
         )
         val note3 = NoteModel(
             id = 5,
             notebookId = 1,
             text = "t5",
-            addedDateTime = TestUtil.tDateTime,
+            createdDateTime = TestUtil.tDateTime,
             alarmDateTime = TestUtil.tDateTime,
         )
 

@@ -33,28 +33,28 @@ object TestUtil {
         id = 1,
         notebookId = tNotebookEntity.id,
         text = "test",
-        addedDateTime = tDateTime,
+        createdDateTime = tDateTime,
         alarmDateTime = tDateTime,
     )
     val tNoteEntity2 = Note(
         id = 2,
         notebookId = tNotebookEntity2.id,
         text = "test2",
-        addedDateTime = tDateTime2,
+        createdDateTime = tDateTime2,
         alarmDateTime = tDateTime2,
     )
     val tNoteModel = NoteModel(
         id = 1,
         notebookId = tNotebookModel.id,
         text = "test",
-        addedDateTime = tDateTime,
+        createdDateTime = tDateTime,
         alarmDateTime = tDateTime,
     )
     val tNoteModel2 = NoteModel(
         id = 2,
         notebookId = tNotebookModel2.id,
         text = "test2",
-        addedDateTime = tDateTime2,
+        createdDateTime = tDateTime2,
         alarmDateTime = tDateTime2,
     )
     val tNoteEntityList = listOf(tNoteEntity, tNoteEntity2)

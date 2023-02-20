@@ -271,7 +271,7 @@ private fun HBody(
             Text(
                 text = "Created at " +
                     HDateTime.formatDateAndTime(
-                        dateTime = note.addedDateTime,
+                        dateTime = note.createdDateTime,
                         dateTimeFormatPattern = DateTimeFormatPattern.DATE_TIME,
                     ),
                 modifier = Modifier.alpha(0.7f),
