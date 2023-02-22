@@ -11,5 +11,6 @@ data class Note(
     val notebookId: Int = DEFAULT_NOTEBOOK_ID,
     val text: String = "",
     val createdDateTime: LocalDateTime = HDateTime.getCurrentDateTime(),
+    val modifiedDateTime: LocalDateTime = HDateTime.getCurrentDateTime(),
     val alarmDateTime: LocalDateTime? = null,
 )

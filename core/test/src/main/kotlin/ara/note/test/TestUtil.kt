@@ -48,6 +48,7 @@ object TestUtil {
         notebookId = tNotebookModel.id,
         text = "test",
         createdDateTime = tDateTime,
+        modifiedDateTime = tDateTime,
         alarmDateTime = tDateTime,
     )
     val tNoteModel2 = NoteModel(
@@ -55,6 +56,7 @@ object TestUtil {
         notebookId = tNotebookModel2.id,
         text = "test2",
         createdDateTime = tDateTime2,
+        modifiedDateTime = tDateTime2,
         alarmDateTime = tDateTime2,
     )
     val tNoteEntityList = listOf(tNoteEntity, tNoteEntity2)

@@ -30,6 +30,9 @@ data class NoteModel(
     @ColumnInfo(name = "created_datetime")
     val createdDateTime: LocalDateTime,
 
+    @ColumnInfo(name = "modified_datetime")
+    val modifiedDateTime: LocalDateTime,
+
     @ColumnInfo(name = "alarm_datetime")
     val alarmDateTime: LocalDateTime? = null,
 )
