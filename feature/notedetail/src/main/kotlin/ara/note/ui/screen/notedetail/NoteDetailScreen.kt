@@ -21,8 +21,6 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Alarm
-import androidx.compose.material.icons.filled.AlarmAdd
 import androidx.compose.material.icons.filled.AlarmOff
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -341,19 +339,20 @@ private fun HAppBarActions(
             },
         )
     }
-    IconButton(onClick = {
-        keyboardController?.hide()
-        scope.launch { modalBottomSheetState.show() }
-    }) {
-        Icon(
-            imageVector = if (doesHasAlarm) Icons.Default.Alarm else Icons.Default.AlarmAdd,
-            contentDescription = if (doesHasAlarm) {
-                stringResource(string.cd_edit_note_alarm)
-            } else {
-                stringResource(string.cd_add_alarm)
-            },
-        )
-    }
+    // TODO: fix alarm
+//    IconButton(onClick = {
+//        keyboardController?.hide()
+//        scope.launch { modalBottomSheetState.show() }
+//    }) {
+//        Icon(
+//            imageVector = if (doesHasAlarm) Icons.Default.Alarm else Icons.Default.AlarmAdd,
+//            contentDescription = if (doesHasAlarm) {
+//                stringResource(string.cd_edit_note_alarm)
+//            } else {
+//                stringResource(string.cd_add_alarm)
+//            },
+//        )
+//    }
     AnimatedVisibility(doesHasAlarm) {
         IconButton(onClick = {
             hManageAlarm(
