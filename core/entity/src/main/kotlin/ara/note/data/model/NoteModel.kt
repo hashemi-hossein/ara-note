@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import ara.note.domain.entity.Note
 import kotlinx.datetime.LocalDateTime
 
 @Entity(
@@ -36,3 +37,20 @@ data class NoteModel(
     @ColumnInfo(name = "alarm_datetime")
     val alarmDateTime: LocalDateTime? = null,
 )
+
+/**
+ * Based on CLEAN Architecture:
+ *
+ * Extension function for mapping [NoteModel] (Database Model) to [Note] (Domain Entity)
+ */
+fun NoteModel.toDomainEntity() = Note(
+    id = this.id,
+    notebookId = this.notebookId,
+    text = this.text,
+    createdDateTime = this.createdDateTime,
+    modifiedDateTime = this.modifiedDateTime,
+    alarmDateTime = this.alarmDateTime,
+)
+
+fun List<NoteModel>.toDomainEntity() =
+    this.map { item -> item.toDomainEntity() }

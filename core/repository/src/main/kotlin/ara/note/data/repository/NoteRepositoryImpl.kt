@@ -1,10 +1,10 @@
 package ara.note.data.repository
 
 import ara.note.data.localdatasource.NoteDao
-import ara.note.data.model.NoteModel
+import ara.note.data.model.toDomainEntity
 import ara.note.domain.entity.Note
+import ara.note.domain.entity.toDataModel
 import ara.note.domain.repository.NoteRepository
-import ara.note.domain.util.Mapper
 import ara.note.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.map
  */
 class NoteRepositoryImpl(
     private val noteDao: NoteDao,
-    private val noteDomainMapper: Mapper<NoteModel, Note>,
 ) : NoteRepository {
 
     override fun observe(notebookId: Int?, searchText: String?): Flow<List<Note>> {
@@ -30,29 +29,29 @@ class NoteRepositoryImpl(
             notebookId != null -> noteDao.observe(notebookId)
             else -> noteDao.observe()
         }.map {
-            noteDomainMapper.mapList(it).sortedByDescending { item -> item.modifiedDateTime }
+            it.toDomainEntity().sortedByDescending { item -> item.modifiedDateTime }
         }
     }
 
     override suspend fun insert(note: Note): Result<Int> {
-        val result = noteDao.insert(noteDomainMapper.mapReverse(note))
+        val result = noteDao.insert(note.toDataModel())
         return if (result != null) Result.Success(result.toInt()) else Result.Error()
     }
 
     override suspend fun delete(note: Note): Result<Boolean> {
-        val result = noteDao.delete(noteDomainMapper.mapReverse(note))
+        val result = noteDao.delete(note.toDataModel())
         return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
     override suspend fun update(note: Note): Result<Boolean> {
-        val result = noteDao.update(noteDomainMapper.mapReverse(note))
+        val result = noteDao.update(note.toDataModel())
         return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
     override suspend fun getById(id: Int): Result<Note> {
         return noteDao.getById(id).let {
             if (it != null) {
-                Result.Success(noteDomainMapper.map(it))
+                Result.Success(it.toDomainEntity())
             } else {
                 Result.Error()
             }
@@ -72,7 +71,7 @@ class NoteRepositoryImpl(
     override suspend fun getAllNotesWithAlarm(): Result<List<Note>> {
         return noteDao.getAllNotesWithAlarm().let {
             if (it != null) {
-                Result.Success(noteDomainMapper.mapList(it))
+                Result.Success(it.toDomainEntity())
             } else {
                 Result.Error()
             }

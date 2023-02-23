@@ -1,13 +1,9 @@
 package ara.note.data.repository
 
 import ara.note.data.localdatasource.NoteDao
-import ara.note.data.model.NoteModel
-import ara.note.domain.entity.Note
-import ara.note.domain.util.Mapper
 import ara.note.test.TestUtil
 import ara.note.util.Result
 import com.google.common.truth.Truth.assertThat
-import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -23,16 +19,9 @@ import org.junit.Test
 class NoteRepositoryImplTest {
 
     private val noteDaoMock = mockk<NoteDao>()
-    private val noteDomainMapperMock = mockk<Mapper<NoteModel, Note>>() {
-        every { map(TestUtil.tNoteModel) } returns TestUtil.tNoteEntity
-        every { mapReverse(TestUtil.tNoteEntity) } returns TestUtil.tNoteModel
-        every { mapList(TestUtil.tNoteModelList) } returns TestUtil.tNoteEntityList
-        every { mapListReverse(TestUtil.tNoteEntityList) } returns TestUtil.tNoteModelList
-    }
 
     private val systemUnderTest = NoteRepositoryImpl(
         noteDao = noteDaoMock,
-        noteDomainMapper = noteDomainMapperMock,
     )
 
     @Test
@@ -44,7 +33,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.insert(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapReverse(TestUtil.tNoteEntity) }
         coVerify { noteDaoMock.insert(TestUtil.tNoteModel) }
         assertThat(r).isInstanceOf(Result.Success::class.java)
         assertThat((r as Result.Success).data).isEqualTo(1)
@@ -59,7 +47,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.insert(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapReverse(TestUtil.tNoteEntity) }
         coVerify { noteDaoMock.insert(TestUtil.tNoteModel) }
         assertThat(r).isInstanceOf(Result.Error::class.java)
     }
@@ -78,7 +65,6 @@ class NoteRepositoryImplTest {
         val r2 = r.toList()
 
         // assert
-        verify { noteDomainMapperMock.mapList(TestUtil.tNoteModelList) }
         verify { noteDaoMock.observe(any<Int>()) }
         assertThat(r2).containsExactly(reorderedList, reorderedList).inOrder()
     }
@@ -92,7 +78,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.getById(1)
 
         // assert
-        coVerify { noteDomainMapperMock.map(TestUtil.tNoteModel) }
         coVerify { noteDaoMock.getById(1) }
         assertThat(r).isInstanceOf(Result.Success::class.java)
         assertThat((r as Result.Success).data).isEqualTo(TestUtil.tNoteEntity)
@@ -107,7 +92,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.getById(1)
 
         // assert
-        coVerify { noteDomainMapperMock wasNot Called }
         coVerify { noteDaoMock.getById(1) }
         assertThat(r).isInstanceOf(Result.Error::class.java)
     }
@@ -121,7 +105,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.update(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapReverse(TestUtil.tNoteEntity) }
         coVerify { noteDaoMock.update(TestUtil.tNoteModel) }
         assertThat(r).isInstanceOf(Result.Success::class.java)
         assertThat((r as Result.Success).data).isTrue()
@@ -136,7 +119,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.update(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapReverse(TestUtil.tNoteEntity) }
         coVerify { noteDaoMock.update(TestUtil.tNoteModel) }
         assertThat(r).isInstanceOf(Result.Error::class.java)
     }
@@ -150,7 +132,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.delete(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapReverse(TestUtil.tNoteEntity) }
         coEvery { noteDaoMock.delete(TestUtil.tNoteModel) }
         assertThat(r).isInstanceOf(Result.Success::class.java)
         assertThat((r as Result.Success).data).isTrue()
@@ -165,7 +146,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.delete(TestUtil.tNoteEntity)
 
         // assert
-        coVerify { noteDomainMapperMock.mapReverse(TestUtil.tNoteEntity) }
         coEvery { noteDaoMock.delete(TestUtil.tNoteModel) }
         assertThat(r).isInstanceOf(Result.Error::class.java)
     }
@@ -179,7 +159,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.getLastId()
 
         // assert
-        coVerify { noteDomainMapperMock wasNot Called }
         coVerify { noteDaoMock.getLastId() }
         assertThat(r).isInstanceOf(Result.Success::class.java)
         assertThat((r as Result.Success).data).isEqualTo(1)
@@ -194,7 +173,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.getLastId()
 
         // assert
-        coVerify { noteDomainMapperMock wasNot Called }
         coVerify { noteDaoMock.getLastId() }
         assertThat(r).isInstanceOf(Result.Error::class.java)
     }
@@ -208,7 +186,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.getAllNotesWithAlarm()
 
         // assert
-        coVerify { noteDomainMapperMock.mapList(TestUtil.tNoteModelList) }
         coVerify { noteDaoMock.getAllNotesWithAlarm() }
         assertThat(r).isInstanceOf(Result.Success::class.java)
         assertThat((r as Result.Success).data).isEqualTo(TestUtil.tNoteEntityList)
@@ -223,7 +200,6 @@ class NoteRepositoryImplTest {
         val r = systemUnderTest.getAllNotesWithAlarm()
 
         // assert
-        coVerify { noteDomainMapperMock wasNot Called }
         coVerify { noteDaoMock.getAllNotesWithAlarm() }
         assertThat(r).isInstanceOf(Result.Error::class.java)
     }
