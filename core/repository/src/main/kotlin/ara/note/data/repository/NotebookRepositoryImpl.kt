@@ -4,8 +4,8 @@ import ara.note.data.localdatasource.NotebookDao
 import ara.note.data.model.NotebookModel
 import ara.note.data.model.toDomainEntity
 import ara.note.domain.entity.Notebook
+import ara.note.domain.entity.toDataModel
 import ara.note.domain.repository.NotebookRepository
-import ara.note.domain.util.Mapper
 import ara.note.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.map
  */
 class NotebookRepositoryImpl(
     private val notebookDao: NotebookDao,
-    private val notebookDomainMapper: Mapper<NotebookModel, Notebook>,
 ) : NotebookRepository {
 
     override fun observe(): Flow<List<Notebook>> {
@@ -34,17 +33,17 @@ class NotebookRepositoryImpl(
     }
 
     override suspend fun insert(notebook: Notebook): Result<Int> {
-        val result = notebookDao.insert(notebookDomainMapper.mapReverse(notebook))
+        val result = notebookDao.insert(notebook.toDataModel())
         return if (result != null) Result.Success(result.toInt()) else Result.Error()
     }
 
     override suspend fun delete(notebook: Notebook): Result<Boolean> {
-        val result = notebookDao.delete(notebookDomainMapper.mapReverse(notebook))
+        val result = notebookDao.delete(notebook.toDataModel())
         return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 
     override suspend fun update(notebook: Notebook): Result<Boolean> {
-        val result = notebookDao.update(notebookDomainMapper.mapReverse(notebook))
+        val result = notebookDao.update(notebook.toDataModel())
         return if (result != null) Result.Success(result == 1) else Result.Error()
     }
 }

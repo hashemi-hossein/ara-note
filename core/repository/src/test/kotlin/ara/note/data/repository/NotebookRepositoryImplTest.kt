@@ -1,9 +1,7 @@
 package ara.note.data.repository
 
 import ara.note.data.localdatasource.NotebookDao
-import ara.note.data.model.NotebookModel
-import ara.note.domain.entity.Notebook
-import ara.note.domain.util.Mapper
+import ara.note.domain.entity.toDataModel
 import ara.note.test.TestUtil
 import ara.note.util.Result
 import com.google.common.truth.Truth.assertThat
@@ -22,16 +20,9 @@ import org.junit.Test
 class NotebookRepositoryImplTest {
 
     private val notebookDaoMock = mockk<NotebookDao>()
-    private val notebookDomainMapperMock = mockk<Mapper<NotebookModel, Notebook>>() {
-        every { map(TestUtil.tNotebookModel) } returns TestUtil.tNotebookEntity
-        every { mapReverse(TestUtil.tNotebookEntity) } returns TestUtil.tNotebookModel
-        every { mapList(TestUtil.tNotebookModelList) } returns TestUtil.tNotebookEntityList
-        every { mapListReverse(TestUtil.tNotebookEntityList) } returns TestUtil.tNotebookModelList
-    }
 
     private val systemUnderTest = NotebookRepositoryImpl(
         notebookDao = notebookDaoMock,
-        notebookDomainMapper = notebookDomainMapperMock,
     )
 
     @Test
@@ -47,7 +38,6 @@ class NotebookRepositoryImplTest {
         val r2 = r.toList()
 
         // assert
-        verify { notebookDomainMapperMock.mapList(TestUtil.tNotebookModelList) }
         verify { notebookDaoMock.observe() }
         assertThat(r2).containsExactly(TestUtil.tNotebookEntityList, TestUtil.tNotebookEntityList)
             .inOrder()
@@ -62,7 +52,7 @@ class NotebookRepositoryImplTest {
         val r = systemUnderTest.insert(TestUtil.tNotebookEntity)
 
         // assert
-        coVerify { notebookDomainMapperMock.mapReverse(TestUtil.tNotebookEntity) }
+        coVerify { TestUtil.tNotebookEntity.toDataModel() }
         coVerify { notebookDaoMock.insert(TestUtil.tNotebookModel) }
         assertThat(r).isInstanceOf(Result.Success::class.java)
         assertThat((r as Result.Success).data).isEqualTo(1)
@@ -77,7 +67,7 @@ class NotebookRepositoryImplTest {
         val r = systemUnderTest.insert(TestUtil.tNotebookEntity)
 
         // assert
-        coVerify { notebookDomainMapperMock.mapReverse(TestUtil.tNotebookEntity) }
+        coVerify { TestUtil.tNotebookEntity.toDataModel() }
         coVerify { notebookDaoMock.insert(TestUtil.tNotebookModel) }
         assertThat(r).isInstanceOf(Result.Error::class.java)
     }

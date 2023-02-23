@@ -16,6 +16,11 @@ data class NotebookModel(
     val name: String,
 )
 
+/**
+ * Based on CLEAN Architecture:
+ *
+ * Extension function for mapping [NotebookModel] (Database Model) to [Notebook] (Domain Entity)
+ */
 fun NotebookModel.toDomainEntity(noteCount: Int) = Notebook(
     id = this.id,
     name = this.name,
