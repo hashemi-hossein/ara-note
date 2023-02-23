@@ -53,16 +53,15 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 subprojects {
     pluginManager.apply("com.diffplug.spotless")
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-        val ktlintVersion = "0.48.2"
         kotlin {
             target("**/*.kt")
             targetExclude("$buildDir/**/*.kt")
             targetExclude("bin/**/*.kt")
-            ktlint(ktlintVersion)
+            ktlint(libs.versions.ktlint.get())
         }
         kotlinGradle {
             target("*.gradle.kts")
-            ktlint(ktlintVersion)
+            ktlint(libs.versions.ktlint.get())
         }
     }
 }
