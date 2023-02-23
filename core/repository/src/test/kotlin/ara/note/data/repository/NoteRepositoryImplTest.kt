@@ -71,7 +71,7 @@ class NoteRepositoryImplTest {
             TestUtil.tNoteModelList,
             TestUtil.tNoteModelList,
         )
-        val reorderedList = TestUtil.tNoteEntityList.sortedByDescending { it.createdDateTime }
+        val reorderedList = TestUtil.tNoteEntityList.sortedByDescending { it.modifiedDateTime }
 
         // act
         val r = systemUnderTest.observe(0)

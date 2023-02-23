@@ -88,7 +88,7 @@ class HomeScreenTest {
             SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
                 hasText(TestUtil.tNotebookEntity.name),
         ).assertExists()
-        composeTestRule.onNodeWithText(HDateTime.gerPrettyDateTime(TestUtil.tNoteEntity.createdDateTime))
+        composeTestRule.onNodeWithText(HDateTime.gerPrettyDateTime(TestUtil.tNoteEntity.modifiedDateTime))
             .assertExists()
     }
 

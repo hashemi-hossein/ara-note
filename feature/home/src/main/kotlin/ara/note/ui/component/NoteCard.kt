@@ -66,7 +66,7 @@ fun NoteCard(
                         .padding(top = 5.dp),
                 ) {
                     Text(
-                        text = HDateTime.gerPrettyDateTime(note.createdDateTime),
+                        text = HDateTime.gerPrettyDateTime(note.modifiedDateTime),
                         style = MaterialTheme.typography.bodySmall,
                     )
                     if (note.alarmDateTime != null) {

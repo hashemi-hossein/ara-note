@@ -269,9 +269,9 @@ private fun HBody(
         Divider(Modifier.padding(vertical = 3.dp))
         if (!isNewNote) {
             Text(
-                text = "Created at " +
+                text = "Modified at " +
                     HDateTime.formatDateAndTime(
-                        dateTime = note.createdDateTime,
+                        dateTime = note.modifiedDateTime,
                         dateTimeFormatPattern = DateTimeFormatPattern.DATE_TIME,
                     ),
                 modifier = Modifier.alpha(0.7f),
