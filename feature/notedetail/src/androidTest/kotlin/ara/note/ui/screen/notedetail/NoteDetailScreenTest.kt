@@ -18,8 +18,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ara.note.notedetail.R
 import ara.note.domain.entity.Note
+import ara.note.notedetail.R
 import ara.note.test.TestUtil
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import ara.note.util.DateTimeFormatPattern

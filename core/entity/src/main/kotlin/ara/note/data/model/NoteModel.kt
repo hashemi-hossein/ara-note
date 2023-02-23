@@ -11,9 +11,12 @@ import kotlinx.datetime.LocalDateTime
     tableName = "tblNote",
     foreignKeys = [
         ForeignKey(
-            entity = NotebookModel::class, parentColumns = ["id"], childColumns = ["notebook_id"],
-            onUpdate = ForeignKey.CASCADE, onDelete = ForeignKey.RESTRICT,
-        )
+            entity = NotebookModel::class,
+            parentColumns = ["id"],
+            childColumns = ["notebook_id"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.RESTRICT,
+        ),
     ],
 )
 data class NoteModel(

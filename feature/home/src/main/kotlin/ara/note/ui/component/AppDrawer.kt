@@ -87,7 +87,7 @@ fun AppDrawer(
                             },
                             trailingContent = {
                                 Text(text = item.noteCount.toString())
-                            }
+                            },
                         )
                     }
                 }

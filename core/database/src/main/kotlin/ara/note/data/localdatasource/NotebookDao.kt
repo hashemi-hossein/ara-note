@@ -16,13 +16,14 @@ interface NotebookDao {
     fun observe(): Flow<List<NotebookModel>>
 
     @MapInfo(keyTable = "tblNotebook", valueColumn = "count")
-    @Query("""
+    @Query(
+        """
         SELECT tblNotebook.id, tblNotebook.name, COUNT(notebook_notes.notebook_id) AS count FROM tblNotebook 
         LEFT JOIN (SELECT notebook_id FROM tblNote) AS notebook_notes ON tblNotebook.id = notebook_notes.notebook_id 
         GROUP BY tblNotebook.id, tblNotebook.name
-    """
+    """,
     )
-    fun observeWithCount(): Flow<Map<NotebookModel,Int>>
+    fun observeWithCount(): Flow<Map<NotebookModel, Int>>
 
     @Insert
     suspend fun insert(notebookModel: NotebookModel): Long?

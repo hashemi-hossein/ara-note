@@ -69,7 +69,7 @@ class HomeScreenTest {
                     filterNotes()
                 },
                 modifySearchText = {
-                }
+                },
             )
         }
     }

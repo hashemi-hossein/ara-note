@@ -16,8 +16,8 @@ import ara.note.data.model.NotebookModel
     version = 3,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2, spec = FirstAutoMigration::class)
-    ]
+        AutoMigration(from = 1, to = 2, spec = FirstAutoMigration::class),
+    ],
 )
 @TypeConverters(DatabaseTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -34,7 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
 @RenameColumn(
     tableName = "tblNote",
     fromColumnName = "added_datetime",
-    toColumnName = "created_datetime"
+    toColumnName = "created_datetime",
 )
 class FirstAutoMigration : AutoMigrationSpec
 
