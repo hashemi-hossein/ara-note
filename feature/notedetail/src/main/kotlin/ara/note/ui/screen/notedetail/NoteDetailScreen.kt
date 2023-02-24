@@ -155,7 +155,6 @@ fun NoteDetailScreen(
         uiState = uiState,
         onNoteChanged = { viewModel.sendIntent(ModifyNote(it)) },
         onBackPressed = { viewModel.triggerSingleEvent(BackPressed(it)) },
-        isNewNote = uiState.isNewNote,
         isAutoNoteSaving = uiState.userPreferences.isAutoSaveMode,
         modalBottomSheetState = modalBottomSheetState,
         snackbarHostState = snackbarHostState,
@@ -173,7 +172,6 @@ internal fun NoteDetailScreen(
     uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
-    isNewNote: Boolean,
     isAutoNoteSaving: Boolean = true,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -194,7 +192,7 @@ internal fun NoteDetailScreen(
         sheetState = modalBottomSheetState,
         sheetContent = {
             HBottomSheet(
-                note = uiState.note,
+                uiState = uiState,
                 onNoteChanged = onNoteChanged,
                 scope = scope,
                 snackbarHostState = snackbarHostState,
@@ -211,11 +209,9 @@ internal fun NoteDetailScreen(
                     icon = if (isAutoNoteSaving) Icons.Default.Done else Icons.Default.ArrowBack,
                     actions = {
                         HAppBarActions(
-                            note = uiState.note,
-                            notebooks = uiState.notebooks,
+                            uiState = uiState,
                             onNoteChanged = onNoteChanged,
                             onBackPressed = onBackPressed,
-                            isNewNote = isNewNote,
                             scope = scope,
                             context = context,
                             modalBottomSheetState = modalBottomSheetState,
@@ -243,9 +239,8 @@ internal fun NoteDetailScreen(
         ) { innerPadding ->
             HBody(
                 innerPadding = innerPadding,
-                note = uiState.note,
+                uiState = uiState,
                 onNoteChanged = onNoteChanged,
-                isNewNote = isNewNote,
             )
         }
     }
@@ -255,9 +250,8 @@ internal fun NoteDetailScreen(
 @Composable
 private fun HBody(
     innerPadding: PaddingValues,
-    note: Note,
+    uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
-    isNewNote: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -265,21 +259,21 @@ private fun HBody(
             .padding(horizontal = 10.dp),
     ) {
         Divider(Modifier.padding(vertical = 3.dp))
-        if (!isNewNote) {
+        if (!uiState.isNewNote) {
             Text(
                 text = "Modified at " +
                     HDateTime.formatDateAndTime(
-                        dateTime = note.modifiedDateTime,
+                        dateTime = uiState.note.modifiedDateTime,
                         dateTimeFormatPattern = DateTimeFormatPattern.DATE_TIME,
                     ),
                 modifier = Modifier.alpha(0.7f),
             )
             Spacer(Modifier.padding(vertical = 3.dp))
         }
-        AnimatedVisibility(note.alarmDateTime != null) {
+        AnimatedVisibility(uiState.note.alarmDateTime != null) {
             Text(
                 text = "Alarm has been set for " +
-                    note.alarmDateTime?.let {
+                    uiState.note.alarmDateTime?.let {
                         HDateTime.gerPrettyDateTime(it)
                     },
                 style = MaterialTheme.typography.bodyMedium,
@@ -289,8 +283,8 @@ private fun HBody(
 
         val focusRequester = remember { FocusRequester() }
         TextField(
-            value = note.text,
-            onValueChange = { onNoteChanged(note.copy(text = it)) },
+            value = uiState.note.text,
+            onValueChange = { onNoteChanged(uiState.note.copy(text = it)) },
             modifier = Modifier
                 .fillMaxSize()
                 .focusRequester(focusRequester),
@@ -303,8 +297,8 @@ private fun HBody(
             placeholder = { Text(text = stringResource(id = string.type_here)) },
         )
 
-        LaunchedEffect(isNewNote) {
-            if (isNewNote) {
+        LaunchedEffect(uiState.isNewNote) {
+            if (uiState.isNewNote) {
                 focusRequester.requestFocus()
             }
         }
@@ -314,25 +308,23 @@ private fun HBody(
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun HAppBarActions(
-    note: Note,
-    notebooks: List<Notebook>,
+    uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
-    isNewNote: Boolean,
     scope: CoroutineScope,
     context: Context,
     modalBottomSheetState: ModalBottomSheetState,
     keyboardController: SoftwareKeyboardController?,
 ) {
-    val doesHasAlarm = note.alarmDateTime != null
+    val doesHasAlarm = uiState.note.alarmDateTime != null
 
     IconButton(onClick = {
         keyboardController?.hide()
-        onBackPressed(if (!isNewNote) TheOperation.DELETE else TheOperation.DISCARD)
+        onBackPressed(if (!uiState.isNewNote) TheOperation.DELETE else TheOperation.DISCARD)
     }) {
         Icon(
             imageVector = Icons.Default.Delete,
-            contentDescription = if (!isNewNote) {
+            contentDescription = if (!uiState.isNewNote) {
                 stringResource(string.cd_delete)
             } else {
                 stringResource(string.cd_discard)
@@ -358,9 +350,9 @@ private fun HAppBarActions(
             hManageAlarm(
                 context = context,
                 doesCreate = false,
-                noteId = note.id,
+                noteId = uiState.note.id,
             )
-            onNoteChanged(note.copy(alarmDateTime = null))
+            onNoteChanged(uiState.note.copy(alarmDateTime = null))
         }) {
             Icon(
                 imageVector = Icons.Default.AlarmOff,
@@ -368,11 +360,11 @@ private fun HAppBarActions(
             )
         }
     }
-    if (notebooks.isNotEmpty()) {
+    if (uiState.notebooks.isNotEmpty()) {
         HDropdown(
-            items = notebooks.associate { it.id to it.name },
-            selectedKey = note.notebookId,
-            onItemClick = { onNoteChanged(note.copy(notebookId = it)) },
+            items = uiState.notebooks.associate { it.id to it.name },
+            selectedKey = uiState.note.notebookId,
+            onItemClick = { onNoteChanged(uiState.note.copy(notebookId = it)) },
         )
     }
 }
@@ -380,7 +372,7 @@ private fun HAppBarActions(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun HBottomSheet(
-    note: Note,
+    uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
@@ -388,7 +380,7 @@ private fun HBottomSheet(
     modalBottomSheetState: ModalBottomSheetState,
 ) {
     var dateTime by remember(modalBottomSheetState.isVisible) {
-        mutableStateOf(note.alarmDateTime ?: HDateTime.getCurrentDateTime())
+        mutableStateOf(uiState.note.alarmDateTime ?: HDateTime.getCurrentDateTime())
     }
     Column(
         modifier = Modifier.padding(vertical = 30.dp, horizontal = 10.dp),
@@ -511,10 +503,10 @@ private fun HBottomSheet(
                         hManageAlarm(
                             context = context,
                             doesCreate = true,
-                            noteId = note.id,
+                            noteId = uiState.note.id,
                             triggerAtMillis = dateTime.millis(),
                         )
-                        onNoteChanged(note.copy(alarmDateTime = dateTime))
+                        onNoteChanged(uiState.note.copy(alarmDateTime = dateTime))
                     } else {
                         showSnackbar(
                             scope = scope,
