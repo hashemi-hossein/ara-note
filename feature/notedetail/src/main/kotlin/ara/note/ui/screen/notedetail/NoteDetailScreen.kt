@@ -37,11 +37,7 @@ import ara.note.ui.component.HAppBarActions
 import ara.note.ui.component.HBody
 import ara.note.ui.component.HSnackbarHost
 import ara.note.ui.component.showSnackbar
-import ara.note.ui.screen.notedetail.NoteDetailIntent.ModifyNote
-import ara.note.ui.screen.notedetail.NoteDetailSingleEvent.BackPressed
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DISCARD
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.SAVE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -68,7 +64,7 @@ fun NoteDetailScreen(
                     hManageAlarm(context = context, doesCreate = false, noteId = it.noteId)
 
                 is NoteDetailSingleEvent.OperationError ->
-                    Toast.makeText(context, "error in operation occurred", Toast.LENGTH_LONG)
+                    Toast.makeText(context, context.getString(string.error_in_operation), Toast.LENGTH_LONG)
                         .show()
 
                 is NoteDetailSingleEvent.BackPressed -> {
@@ -111,8 +107,8 @@ fun NoteDetailScreen(
 
     NoteDetailScreen(
         uiState = uiState,
-        onNoteChanged = { viewModel.sendIntent(ModifyNote(it)) },
-        onBackPressed = { viewModel.triggerSingleEvent(BackPressed(it)) },
+        onNoteChanged = { viewModel.sendIntent(NoteDetailIntent.ModifyNote(it)) },
+        onBackPressed = { viewModel.triggerSingleEvent(NoteDetailSingleEvent.BackPressed(it)) },
         isAutoNoteSaving = uiState.userPreferences.isAutoSaveMode,
         modalBottomSheetState = modalBottomSheetState,
         snackbarHostState = snackbarHostState,
@@ -178,7 +174,7 @@ internal fun NoteDetailScreen(
                     },
                     onNavButtonClick = {
                         keyboardController?.hide()
-                        onBackPressed(if (isAutoNoteSaving) SAVE else DISCARD)
+                        onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD)
                     },
                 )
             },
