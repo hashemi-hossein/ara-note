@@ -33,7 +33,7 @@ class BootReceiver : BroadcastReceiver() {
                 when (val result = noteRepository.getAllNotesWithAlarm()) {
                     is Result.Success -> {
                         val notes = result.data
-                        println(notes.toString())
+//                        println(notes.toString())
 
                         for (note in notes) {
                             hManageAlarm(
@@ -45,7 +45,7 @@ class BootReceiver : BroadcastReceiver() {
                             )
                         }
                     }
-                    is Result.Error -> println(result)
+                    is Result.Error -> Unit //println(result)
                 }
             }
         }

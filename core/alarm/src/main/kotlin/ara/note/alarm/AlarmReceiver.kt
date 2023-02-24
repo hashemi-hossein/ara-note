@@ -34,7 +34,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 when (val result = noteRepository.getById(requestCode)) {
                     is Result.Success -> {
                         val note = result.data
-                        println(note)
+//                        println(note)
 
                         Notify.with(context)
                             .header {
@@ -59,7 +59,7 @@ class AlarmReceiver : BroadcastReceiver() {
                             .show()
                         noteRepository.update(note.copy(alarmDateTime = null))
                     }
-                    is Result.Error -> println(result)
+                    is Result.Error -> Unit //println(result)
                 }
             }
         }

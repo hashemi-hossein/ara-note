@@ -50,7 +50,7 @@ class HDataBackup
                 }
                 result = "Success"
             } catch (e: IOException) {
-                e.printStackTrace()
+//                e.printStackTrace()
                 result = "Error\n${e.localizedMessage}"
             }
             onComplete(result)
@@ -90,13 +90,13 @@ class HDataBackup
 
                 result = "Success"
             } catch (e: FileNotFoundException) {
-                e.printStackTrace()
+//                e.printStackTrace()
                 result = "Error\n${e.localizedMessage}"
             } catch (e: IOException) {
-                e.printStackTrace()
+//                e.printStackTrace()
                 result = "Error\n${e.localizedMessage}"
             } catch (e: Exception) {
-                e.printStackTrace()
+//                e.printStackTrace()
                 result = "Error\n${e.localizedMessage}"
             }
             onComplete(result)

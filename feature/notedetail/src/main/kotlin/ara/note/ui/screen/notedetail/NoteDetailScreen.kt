@@ -104,7 +104,7 @@ fun NoteDetailScreen(
     val modalBottomSheetState = rememberModalBottomSheetState(
         ModalBottomSheetValue.Hidden,
         confirmStateChange = {
-            println("modalBottomSheetValue = $it")
+//            println("modalBottomSheetValue = $it")
             true
         },
     )
