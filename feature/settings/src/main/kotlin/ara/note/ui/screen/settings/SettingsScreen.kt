@@ -25,9 +25,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import ara.note.data.datastore.DarkMode
 import ara.note.data.datastore.NoteViewMode
 import ara.note.data.datastore.UserPreferences
+import ara.note.settings.R.string
 import ara.note.ui.component.HAppBar
 import ara.note.ui.component.HDropdown
 import ara.note.ui.component.HSnackbarHost
@@ -105,7 +107,7 @@ internal fun SettingsScreen(
 ) {
     Scaffold(
         snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
-        topBar = { HAppBar(title = "Settings", onNavButtonClick = navigateUp) },
+        topBar = { HAppBar(title = stringResource(string.settings), onNavButtonClick = navigateUp) },
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -113,7 +115,7 @@ internal fun SettingsScreen(
                 .padding(innerPadding),
         ) {
             ListItem(
-                headlineText = { Text(text = "Dark Theme") },
+                headlineText = { Text(text = stringResource(string.dark_theme)) },
                 trailingContent = {
                     HDropdown(
                         items = DarkMode.values().associate { it.ordinal to it.name },
@@ -123,7 +125,7 @@ internal fun SettingsScreen(
                 },
             )
             ListItem(
-                headlineText = { Text(text = "Note View Mode") },
+                headlineText = { Text(text = stringResource(string.note_view_mode)) },
                 trailingContent = {
                     HDropdown(
                         items = NoteViewMode.values().associate { it.ordinal to it.name },
@@ -133,7 +135,7 @@ internal fun SettingsScreen(
                 },
             )
             ListItem(
-                headlineText = { Text(text = "Auto save Mode") },
+                headlineText = { Text(text = stringResource(string.auto_save_mode)) },
                 trailingContent = {
                     Switch(
                         checked = userPreferences.isAutoSaveMode,
@@ -142,7 +144,7 @@ internal fun SettingsScreen(
                 },
             )
             ListItem(
-                headlineText = { Text(text = "Double back to exit Mode") },
+                headlineText = { Text(text = stringResource(string.double_back_to_exit_mode)) },
                 trailingContent = {
                     Switch(
                         checked = userPreferences.isDoubleBackToExitMode,
@@ -154,8 +156,9 @@ internal fun SettingsScreen(
 
             val activityResultLauncherCreateDocument =
                 rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
-                    if (it != null) {
-                        exportData(it) {
+                    uri->
+                    if (uri != null) {
+                        exportData(uri) {
                             showSnackbar(
                                 scope = scope,
                                 snackbarHostState = snackbarHostState,
@@ -166,23 +169,23 @@ internal fun SettingsScreen(
                     }
                 }
             ListItem(
-                headlineText = { Text(text = "Export Data") },
+                headlineText = { Text(text = stringResource(string.export_data)) },
                 trailingContent = {
                     Button(onClick = {
                         activityResultLauncherCreateDocument.launch("AraNote.txt")
                     }) {
                         Icon(
                             imageVector = Icons.Default.OpenInNewOff,
-                            contentDescription = "Export Data",
+                            contentDescription = stringResource(string.export_data),
                         )
                     }
                 },
             )
 
             val activityResultLauncherOpenDocument =
-                rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
-                    if (it != null) {
-                        importData(it) {
+                rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {uri->
+                    if (uri != null) {
+                        importData(uri) {
                             showSnackbar(
                                 scope = scope,
                                 snackbarHostState = snackbarHostState,
@@ -193,14 +196,14 @@ internal fun SettingsScreen(
                     }
                 }
             ListItem(
-                headlineText = { Text(text = "Import Data") },
+                headlineText = { Text(text = stringResource(string.import_data)) },
                 trailingContent = {
                     Button(onClick = {
                         activityResultLauncherOpenDocument.launch(arrayOf("text/plain"))
                     }) {
                         Icon(
                             imageVector = Icons.Default.ExitToApp,
-                            contentDescription = "Import Data",
+                            contentDescription = stringResource(string.import_data),
                         )
                     }
                 },
