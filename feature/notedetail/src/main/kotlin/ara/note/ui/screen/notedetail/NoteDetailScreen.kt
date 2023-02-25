@@ -109,7 +109,6 @@ fun NoteDetailScreen(
         uiState = uiState,
         onNoteChanged = { viewModel.sendIntent(NoteDetailIntent.ModifyNote(it)) },
         onBackPressed = { viewModel.triggerSingleEvent(NoteDetailSingleEvent.BackPressed(it)) },
-        isAutoNoteSaving = uiState.userPreferences.isAutoSaveMode,
         modalBottomSheetState = modalBottomSheetState,
         snackbarHostState = snackbarHostState,
         scope = scope,
@@ -126,7 +125,6 @@ internal fun NoteDetailScreen(
     uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
-    isAutoNoteSaving: Boolean = true,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
@@ -139,7 +137,7 @@ internal fun NoteDetailScreen(
         if (modalBottomSheetState.isVisible) {
             scope.launch { modalBottomSheetState.hide() }
         } else {
-            onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD)
+            onBackPressed(if (uiState.userPreferences.isAutoSaveMode) TheOperation.SAVE else TheOperation.DISCARD)
         }
     })
     ModalBottomSheetLayout(
@@ -160,7 +158,7 @@ internal fun NoteDetailScreen(
             topBar = {
                 HAppBar(
                     title = /*if (isNewNote) stringResource(string.add_note) else*/ "",
-                    icon = if (isAutoNoteSaving) Icons.Default.Done else Icons.Default.ArrowBack,
+                    icon = if (uiState.userPreferences.isAutoSaveMode) Icons.Default.Done else Icons.Default.ArrowBack,
                     actions = {
                         HAppBarActions(
                             uiState = uiState,
@@ -174,12 +172,12 @@ internal fun NoteDetailScreen(
                     },
                     onNavButtonClick = {
                         keyboardController?.hide()
-                        onBackPressed(if (isAutoNoteSaving) TheOperation.SAVE else TheOperation.DISCARD)
+                        onBackPressed(if (uiState.userPreferences.isAutoSaveMode) TheOperation.SAVE else TheOperation.DISCARD)
                     },
                 )
             },
             floatingActionButton = {
-                if (!isAutoNoteSaving) {
+                if (!uiState.userPreferences.isAutoSaveMode) {
                     FloatingActionButton(onClick = {
                         onBackPressed(TheOperation.SAVE)
                     }) {

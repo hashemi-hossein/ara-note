@@ -27,9 +27,9 @@ fun HAppBar(
     title: String = "",
     appBarNavButtonType: AppBarNavButtonType = BACK,
     icon: ImageVector = if (appBarNavButtonType == BACK) {
-        Icons.Filled.ArrowBack
+        Icons.Default.ArrowBack
     } else {
-        Icons.Filled.Menu
+        Icons.Default.Menu
     },
     actions: @Composable RowScope.() -> Unit = {},
     onNavButtonClick: () -> Unit,
