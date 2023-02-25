@@ -1,8 +1,8 @@
 package ara.note.ui.screen.notedetail
 
-import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
@@ -64,8 +65,11 @@ fun NoteDetailScreen(
                     hManageAlarm(context = context, doesCreate = false, noteId = it.noteId)
 
                 is NoteDetailSingleEvent.OperationError ->
-                    Toast.makeText(context, context.getString(string.error_in_operation), Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(
+                        context,
+                        context.getString(string.error_in_operation),
+                        Toast.LENGTH_LONG
+                    ).show()
 
                 is NoteDetailSingleEvent.BackPressed -> {
                     if (it.theOperation == TheOperation.DISCARD) {
@@ -111,7 +115,6 @@ fun NoteDetailScreen(
         onBackPressed = { viewModel.triggerSingleEvent(NoteDetailSingleEvent.BackPressed(it)) },
         modalBottomSheetState = modalBottomSheetState,
         snackbarHostState = snackbarHostState,
-        scope = scope,
     )
 }
 
@@ -127,7 +130,6 @@ internal fun NoteDetailScreen(
     onBackPressed: (TheOperation) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
-    context: Context = LocalContext.current,
     modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
         ModalBottomSheetValue.Hidden,
     ),
@@ -146,9 +148,7 @@ internal fun NoteDetailScreen(
             AlarmDateTimePickerBottomSheet(
                 uiState = uiState,
                 onNoteChanged = onNoteChanged,
-                scope = scope,
                 snackbarHostState = snackbarHostState,
-                context = context,
                 modalBottomSheetState = modalBottomSheetState,
             )
         },
@@ -157,17 +157,13 @@ internal fun NoteDetailScreen(
             snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
             topBar = {
                 HAppBar(
-                    title = /*if (isNewNote) stringResource(string.add_note) else*/ "",
                     icon = if (uiState.userPreferences.isAutoSaveMode) Icons.Default.Done else Icons.Default.ArrowBack,
                     actions = {
                         HAppBarActions(
                             uiState = uiState,
                             onNoteChanged = onNoteChanged,
                             onBackPressed = onBackPressed,
-                            scope = scope,
-                            context = context,
                             modalBottomSheetState = modalBottomSheetState,
-                            keyboardController = keyboardController,
                         )
                     },
                     onNavButtonClick = {
@@ -190,7 +186,7 @@ internal fun NoteDetailScreen(
             },
         ) { innerPadding ->
             HBody(
-                innerPadding = innerPadding,
+                modifier = Modifier.padding(innerPadding),
                 uiState = uiState,
                 onNoteChanged = onNoteChanged,
             )

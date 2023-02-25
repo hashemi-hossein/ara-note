@@ -10,7 +10,10 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import ara.note.alarm.hManageAlarm
@@ -28,10 +31,10 @@ internal fun HAppBarActions(
     uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
-    scope: CoroutineScope,
-    context: Context,
     modalBottomSheetState: ModalBottomSheetState,
-    keyboardController: SoftwareKeyboardController?,
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
+    context: Context = LocalContext.current,
+    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     val doesHasAlarm = uiState.note.alarmDateTime != null
 

@@ -2,7 +2,6 @@ package ara.note.ui.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,14 +30,12 @@ import ara.note.util.HDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HBody(
-    innerPadding: PaddingValues,
+    modifier: Modifier,
     uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .padding(innerPadding)
-            .padding(horizontal = 10.dp),
+        modifier = modifier.padding(horizontal = 10.dp),
     ) {
         Divider(Modifier.padding(vertical = 3.dp))
         if (!uiState.isNewNote) {
