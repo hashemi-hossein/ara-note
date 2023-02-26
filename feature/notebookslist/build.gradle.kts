@@ -1,5 +1,5 @@
 plugins {
-    id("ara.library.compose")
+    id("ara.library.compose.feature")
     id("ara.hilt")
 }
 
@@ -8,10 +8,4 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":core:domain"))
-    implementation(project(":core:entity"))
-    implementation(project(":core:util"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:preference"))
 }
