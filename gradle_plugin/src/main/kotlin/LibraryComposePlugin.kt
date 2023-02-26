@@ -1,13 +1,9 @@
-import ara.KOTLIN_ANDROID
 import ara.getVersionCatalogLibs
 import com.android.build.gradle.LibraryExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 class LibraryComposePlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -29,10 +25,11 @@ class LibraryComposePlugin : Plugin<Project> {
             }
 
             dependencies {
+                // ### Jetpack Compose ####
                 val composeBom = platform(libs.findLibrary("androidx.compose.bom").get())
                 add("implementation", composeBom)
                 add("androidTestImplementation", composeBom)
-
+                //
                 add("implementation", libs.findLibrary("androidx.compose.ui").get())
                 add("implementation", libs.findLibrary("androidx.compose.ui.tooling.preview").get())
                 // Tooling support (Previews, etc.)

@@ -18,9 +18,13 @@ gradlePlugin {
             id = "ara.library"
             implementationClass = "LibraryPlugin"
         }
-        register("compose-library") {
+        register("library-compose") {
             id = "ara.library.compose"
             implementationClass = "LibraryComposePlugin"
+        }
+        register("library-compose-feature") {
+            id = "ara.library.compose.feature"
+            implementationClass = "LibraryComposeFeaturePlugin"
         }
         register("hilt") {
             id = "ara.hilt"
