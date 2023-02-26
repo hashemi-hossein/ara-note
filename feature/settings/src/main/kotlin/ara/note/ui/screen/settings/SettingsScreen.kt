@@ -49,38 +49,10 @@ fun SettingsScreen(
     SettingsScreen(
         navigateUp = navigateUp,
         userPreferences = uiState.userPreferences,
-        setDarkMode = {
-            viewModel.sendIntent(
-                WriteUserPreferences(
-                    UserPreferences::darkMode,
-                    it,
-                ),
-            )
-        },
-        setIsAutoSaveMode = {
-            viewModel.sendIntent(
-                WriteUserPreferences(
-                    UserPreferences::isAutoSaveMode,
-                    it,
-                ),
-            )
-        },
-        setIsDoubleBackToExitMode = {
-            viewModel.sendIntent(
-                WriteUserPreferences(
-                    UserPreferences::isDoubleBackToExitMode,
-                    it,
-                ),
-            )
-        },
-        setNoteViewMode = {
-            viewModel.sendIntent(
-                WriteUserPreferences(
-                    UserPreferences::noteViewMode,
-                    it,
-                ),
-            )
-        },
+        setDarkMode = { viewModel.sendIntent(WriteUserPreferences(UserPreferences::darkMode, it)) },
+        setIsAutoSaveMode = { viewModel.sendIntent(WriteUserPreferences(UserPreferences::isAutoSaveMode, it)) },
+        setIsDoubleBackToExitMode = { viewModel.sendIntent(WriteUserPreferences(UserPreferences::isDoubleBackToExitMode, it)) },
+        setNoteViewMode = { viewModel.sendIntent(WriteUserPreferences(UserPreferences::noteViewMode, it)) },
         exportData = { uri, onComplete ->
             viewModel.sendIntent(ExportData(uri, onComplete))
         },
@@ -155,8 +127,7 @@ internal fun SettingsScreen(
             Divider()
 
             val activityResultLauncherCreateDocument =
-                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
-                    uri->
+                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
                     if (uri != null) {
                         exportData(uri) {
                             showSnackbar(
@@ -183,7 +154,7 @@ internal fun SettingsScreen(
             )
 
             val activityResultLauncherOpenDocument =
-                rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {uri->
+                rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
                     if (uri != null) {
                         importData(uri) {
                             showSnackbar(
