@@ -71,15 +71,8 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
 
-    implementation(project(":core:entity"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:repository"))
-    implementation(project(":core:database"))
     implementation(project(":core:preference"))
     implementation(project(":core:util"))
-    testImplementation(project(":core:test"))
-    androidTestImplementation(project(":core:test"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:notedetail"))
     implementation(project(":feature:home"))
