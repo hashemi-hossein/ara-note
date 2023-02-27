@@ -36,9 +36,6 @@ data class NoteModel(
 
     @ColumnInfo(name = "modified_datetime")
     val modifiedDateTime: LocalDateTime,
-
-    @ColumnInfo(name = "alarm_datetime")
-    val alarmDateTime: LocalDateTime? = null,
 )
 
 /**
@@ -52,7 +49,6 @@ fun NoteModel.toDomainEntity() = Note(
     text = this.text,
     createdDateTime = this.createdDateTime,
     modifiedDateTime = this.modifiedDateTime,
-    alarmDateTime = this.alarmDateTime,
 )
 
 fun List<NoteModel>.toDomainEntity() =

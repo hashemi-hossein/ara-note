@@ -6,6 +6,8 @@
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
     <string name="error_in_operation">error in operation occurred</string>
+    <string name="modified_at">\"Modified at \"</string>
+<!--    <string name="alarm_has_been_set_for">\"Alarm has been set for \"</string>-->
 
     <string name="cd_discard">Discard</string>
     <string name="cd_delete">Delete</string>

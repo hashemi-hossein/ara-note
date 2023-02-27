@@ -78,7 +78,6 @@ dependencies {
     implementation(project(":core:database"))
     implementation(project(":core:preference"))
     implementation(project(":core:util"))
-    implementation(project(":core:alarm"))
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))
     implementation(project(":feature:settings"))

@@ -29,10 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import ara.note.alarm.hManageAlarm
 import ara.note.domain.entity.Note
 import ara.note.notedetail.R.string
-import ara.note.ui.component.AlarmDateTimePickerBottomSheet
 import ara.note.ui.component.HAppBar
 import ara.note.ui.component.HAppBarActions
 import ara.note.ui.component.HBody
@@ -61,8 +59,8 @@ fun NoteDetailScreen(
             when (it) {
                 is NoteDetailSingleEvent.NavigateUp -> navigateUp()
 
-                is NoteDetailSingleEvent.DisableAlarm ->
-                    hManageAlarm(context = context, doesCreate = false, noteId = it.noteId)
+                is NoteDetailSingleEvent.DisableAlarm -> Unit
+//                    hManageAlarm(context = context, doesCreate = false, noteId = it.noteId)
 
                 is NoteDetailSingleEvent.OperationError ->
                     Toast.makeText(
@@ -145,12 +143,12 @@ internal fun NoteDetailScreen(
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
         sheetContent = {
-            AlarmDateTimePickerBottomSheet(
-                uiState = uiState,
-                onNoteChanged = onNoteChanged,
-                snackbarHostState = snackbarHostState,
-                modalBottomSheetState = modalBottomSheetState,
-            )
+//            AlarmDateTimePickerBottomSheet(
+//                uiState = uiState,
+//                onNoteChanged = onNoteChanged,
+//                snackbarHostState = snackbarHostState,
+//                modalBottomSheetState = modalBottomSheetState,
+//            )
         },
     ) {
         Scaffold(
@@ -163,7 +161,6 @@ internal fun NoteDetailScreen(
                             uiState = uiState,
                             onNoteChanged = onNoteChanged,
                             onBackPressed = onBackPressed,
-                            modalBottomSheetState = modalBottomSheetState,
                         )
                     },
                     onNavButtonClick = {

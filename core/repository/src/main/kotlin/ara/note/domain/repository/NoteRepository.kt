@@ -17,6 +17,4 @@ interface NoteRepository {
     suspend fun getById(id: Int): Result<Note>
 
     suspend fun getLastId(): Result<Int>
-
-    suspend fun getAllNotesWithAlarm(): Result<List<Note>>
 }

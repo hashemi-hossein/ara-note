@@ -34,14 +34,12 @@ object TestUtil {
         notebookId = tNotebookEntity.id,
         text = "test",
         createdDateTime = tDateTime,
-        alarmDateTime = tDateTime,
     )
     val tNoteEntity2 = Note(
         id = 2,
         notebookId = tNotebookEntity2.id,
         text = "test2",
         createdDateTime = tDateTime2,
-        alarmDateTime = tDateTime2,
     )
     val tNoteModel = NoteModel(
         id = 1,
@@ -49,7 +47,6 @@ object TestUtil {
         text = "test",
         createdDateTime = tDateTime,
         modifiedDateTime = tDateTime,
-        alarmDateTime = tDateTime,
     )
     val tNoteModel2 = NoteModel(
         id = 2,
@@ -57,7 +54,6 @@ object TestUtil {
         text = "test2",
         createdDateTime = tDateTime2,
         modifiedDateTime = tDateTime2,
-        alarmDateTime = tDateTime2,
     )
     val tNoteEntityList = listOf(tNoteEntity, tNoteEntity2)
     val tNoteModelList = listOf(tNoteModel, tNoteModel2)

@@ -34,7 +34,4 @@ interface NoteDao {
 
     @Query("SELECT MAX(id) FROM tblNote")
     suspend fun getLastId(): Int?
-
-    @Query("SELECT * FROM tblNote WHERE alarm_datetime IS NOT NULL")
-    suspend fun getAllNotesWithAlarm(): List<NoteModel>?
 }

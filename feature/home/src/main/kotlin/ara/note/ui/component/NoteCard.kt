@@ -69,13 +69,13 @@ fun NoteCard(
                         text = HDateTime.gerPrettyDateTime(note.modifiedDateTime),
                         style = MaterialTheme.typography.bodySmall,
                     )
-                    if (note.alarmDateTime != null) {
-                        Icon(
-                            imageVector = Icons.Default.Alarm,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
+//                    if (note.alarmDateTime != null) {
+//                        Icon(
+//                            imageVector = Icons.Default.Alarm,
+//                            contentDescription = null,
+//                            modifier = Modifier.size(20.dp),
+//                        )
+//                    }
                 }
             }
         }

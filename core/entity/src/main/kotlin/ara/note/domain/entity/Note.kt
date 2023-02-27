@@ -13,7 +13,6 @@ data class Note(
     val text: String = "",
     val createdDateTime: LocalDateTime = HDateTime.getCurrentDateTime(),
     val modifiedDateTime: LocalDateTime = HDateTime.getCurrentDateTime(),
-    val alarmDateTime: LocalDateTime? = null,
 )
 
 /**
@@ -27,5 +26,4 @@ fun Note.toDataModel() = NoteModel(
     text = this.text,
     createdDateTime = this.createdDateTime,
     modifiedDateTime = this.modifiedDateTime,
-    alarmDateTime = this.alarmDateTime,
 )

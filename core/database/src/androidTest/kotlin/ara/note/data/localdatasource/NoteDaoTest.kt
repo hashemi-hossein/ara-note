@@ -46,7 +46,6 @@ class NoteDaoTest {
         val note2 = TestUtil.tNoteModel.copy(
             id = 2,
             text = "t2",
-            alarmDateTime = null,
         )
         val note3 = TestUtil.tNoteModel.copy(
             id = 5,
@@ -134,7 +133,6 @@ class NoteDaoTest {
             text = "t2",
             createdDateTime = TestUtil.tDateTime,
             modifiedDateTime = TestUtil.tDateTime,
-            alarmDateTime = null,
         )
         val note3 = NoteModel(
             id = 5,
@@ -142,7 +140,6 @@ class NoteDaoTest {
             text = "t5",
             createdDateTime = TestUtil.tDateTime,
             modifiedDateTime = TestUtil.tDateTime,
-            alarmDateTime = TestUtil.tDateTime,
         )
 
         // act
@@ -156,20 +153,5 @@ class NoteDaoTest {
         assertThat(r2).isEqualTo(note2.id)
         assertThat(r3).isEqualTo(note3.id)
         assertThat(r4).isEqualTo(note3.id)
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun insertNoteWithoutAlarm_then_getAllWithAlarm() = runBlocking {
-        // arrange
-        val noteWithoutAlarm = TestUtil.tNoteModel.copy(alarmDateTime = null)
-
-        // act
-        val r = systemUnderTest.insert(noteWithoutAlarm)
-        val r2 = systemUnderTest.getAllNotesWithAlarm()
-
-        // assert
-        assertThat(r).isEqualTo(noteWithoutAlarm.id)
-        assertThat(r2).isEmpty()
     }
 }

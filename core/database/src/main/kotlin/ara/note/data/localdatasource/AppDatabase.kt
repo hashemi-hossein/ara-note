@@ -2,6 +2,7 @@ package ara.note.data.localdatasource
 
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
 import androidx.room.RenameColumn
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -13,10 +14,11 @@ import ara.note.data.model.NotebookModel
 
 @Database(
     entities = [NoteModel::class, NotebookModel::class],
-    version = 3,
+    version = 4,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2, spec = FirstAutoMigration::class),
+        AutoMigration(from = 3, to = 4, spec = SecondAutoMigration::class),
     ],
 )
 @TypeConverters(DatabaseTypeConverters::class)
@@ -37,6 +39,12 @@ abstract class AppDatabase : RoomDatabase() {
     toColumnName = "created_datetime",
 )
 class FirstAutoMigration : AutoMigrationSpec
+
+@DeleteColumn(
+    tableName = "tblNote",
+    columnName = "alarm_datetime",
+)
+class SecondAutoMigration : AutoMigrationSpec
 
 val MIGRATION_2_3 = object : Migration(2, 3) {
     override fun migrate(database: SupportSQLiteDatabase) {

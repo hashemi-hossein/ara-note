@@ -30,23 +30,23 @@ class BootReceiver : BroadcastReceiver() {
 
         if (context != null && intent?.action == "android.intent.action.BOOT_COMPLETED") {
             coroutineScope.launch {
-                when (val result = noteRepository.getAllNotesWithAlarm()) {
-                    is Result.Success -> {
-                        val notes = result.data
-//                        println(notes.toString())
-
-                        for (note in notes) {
-                            hManageAlarm(
-                                context = context,
-                                doesCreate = true,
-                                noteId = note.id,
-                                triggerAtMillis = note.alarmDateTime?.millis()
-                                    ?: System.currentTimeMillis(),
-                            )
-                        }
-                    }
-                    is Result.Error -> Unit //println(result)
-                }
+//                when (val result = noteRepository.getAllNotesWithAlarm()) {
+//                    is Result.Success -> {
+//                        val notes = result.data
+////                        println(notes.toString())
+//
+//                        for (note in notes) {
+//                            hManageAlarm(
+//                                context = context,
+//                                doesCreate = true,
+//                                noteId = note.id,
+//                                triggerAtMillis = note.alarmDateTime?.millis()
+//                                    ?: System.currentTimeMillis(),
+//                            )
+//                        }
+//                    }
+//                    is Result.Error -> Unit //println(result)
+//                }
             }
         }
     }

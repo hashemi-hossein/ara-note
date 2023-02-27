@@ -1,43 +1,30 @@
 package ara.note.ui.component
 
-import android.content.Context
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AlarmOff
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import ara.note.alarm.hManageAlarm
+import androidx.compose.ui.tooling.preview.Preview
 import ara.note.domain.entity.Note
 import ara.note.notedetail.R.string
 import ara.note.ui.screen.notedetail.NoteDetailState
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DELETE
 import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DISCARD
-import kotlinx.coroutines.CoroutineScope
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun HAppBarActions(
     uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
     onBackPressed: (TheOperation) -> Unit,
-    modalBottomSheetState: ModalBottomSheetState,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
-    context: Context = LocalContext.current,
-    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
-    val doesHasAlarm = uiState.note.alarmDateTime != null
-
     IconButton(onClick = {
         keyboardController?.hide()
         onBackPressed(if (!uiState.isNewNote) DELETE else DISCARD)
@@ -51,7 +38,9 @@ internal fun HAppBarActions(
             },
         )
     }
+
     // TODO: fix alarm
+//    val doesHasAlarm = uiState.note.alarmDateTime != null
 //    IconButton(onClick = {
 //        keyboardController?.hide()
 //        scope.launch { modalBottomSheetState.show() }
@@ -65,21 +54,22 @@ internal fun HAppBarActions(
 //            },
 //        )
 //    }
-    AnimatedVisibility(doesHasAlarm) {
-        IconButton(onClick = {
-            hManageAlarm(
-                context = context,
-                doesCreate = false,
-                noteId = uiState.note.id,
-            )
-            onNoteChanged(uiState.note.copy(alarmDateTime = null))
-        }) {
-            Icon(
-                imageVector = Icons.Default.AlarmOff,
-                contentDescription = stringResource(string.cd_delete_alarm),
-            )
-        }
-    }
+//    AnimatedVisibility(doesHasAlarm) {
+//        IconButton(onClick = {
+//            hManageAlarm(
+//                context = context,
+//                doesCreate = false,
+//                noteId = uiState.note.id,
+//            )
+//            onNoteChanged(uiState.note.copy(alarmDateTime = null))
+//        }) {
+//            Icon(
+//                imageVector = Icons.Default.AlarmOff,
+//                contentDescription = stringResource(string.cd_delete_alarm),
+//            )
+//        }
+//    }
+
     if (uiState.notebooks.isNotEmpty()) {
         HDropdown(
             items = uiState.notebooks.associate { it.id to it.name },
@@ -87,4 +77,15 @@ internal fun HAppBarActions(
             onItemClick = { onNoteChanged(uiState.note.copy(notebookId = it)) },
         )
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Preview
+@Composable
+private fun HPreview() {
+    HAppBarActions(
+        uiState = NoteDetailState(),
+        onNoteChanged = {},
+        onBackPressed = {},
+    )
 }

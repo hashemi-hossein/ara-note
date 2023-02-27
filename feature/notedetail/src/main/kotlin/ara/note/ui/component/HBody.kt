@@ -1,6 +1,5 @@
 package ara.note.ui.component
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +19,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ara.note.domain.entity.Note
 import ara.note.notedetail.R.string
@@ -30,7 +30,7 @@ import ara.note.util.HDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HBody(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
 ) {
@@ -40,7 +40,7 @@ internal fun HBody(
         Divider(Modifier.padding(vertical = 3.dp))
         if (!uiState.isNewNote) {
             Text(
-                text = "Modified at " +
+                text = stringResource(string.modified_at) +
                     HDateTime.formatDateAndTime(
                         dateTime = uiState.note.modifiedDateTime,
                         dateTimeFormatPattern = DATE_TIME,
@@ -49,16 +49,17 @@ internal fun HBody(
             )
             Spacer(Modifier.padding(vertical = 3.dp))
         }
-        AnimatedVisibility(uiState.note.alarmDateTime != null) {
-            Text(
-                text = "Alarm has been set for " +
-                    uiState.note.alarmDateTime?.let {
-                        HDateTime.gerPrettyDateTime(it)
-                    },
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.alpha(0.4f),
-            )
-        }
+
+//        AnimatedVisibility(uiState.note.alarmDateTime != null) {
+//            Text(
+//                text = stringResource(string.alarm_has_been_set_for) +
+//                    uiState.note.alarmDateTime?.let {
+//                        HDateTime.gerPrettyDateTime(it)
+//                    },
+//                style = MaterialTheme.typography.bodyMedium,
+//                modifier = Modifier.alpha(0.4f),
+//            )
+//        }
 
         val focusRequester = remember { FocusRequester() }
         TextField(
@@ -82,4 +83,10 @@ internal fun HBody(
             }
         }
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+private fun HPreview() {
+    HBody(uiState = NoteDetailState(), onNoteChanged = {})
 }

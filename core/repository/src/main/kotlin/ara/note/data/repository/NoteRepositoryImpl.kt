@@ -67,14 +67,4 @@ class NoteRepositoryImpl(
             }
         }
     }
-
-    override suspend fun getAllNotesWithAlarm(): Result<List<Note>> {
-        return noteDao.getAllNotesWithAlarm().let {
-            if (it != null) {
-                Result.Success(it.toDomainEntity())
-            } else {
-                Result.Error()
-            }
-        }
-    }
 }
