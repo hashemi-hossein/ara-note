@@ -50,9 +50,9 @@ fun HAppBar(
                     imageVector = icon,
                     contentDescription =
                     if (appBarNavButtonType == BACK) {
-                        stringResource(string.cd_happbar_back)
+                        stringResource(string.cd_appbar_back)
                     } else {
-                        stringResource(string.cd_happbar_menu)
+                        stringResource(string.cd_appbar_menu)
                     },
                 )
             }

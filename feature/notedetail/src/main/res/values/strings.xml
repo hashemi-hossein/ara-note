@@ -9,8 +9,8 @@
     <string name="modified_at">\"Modified at \"</string>
 <!--    <string name="alarm_has_been_set_for">\"Alarm has been set for \"</string>-->
 
-    <string name="cd_discard">Discard</string>
-    <string name="cd_delete">Delete</string>
+    <string name="cd_discard">Discard note</string>
+    <string name="cd_delete">Delete note</string>
     <string name="cd_edit_note_alarm">Edit Note Alarm</string>
     <string name="cd_add_alarm">Add Alarm</string>
     <string name="cd_delete_alarm">Delete Alarm</string>
