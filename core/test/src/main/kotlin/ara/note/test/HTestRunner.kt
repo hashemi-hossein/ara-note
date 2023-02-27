@@ -1,4 +1,4 @@
-package ara.note
+package ara.note.test
 
 import android.app.Application
 import android.content.Context
