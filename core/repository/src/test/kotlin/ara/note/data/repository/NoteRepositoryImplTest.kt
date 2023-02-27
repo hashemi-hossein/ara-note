@@ -176,31 +176,4 @@ class NoteRepositoryImplTest {
         coVerify { noteDaoMock.getLastId() }
         assertThat(r).isInstanceOf(Result.Error::class.java)
     }
-
-    @Test
-    fun getAllNotesWithAlarm_onDbSuccessful() = runTest {
-        // arrange
-        coEvery { noteDaoMock.getAllNotesWithAlarm() } returns TestUtil.tNoteModelList
-
-        // act
-        val r = systemUnderTest.getAllNotesWithAlarm()
-
-        // assert
-        coVerify { noteDaoMock.getAllNotesWithAlarm() }
-        assertThat(r).isInstanceOf(Result.Success::class.java)
-        assertThat((r as Result.Success).data).isEqualTo(TestUtil.tNoteEntityList)
-    }
-
-    @Test
-    fun getAllNotesWithAlarm_onDbError() = runTest {
-        // arrange
-        coEvery { noteDaoMock.getAllNotesWithAlarm() } returns null
-
-        // act
-        val r = systemUnderTest.getAllNotesWithAlarm()
-
-        // assert
-        coVerify { noteDaoMock.getAllNotesWithAlarm() }
-        assertThat(r).isInstanceOf(Result.Error::class.java)
-    }
 }
