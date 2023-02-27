@@ -36,6 +36,5 @@ sealed interface NoteDetailSingleEvent : MviSingleEvent {
     object NavigateUp : NoteDetailSingleEvent
     data class DisableAlarm(val noteId: Int) : NoteDetailSingleEvent
     data class OperationError(val message: String = "") : NoteDetailSingleEvent
-    data class BackPressed(val theOperation: TheOperation) :
-        NoteDetailSingleEvent
+    data class BackPressed(val theOperation: TheOperation) : NoteDetailSingleEvent
 }

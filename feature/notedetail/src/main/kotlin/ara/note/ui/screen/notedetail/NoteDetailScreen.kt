@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
@@ -140,55 +139,55 @@ internal fun NoteDetailScreen(
             onBackPressed(if (uiState.userPreferences.isAutoSaveMode) TheOperation.SAVE else TheOperation.DISCARD)
         }
     })
-    ModalBottomSheetLayout(
-        sheetState = modalBottomSheetState,
-        sheetContent = {
+//    ModalBottomSheetLayout(
+//        sheetState = modalBottomSheetState,
+//        sheetContent = {
 //            AlarmDateTimePickerBottomSheet(
 //                uiState = uiState,
 //                onNoteChanged = onNoteChanged,
 //                snackbarHostState = snackbarHostState,
 //                modalBottomSheetState = modalBottomSheetState,
 //            )
-        },
-    ) {
-        Scaffold(
-            snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
-            topBar = {
-                HAppBar(
-                    icon = if (uiState.userPreferences.isAutoSaveMode) Icons.Default.Done else Icons.Default.ArrowBack,
-                    actions = {
-                        HAppBarActions(
-                            uiState = uiState,
-                            onNoteChanged = onNoteChanged,
-                            onBackPressed = onBackPressed,
-                        )
-                    },
-                    onNavButtonClick = {
-                        keyboardController?.hide()
-                        onBackPressed(if (uiState.userPreferences.isAutoSaveMode) TheOperation.SAVE else TheOperation.DISCARD)
-                    },
-                )
-            },
-            floatingActionButton = {
-                if (!uiState.userPreferences.isAutoSaveMode) {
-                    FloatingActionButton(onClick = {
-                        onBackPressed(TheOperation.SAVE)
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Save,
-                            contentDescription = stringResource(string.cd_save),
-                        )
-                    }
-                }
-            },
-        ) { innerPadding ->
-            HBody(
-                modifier = Modifier.padding(innerPadding),
-                uiState = uiState,
-                onNoteChanged = onNoteChanged,
+//        },
+//    ) {
+    Scaffold(
+        snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
+        topBar = {
+            HAppBar(
+                icon = if (uiState.userPreferences.isAutoSaveMode) Icons.Default.Done else Icons.Default.ArrowBack,
+                actions = {
+                    HAppBarActions(
+                        uiState = uiState,
+                        onNoteChanged = onNoteChanged,
+                        onBackPressed = onBackPressed,
+                    )
+                },
+                onNavButtonClick = {
+                    keyboardController?.hide()
+                    onBackPressed(if (uiState.userPreferences.isAutoSaveMode) TheOperation.SAVE else TheOperation.DISCARD)
+                },
             )
-        }
+        },
+        floatingActionButton = {
+            if (!uiState.userPreferences.isAutoSaveMode) {
+                FloatingActionButton(onClick = {
+                    onBackPressed(TheOperation.SAVE)
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Save,
+                        contentDescription = stringResource(string.cd_save),
+                    )
+                }
+            }
+        },
+    ) { innerPadding ->
+        HBody(
+            modifier = Modifier.padding(innerPadding),
+            uiState = uiState,
+            onNoteChanged = onNoteChanged,
+        )
     }
+//    }
 }
 
 // @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
