@@ -1,238 +1,113 @@
 package ara.note.ui.screen.notedetail
 
-import android.content.Context
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.assertHasClickAction
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextReplacement
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import ara.note.domain.entity.Note
-import ara.note.notedetail.R
-import ara.note.test.TestUtil
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
-import ara.note.util.DateTimeFormatPattern
-import ara.note.util.HDateTime
-import ara.note.util.plus
-import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import kotlin.time.Duration.Companion.hours
 
-@RunWith(AndroidJUnit4::class)
 class NoteDetailScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val context = ApplicationProvider.getApplicationContext<Context>()
+    private lateinit var pageObject: NoteDetailPageObject
 
-    private lateinit var uiState: MutableState<NoteDetailState>
-    private var backPressResult: TheOperation? = null
-
-    @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
     @Before
     fun setUp() {
-        uiState = mutableStateOf(
-            NoteDetailState(
-                note = Note(id = 1),
-                notebooks = TestUtil.tNotebookEntityList,
-            ),
-        )
-        backPressResult = null
-        composeTestRule.setContent {
-            NoteDetailScreen(
-                uiState = uiState.value,
-                onNoteChanged = { uiState.value = uiState.value.copy(note = it) },
-                onBackPressed = { backPressResult = it },
-                isNewNote = true,
-            )
+        pageObject = NoteDetailPageObject(composeTestRule).apply { setUp() }
+    }
+
+    @Test
+    fun textField_textEntering_whenNewNote() {
+        with(pageObject) {
+            // given
+            setIsNewNote(isNewNote = true)
+            val testText = "hello"
+
+            // when
+            typeIntoTextField(testText)
+
+            // then
+            textIsDisplayingInTextField(testText)
         }
     }
 
     @Test
-    fun entering_text() {
-        // act
-        composeTestRule.onNodeWithText(context.getString(R.string.type_here))
-            .performTextReplacement("Hello")
+    fun backButton_triggerSaveWhenAutoSave() {
+        with(pageObject) {
+            // given
+            setAutoSaveMode(on = true)
 
-        // assert
-        composeTestRule.onNodeWithText("Hello").assertIsDisplayed()
-        assertThat(uiState.value.note.text).isEqualTo("Hello")
+            // when
+            clickOnBackButton()
+
+            // then
+            assertSaveTriggered()
+        }
     }
 
     @Test
-    fun notebooks_visibility() {
-        // act
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[uiState.value.note.notebookId - 1].name)
-            .assertIsDisplayed().performClick()
+    fun backButton_triggerDiscardWhenAutoSaveIsOff() {
+        with(pageObject) {
+            // given
+            setAutoSaveMode(on = false)
 
-        // assert
-        for (item in TestUtil.tNotebookEntityList)
-            composeTestRule.onNode(
-                !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button) and
-                    hasText(item.name),
-            ).assertIsDisplayed()
+            // when
+            clickOnBackButton()
+
+            // then
+            assertDiscardTriggered()
+        }
     }
 
     @Test
-    fun changing_notebook_of_note() {
-        // act
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[uiState.value.note.notebookId - 1].name)
-            .assertIsDisplayed().performClick()
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntityList[1].name)
-            .assertIsDisplayed().performClick()
+    fun deleteButton_triggerDeleteWhenIsNotNewNote() {
+        with(pageObject) {
+            // given
+            setIsNewNote(isNewNote = true)
 
-        // assert
-        for (item in TestUtil.tNotebookEntityList)
-            composeTestRule.onNode(
-                !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button) and
-                    hasText(item.name),
-            ).assertDoesNotExist()
-        assertThat(uiState.value.note.notebookId).isEqualTo(TestUtil.tNotebookEntityList[1].id)
+            // when
+            clickOnDeleteButton()
+
+            // then
+            assertDiscardTriggered()
+        }
     }
 
     @Test
-    fun addAlarmVisibility() {
-        // assert
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))
-            .assertIsDisplayed().assertHasClickAction()
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_delete_alarm))
-            .assertDoesNotExist()
+    fun deleteButton_triggerDiscardWhenIsNewNote() {
+        with(pageObject) {
+            // given
+            setIsNewNote(isNewNote = false)
+
+            // when
+            clickOnDeleteButton()
+
+            // then
+            assertDeleteTriggered()
+        }
     }
 
     @Test
-    fun open_alarm_bottomSheet() {
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))
-            .assertIsDisplayed().performClick()
+    fun notebookDropdown_showAllWhenClick() {
+        with(pageObject) {
+            // when
+            clickOnNotebookDropdown()
 
-        // assert
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_set_alarm))
-            .assertIsDisplayed()
+            // then
+            assertAllNotebooksIsDisplaying()
+        }
     }
 
     @Test
-    fun set_invalid_alarm() {
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))
-            .assertIsDisplayed().performClick()
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_set_alarm))
-            .assertIsDisplayed().performClick()
+    fun notebookDropdown_changeNotebookOnClick() {
+        with(pageObject) {
+            // when
+            clickOnNotebookDropdown()
+            clickOnLastDropdownItem()
 
-        // assert
-        composeTestRule.onNodeWithText(context.getString(R.string.invalid_date_and_time))
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun set_and_reset_alarmDateTime() {
-        // arrange
-        val newAlarmDateTime = HDateTime.getCurrentDateTime().plus(25.hours)
-
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_alarm))
-            .assertIsDisplayed().performClick()
-        uiState.value = uiState.value.copy(note = uiState.value.note.copy(alarmDateTime = newAlarmDateTime))
-
-        // assert
-        composeTestRule.onNodeWithText(
-            HDateTime.formatDateAndTime(
-                newAlarmDateTime,
-                DateTimeFormatPattern.DATE,
-            ),
-        ).assertIsDisplayed()
-        composeTestRule.onNodeWithText(
-            HDateTime.formatDateAndTime(
-                newAlarmDateTime,
-                DateTimeFormatPattern.TIME,
-            ),
-        ).assertIsDisplayed()
-
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_reset_date_and_time))
-            .assertIsDisplayed().performClick()
-
-        // assert
-        composeTestRule.onNodeWithText(
-            HDateTime.formatDateAndTime(
-                HDateTime.getCurrentDateTime(),
-                DateTimeFormatPattern.DATE,
-            ),
-        ).assertIsDisplayed()
-        composeTestRule.onNodeWithText(
-            HDateTime.formatDateAndTime(
-                HDateTime.getCurrentDateTime(),
-                DateTimeFormatPattern.TIME,
-            ),
-        ).assertIsDisplayed()
-    }
-
-    @Test
-    fun delete_alarm() {
-        // arrange
-        uiState.value = uiState.value.copy(note = uiState.value.note.copy(alarmDateTime = HDateTime.getCurrentDateTime()))
-
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_delete_alarm))
-            .assertIsDisplayed().performClick()
-
-        // assert
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_delete_alarm))
-            .assertDoesNotExist()
-        assertThat(uiState.value.note.alarmDateTime).isNull()
-    }
-
-//    @Test
-//    fun back_button_press() {
-//        // act
-//        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_happbar_back))
-//            .assertIsDisplayed().performClick()
-//
-//        // assert
-//        assertThat(backPressResult).isEqualTo(TheOperation.SAVE)
-//    }
-
-    @Test
-    fun clickDeleteIcon_when_no_text() {
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_discard))
-            .performClick()
-        // snackbar
-        // this way can be used
-        // https://github.com/android/compose-samples/blob/main/JetNews/app/src/sharedTest/java/com/example/jetnews/HomeScreenTests.kt
-//        composeTestRule.onNodeWithText(context.getString(R.string.discard)).assertDoesNotExist()
-
-        // assert
-        assertThat(backPressResult).isEqualTo(TheOperation.DISCARD)
-    }
-
-    @Test
-    fun clickDeleteIcon_when_text() {
-        // arrange
-        uiState.value = uiState.value.copy(note = uiState.value.note.copy(text = "hello"))
-
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_discard))
-            .performClick()
-        // snackbar
-//        composeTestRule.onNodeWithText(context.getString(R.string.discard))
-//            .assertIsDisplayed().performClick()
-
-        // assert
-        assertThat(backPressResult).isEqualTo(TheOperation.DISCARD)
+            // then
+            assertLastNotebookIsDisplaying()
+        }
     }
 }
