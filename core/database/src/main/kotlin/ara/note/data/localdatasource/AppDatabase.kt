@@ -1,25 +1,15 @@
 package ara.note.data.localdatasource
 
-import androidx.room.AutoMigration
 import androidx.room.Database
-import androidx.room.DeleteColumn
-import androidx.room.RenameColumn
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.AutoMigrationSpec
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import ara.note.data.model.NoteModel
 import ara.note.data.model.NotebookModel
 
 @Database(
     entities = [NoteModel::class, NotebookModel::class],
-    version = 4,
+    version = 1,
     exportSchema = true,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2, spec = FirstAutoMigration::class),
-        AutoMigration(from = 3, to = 4, spec = SecondAutoMigration::class),
-    ],
 )
 @TypeConverters(DatabaseTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -30,25 +20,5 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         const val DATABASE_NAME = "app_database.sqlite"
-    }
-}
-
-@RenameColumn(
-    tableName = "tblNote",
-    fromColumnName = "added_datetime",
-    toColumnName = "created_datetime",
-)
-class FirstAutoMigration : AutoMigrationSpec
-
-@DeleteColumn(
-    tableName = "tblNote",
-    columnName = "alarm_datetime",
-)
-class SecondAutoMigration : AutoMigrationSpec
-
-val MIGRATION_2_3 = object : Migration(2, 3) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE tblNote ADD COLUMN modified_datetime TEXT NOT NULL DEFAULT '2023-01-01T00:00:00.000'")
-        database.execSQL("UPDATE tblNote SET modified_datetime = created_datetime")
     }
 }

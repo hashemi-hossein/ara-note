@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3074a01d85149550a168f1c1438a4f63",
+    "identityHash": "ee7e1b9d6a6857b6dc06c4dd79b5bfdb",
     "entities": [
       {
         "tableName": "tblNote",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `notebook_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `added_datetime` TEXT NOT NULL, `alarm_datetime` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`notebook_id`) REFERENCES `tblNotebook`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `notebook_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `created_datetime` TEXT NOT NULL, `modified_datetime` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`notebook_id`) REFERENCES `tblNotebook`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT )",
         "fields": [
           {
             "fieldPath": "id",
@@ -27,16 +27,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "addedDateTime",
-            "columnName": "added_datetime",
+            "fieldPath": "createdDateTime",
+            "columnName": "created_datetime",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "alarmDateTime",
-            "columnName": "alarm_datetime",
+            "fieldPath": "modifiedDateTime",
+            "columnName": "modified_datetime",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -90,7 +90,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3074a01d85149550a168f1c1438a4f63')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ee7e1b9d6a6857b6dc06c4dd79b5bfdb')"
     ]
   }
 }

@@ -3,7 +3,6 @@ package ara.note.di
 import android.content.Context
 import androidx.room.Room
 import ara.note.data.localdatasource.AppDatabase
-import ara.note.data.localdatasource.MIGRATION_2_3
 import ara.note.data.localdatasource.NoteDao
 import ara.note.data.localdatasource.NotebookDao
 import dagger.Module
@@ -24,9 +23,7 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME,
-        )
-            .addMigrations(MIGRATION_2_3)
-            .build()
+        ).build()
 
     @Singleton
     @Provides
