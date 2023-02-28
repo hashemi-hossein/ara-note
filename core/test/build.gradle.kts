@@ -1,6 +1,5 @@
 plugins {
     id("ara.library")
-    id("ara.room")
 }
 
 android {
@@ -11,7 +10,6 @@ dependencies {
 
     implementation(project(":core:entity"))
     implementation(project(":core:util"))
-    implementation(project(":core:database"))
 
     implementation(libs.kotlinx.coroutines.test)
     implementation(libs.junit)
