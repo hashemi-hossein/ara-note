@@ -95,7 +95,7 @@ class NoteDetailScreenTest {
             clickOnNotebookDropdown()
 
             // then
-            assertAllNotebooksIsDisplaying()
+            assertAllNotebooksAreDisplaying()
         }
     }
 

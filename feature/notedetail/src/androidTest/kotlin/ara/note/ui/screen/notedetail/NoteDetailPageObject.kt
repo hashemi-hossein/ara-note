@@ -78,7 +78,7 @@ internal class NoteDetailPageObject(
 
     fun assertLastNotebookIsDisplaying() = findNotebookText(uiState.value.notebooks.last().name).assertIsDisplayed()
 
-    fun assertAllNotebooksIsDisplaying() {
+    fun assertAllNotebooksAreDisplaying() {
         for (item in uiState.value.notebooks)
             findNotebookDropdownItem(item.name).assertIsDisplayed()
     }
