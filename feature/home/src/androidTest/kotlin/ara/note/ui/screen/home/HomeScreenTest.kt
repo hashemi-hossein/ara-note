@@ -1,139 +1,77 @@
 package ara.note.ui.screen.home
 
-import android.content.Context
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import ara.note.home.R
-import ara.note.test.TestUtil
-import ara.note.util.HDateTime
-import ara.note.util.INVALID_NOTE_ID
-import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 class HomeScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val context = ApplicationProvider.getApplicationContext<Context>()
+    private lateinit var pageObject: HomePageObject
 
-    private lateinit var uiState: MutableState<HomeState>
-
-    private var noteIdToNavigate: Int? = null
-    private var notebookIdToNavigate: Int? = null
-
-    @OptIn(ExperimentalMaterial3Api::class)
     @Before
     fun setUp() {
-        uiState = mutableStateOf(
-            HomeState(
-                notes = TestUtil.tNoteEntityList,
-                notebooks = TestUtil.tNotebookEntityList,
-                currentNotebookId = TestUtil.tNotebookEntity.id,
-            ),
-        )
-        val filterNotes = {
-            uiState.value =
-                uiState.value.copy(notes = TestUtil.tNoteEntityList.filter { it.notebookId == uiState.value.currentNotebookId })
-        }
-        filterNotes()
-        noteIdToNavigate = null
-        notebookIdToNavigate = null
-        composeTestRule.setContent {
-            HomeScreen(
-                uiState = uiState.value,
-                navigateToNoteDetailScreen = { noteId ->
-                    noteIdToNavigate = noteId
-                    notebookIdToNavigate = uiState.value.currentNotebookId
-                },
-                navigateToSettingsScreen = {},
-                navigateToNotebooksScreen = {},
-                setCurrentNotebookId = { notebookId ->
-                    uiState.value = uiState.value.copy(currentNotebookId = notebookId)
-                    filterNotes()
-                },
-                modifySearchText = {
-                },
-            )
+        pageObject = HomePageObject(composeTestRule).apply { setUp() }
+    }
+
+    @Test
+    fun idle_noteCardsOfCurrentNotebookAndNotebookNameAreDisplaying() {
+        with(pageObject) {
+            // then
+            assertAllNotesOfCurrentNotebookAreDisplaying()
+            assertNotebookNameInAppbarIsDisplaying()
         }
     }
 
     @Test
-    fun note_visibility() {
-        // assert
-        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text).assertExists()
-        // notebook name in the Appbar
-        composeTestRule.onNode(
-            !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
-                hasText(TestUtil.tNotebookEntity.name),
-        ).assertIsDisplayed()
-        // notebook name in the drawer
-        composeTestRule.onNode(
-            SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
-                hasText(TestUtil.tNotebookEntity.name),
-        ).assertExists()
-        composeTestRule.onNodeWithText(HDateTime.gerPrettyDateTime(TestUtil.tNoteEntity.modifiedDateTime))
-            .assertExists()
+    fun fab_click_navigateToNoteDetailWithNewNoteId() {
+        with(pageObject) {
+            // when
+            clickFab()
+
+            // then
+            assertNavigateToNodeDetailScreenWithNewNoteId()
+        }
     }
 
     @Test
-    fun click_addNoteFAB() {
-        // act
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_note))
-            .performClick()
+    fun noteCard_click_navigateToNoteDetailWithItsNoteId() {
+        with(pageObject) {
+            // when
+            clickFirstNoteCard()
 
-        // assert
-        assertThat(noteIdToNavigate).isEqualTo(INVALID_NOTE_ID)
+            // then
+            assertNavigateToNodeDetailScreenWithItsNoteId()
+        }
     }
 
     @Test
-    fun click_note() {
-        // act
-        composeTestRule.onNodeWithText(TestUtil.tNoteEntity.text, substring = true).performClick()
+    fun drawer_openWhenClickingMenuButton() {
+        with(pageObject) {
+            // when
+            clickMenuButton()
 
-        // assert
-        assertThat(noteIdToNavigate).isEqualTo(TestUtil.tNoteEntity.id)
-        assertThat(notebookIdToNavigate).isEqualTo(uiState.value.currentNotebookId)
+            // then
+            assertAllNotebooksInDrawerAreDisplaying()
+        }
     }
 
-//    @Test
-//    fun click_addNotebookIcon() {
-//        // act
-//        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_add_notebook))
-//            .performClick()
-//
-//        // assert
-//        composeTestRule.onNodeWithContentDescription(context.getString(R.string.cd_dialog_confirm))
-//            .assertIsDisplayed()
-//        composeTestRule.onNodeWithText(context.getString(R.string.add_notebook)).assertIsDisplayed()
-//    }
 
     @Test
-    fun change_notebook_on_clicking() {
-        // act
-        composeTestRule.onNodeWithText(TestUtil.tNotebookEntity2.name).performClick()
+    fun drawer_changeCurrentNotebookWhenClickingOnLastNotebook() {
+        with(pageObject) {
+            // given
+            clickMenuButton()
 
-        // assert
-        assertThat(uiState.value.currentNotebookId).isEqualTo(TestUtil.tNotebookEntity2.id)
-        composeTestRule.onNodeWithText(
-            TestUtil.tNoteEntityList.first { it.notebookId == uiState.value.currentNotebookId }.text,
-            substring = true,
-        ).assertIsDisplayed()
+            // when
+            clickOnLastNotebookInDrawer()
+
+            // then
+            assertCurrentNotebookIdIsTheLastOne()
+            assertAllNotesOfCurrentNotebookAreDisplaying()
+        }
     }
 }
