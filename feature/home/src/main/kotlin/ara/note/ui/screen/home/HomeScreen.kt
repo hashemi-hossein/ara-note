@@ -4,16 +4,9 @@ import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
@@ -26,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,22 +30,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import ara.note.data.datastore.NoteViewMode
+import androidx.compose.ui.tooling.preview.Preview
 import ara.note.domain.entity.Note
+import ara.note.domain.entity.Notebook
 import ara.note.home.R.string
 import ara.note.ui.component.AppBarNavButtonType.MENU
-import ara.note.ui.component.AppDrawer
 import ara.note.ui.component.HAppBar
 import ara.note.ui.component.HSnackbarHost
-import ara.note.ui.component.NoteCard
-import ara.note.ui.component.SearchAppBar
 import ara.note.ui.component.showSnackbar
 import ara.note.ui.screen.home.HomeIntent.ChangeNotebook
 import ara.note.ui.screen.home.HomeIntent.ModifySearchText
+import ara.note.ui.screen.home.component.AppDrawer
+import ara.note.ui.screen.home.component.HBody
+import ara.note.ui.screen.home.component.SearchAppBar
 import ara.note.util.DEFAULT_NOTEBOOK_ID
+import ara.note.util.HDateTime
 import ara.note.util.INVALID_NOTE_ID
+import ara.note.util.minus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.pow
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,7 +80,7 @@ internal fun HomeScreen(
     navigateToNoteDetailScreen: (Int) -> Unit,
     navigateToSettingsScreen: () -> Unit,
     navigateToNotebooksScreen: () -> Unit,
-    setCurrentNotebookId: (Int) -> Unit = {},
+    setCurrentNotebookId: (Int) -> Unit,
     modifySearchText: (String?) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
@@ -186,8 +184,8 @@ internal fun HomeScreen(
             },
         ) { innerPadding ->
             HBody(
+                modifier = Modifier.padding(innerPadding),
                 uiState = uiState,
-                innerPadding = innerPadding,
                 navigateToNoteDetailScreen = navigateToNoteDetailScreen,
                 listState = listState,
             )
@@ -195,72 +193,30 @@ internal fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-private fun HBody(
-    uiState: HomeState,
-    innerPadding: PaddingValues,
-    navigateToNoteDetailScreen: (Int) -> Unit,
-    listState: LazyListState,
-) {
-    Surface(
-        modifier = Modifier
-            .padding(innerPadding),
-    ) {
-        val noteCard: @Composable (Note) -> Unit = {
-            NoteCard(note = it) {
-                navigateToNoteDetailScreen(it.id)
-            }
-        }
-        when (uiState.userPreferences.noteViewMode) {
-            NoteViewMode.LIST -> {
-                LazyColumn(state = listState) {
-                    items(uiState.notes) { noteCard(it) }
-                }
-            }
-            NoteViewMode.GRID -> {
-                LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2)) {
-                    items(uiState.notes) { noteCard(it) }
-                }
-            }
-        }
+private fun HPreview() {
+    val currentDateTime = HDateTime.getCurrentDateTime()
+    val random = Random(0)
+    val lstNotes = List(30) {
+        Note(
+            id = it,
+            notebookId = DEFAULT_NOTEBOOK_ID,
+            text = "item $it ".repeat(random.nextInt(1, 15)),
+            modifiedDateTime = currentDateTime.minus((it.toDouble().pow(5)).seconds),
+        )
     }
+    val lstNotebooks = List(10) {
+        Notebook(id = it, name = "notebook$it")
+    }
+    val uiState = HomeState(notes = lstNotes, notebooks = lstNotebooks)
+    HomeScreen(
+        uiState = uiState,
+        navigateToNoteDetailScreen = {},
+        navigateToSettingsScreen = {},
+        navigateToNotebooksScreen = {},
+        setCurrentNotebookId = {},
+        modifySearchText = {},
+    )
 }
-
-// @OptIn(ExperimentalTime::class)
-// @Preview(
-// //    showBackground = true,
-// //    backgroundColor = 0xff2ff2f2,
-// //    widthDp = 200,
-// //    heightDp = 300,
-// //    showSystemUi = true,
-// )
-// @Composable
-// private fun HPreview() {
-//    val lstNotes = mutableListOf<Note>()
-//    val currentDateTime = HDateTime.getCurrentDateTime()
-//    for (i in 1..10) {
-//        lstNotes.add(
-//            Note(
-//                id = i,
-//                notebookId = DEFAULT_NOTEBOOK_ID,
-//                text = "item $i",
-//                addedDateTime = currentDateTime.minus((i * i * i * i * i).seconds),
-//                alarmDateTime = if (i % 3 == 1) currentDateTime else null,
-//            )
-//        )
-//    }
-//    val lstNotebooks = mutableListOf<Notebook>()
-//    for (i in 1..3) {
-//        lstNotebooks.add(
-//            Notebook(id = i, name = "notebook$i")
-//        )
-//    }
-//    HomeScreen(
-//        notes = lstNotes,
-//        notebooks = lstNotebooks,
-//        navigateToNoteDetailScreen = { },
-//        navigateToSettingsScreen = {},
-//        navigateToNotebooksScreen = {},
-//    )
-// }

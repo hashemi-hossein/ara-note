@@ -1,4 +1,4 @@
-package ara.note.ui.component
+package ara.note.ui.screen.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
