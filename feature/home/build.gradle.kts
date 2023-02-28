@@ -10,6 +10,4 @@ android {
 dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.datetime)
-
-    androidTestImplementation(libs.google.truth)
 }
