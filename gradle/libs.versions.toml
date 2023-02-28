@@ -130,6 +130,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-symbolProcessing = { id = "com.google.devtools.ksp", version.ref = "kotlin-symbolProcessing" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }

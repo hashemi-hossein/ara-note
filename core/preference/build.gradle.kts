@@ -1,7 +1,7 @@
 plugins {
     id("ara.library")
     id("ara.hilt")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
