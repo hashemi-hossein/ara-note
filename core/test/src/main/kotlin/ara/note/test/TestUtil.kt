@@ -16,6 +16,8 @@ object TestUtil {
         id = 2,
         name = "notebook2",
     )
+    val tNotebookEntityList = listOf(tNotebookEntity, tNotebookEntity2)
+
     val tNotebookModel = NotebookModel(
         id = 1,
         name = "notebook",
@@ -24,7 +26,6 @@ object TestUtil {
         id = 2,
         name = "notebook2",
     )
-    val tNotebookEntityList = listOf(tNotebookEntity, tNotebookEntity2)
     val tNotebookModelList = listOf(tNotebookModel, tNotebookModel2)
 
     val tDateTime = LocalDateTime.parse("2021-01-01T00:00")
@@ -41,6 +42,8 @@ object TestUtil {
         text = "test2",
         createdDateTime = tDateTime2,
     )
+    val tNoteEntityList = listOf(tNoteEntity, tNoteEntity2)
+
     val tNoteModel = NoteModel(
         id = 1,
         notebookId = tNotebookModel.id,
@@ -55,6 +58,5 @@ object TestUtil {
         createdDateTime = tDateTime2,
         modifiedDateTime = tDateTime2,
     )
-    val tNoteEntityList = listOf(tNoteEntity, tNoteEntity2)
     val tNoteModelList = listOf(tNoteModel, tNoteModel2)
 }
