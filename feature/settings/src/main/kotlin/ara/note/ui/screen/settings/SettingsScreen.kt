@@ -3,7 +3,8 @@ package ara.note.ui.screen.settings
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
+import androidx.activity.result.contract.ActivityResultContracts.OpenDocument
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -75,7 +76,6 @@ internal fun SettingsScreen(
     exportData: (Uri, (result: String) -> Unit) -> Unit,
     importData: (Uri, (result: String) -> Unit) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     Scaffold(
         snackbarHost = { HSnackbarHost(hostState = snackbarHostState) },
@@ -124,61 +124,72 @@ internal fun SettingsScreen(
                     )
                 },
             )
-            Divider()
-
-            val activityResultLauncherCreateDocument =
-                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
-                    if (uri != null) {
-                        exportData(uri) {
-                            showSnackbar(
-                                scope = scope,
-                                snackbarHostState = snackbarHostState,
-                                message = it,
-                                actionLabel = "OK",
-                            )
-                        }
-                    }
-                }
-            ListItem(
-                headlineText = { Text(text = stringResource(string.export_data)) },
-                trailingContent = {
-                    Button(onClick = {
-                        activityResultLauncherCreateDocument.launch("AraNote.txt")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.OpenInNewOff,
-                            contentDescription = stringResource(string.export_data),
-                        )
-                    }
-                },
-            )
-
-            val activityResultLauncherOpenDocument =
-                rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-                    if (uri != null) {
-                        importData(uri) {
-                            showSnackbar(
-                                scope = scope,
-                                snackbarHostState = snackbarHostState,
-                                message = it,
-                                actionLabel = "OK",
-                            )
-                        }
-                    }
-                }
-            ListItem(
-                headlineText = { Text(text = stringResource(string.import_data)) },
-                trailingContent = {
-                    Button(onClick = {
-                        activityResultLauncherOpenDocument.launch(arrayOf("text/plain"))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.ExitToApp,
-                            contentDescription = stringResource(string.import_data),
-                        )
-                    }
-                },
-            )
+//            BackupAndRestore(exportData = exportData, importData = importData, snackbarHostState = snackbarHostState)
         }
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun BackupAndRestore(
+    exportData: (Uri, (result: String) -> Unit) -> Unit,
+    importData: (Uri, (result: String) -> Unit) -> Unit,
+    snackbarHostState: SnackbarHostState,
+    scope: CoroutineScope = rememberCoroutineScope(),
+) {
+    Divider()
+
+    val activityResultLauncherCreateDocument =
+        rememberLauncherForActivityResult(CreateDocument("text/plain")) { uri ->
+            if (uri != null) {
+                exportData(uri) {
+                    showSnackbar(
+                        scope = scope,
+                        snackbarHostState = snackbarHostState,
+                        message = it,
+                        actionLabel = "OK",
+                    )
+                }
+            }
+        }
+    ListItem(
+        headlineText = { Text(text = stringResource(string.export_data)) },
+        trailingContent = {
+            Button(onClick = {
+                activityResultLauncherCreateDocument.launch("AraNote.txt")
+            }) {
+                Icon(
+                    imageVector = Icons.Default.OpenInNewOff,
+                    contentDescription = stringResource(string.export_data),
+                )
+            }
+        },
+    )
+
+    val activityResultLauncherOpenDocument =
+        rememberLauncherForActivityResult(OpenDocument()) { uri ->
+            if (uri != null) {
+                importData(uri) {
+                    showSnackbar(
+                        scope = scope,
+                        snackbarHostState = snackbarHostState,
+                        message = it,
+                        actionLabel = "OK",
+                    )
+                }
+            }
+        }
+    ListItem(
+        headlineText = { Text(text = stringResource(string.import_data)) },
+        trailingContent = {
+            Button(onClick = {
+                activityResultLauncherOpenDocument.launch(arrayOf("text/plain"))
+            }) {
+                Icon(
+                    imageVector = Icons.Default.ExitToApp,
+                    contentDescription = stringResource(string.import_data),
+                )
+            }
+        },
+    )
 }
