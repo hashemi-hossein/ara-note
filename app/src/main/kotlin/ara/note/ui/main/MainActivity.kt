@@ -10,7 +10,6 @@ import ara.note.data.datastore.DarkMode
 import ara.note.data.datastore.UserPreferences
 import ara.note.data.repository.UserPreferencesRepository
 import ara.note.ui.navigation.NavigationGraph
-import ara.note.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,9 +29,7 @@ class MainActivity : ComponentActivity() {
                 DarkMode.DARK -> true
                 DarkMode.SYSTEM -> isSystemInDarkTheme()
             }
-            AppTheme(darkTheme = isDark) {
-                NavigationGraph()
-            }
+            NavigationGraph(isDark = isDark)
         }
     }
 }

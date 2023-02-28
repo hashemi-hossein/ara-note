@@ -72,11 +72,7 @@ tasks.withType<Test>().configureEach {
 dependencies {
 
     implementation(project(":core:preference"))
-    implementation(project(":core:util"))
-    implementation(project(":feature:settings"))
-    implementation(project(":feature:notedetail"))
-    implementation(project(":feature:home"))
-    implementation(project(":feature:notebookslist"))
+    implementation(project(":feature:navigation"))
 
     implementation(libs.kotlin.stdlib)
 
@@ -113,12 +109,6 @@ dependencies {
     implementation(libs.androidx.compose.animation)
     // Lifecycle
 //    implementation(libs.androidx.lifecycle.runtime.compose)
-
-    // Navigation Compose
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.accompanist.navigation.animation)
-//    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_compose"
 
     // Hilt Dependency Injection
     kapt(libs.androidx.hilt.compiler)
