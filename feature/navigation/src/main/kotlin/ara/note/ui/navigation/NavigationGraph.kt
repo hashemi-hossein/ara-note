@@ -24,7 +24,6 @@ import ara.note.ui.screen.notedetail.NoteDetailScreen
 import ara.note.ui.screen.notedetail.NoteDetailViewModel
 import ara.note.ui.screen.settings.SettingsScreen
 import ara.note.ui.screen.settings.SettingsViewModel
-import ara.note.ui.theme.AppTheme
 import ara.note.util.ANIMATION_DURATION
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.INVALID_NOTE_ID
@@ -33,13 +32,6 @@ import ara.note.util.NAV_ARGUMENT_NOTE_ID
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-
-@Composable
-fun NavigationGraph(isDark: Boolean) {
-    AppTheme(darkTheme = isDark) {
-        NavigationGraph()
-    }
-}
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
