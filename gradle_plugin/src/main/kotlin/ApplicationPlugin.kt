@@ -54,6 +54,7 @@ class ApplicationPlugin : Plugin<Project> {
                 val composeBom = platform(libs.findLibrary("androidx.compose.bom").get())
                 add("implementation", composeBom)
                 add("androidTestImplementation", composeBom)
+                add("implementation", libs.findLibrary("androidx.activity.compose").get())
             }
         }
     }

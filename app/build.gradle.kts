@@ -1,7 +1,6 @@
 plugins {
     id("ara.application")
     id("ara.hilt")
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -70,54 +69,15 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
-
-    implementation(project(":core:preference"))
     implementation(project(":feature:navigation"))
 
     implementation(libs.kotlin.stdlib)
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.appcompat)
-
-    // ### Jetpack Compose ####
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    // Tooling support (Previews, etc.)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation(libs.androidx.compose.foundation)
-    // Material Design
-    implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.windowsize)
-    // Material design icons
-    implementation(libs.androidx.compose.material.iconsExtended)
-    // Integration with activities
-    implementation(libs.androidx.activity.compose)
-    // Integration with ViewModels
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    // Compose Testing
-    testImplementation(libs.androidx.compose.ui.test)
-    androidTestImplementation(libs.androidx.compose.ui.test)
-    // Test rules and transitive dependencies:
-    testImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    // Needed for createComposeRule, but not createAndroidComposeRule:
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-    // Animation
-    implementation(libs.androidx.compose.animation)
-    // Lifecycle
-//    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Hilt Dependency Injection
     kapt(libs.androidx.hilt.compiler)
     // Hilt Testing
     androidTestImplementation(libs.hilt.android.testing)
-
-    // DateTime
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.prettytime)
 
     // Kotlinx Coroutines
     implementation(libs.kotlinx.coroutines.android)
@@ -150,6 +110,5 @@ dependencies {
     testImplementation(libs.robolectric)
 
     // Other Libs
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.timber)
 }

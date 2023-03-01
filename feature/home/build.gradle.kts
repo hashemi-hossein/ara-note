@@ -7,6 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.datetime)
 }

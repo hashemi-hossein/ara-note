@@ -1,8 +1,8 @@
 package ara.note.ui.screen.home
 
 import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
@@ -103,7 +103,7 @@ internal fun HomeScreen(
                     }
                 }
                 !uiState.userPreferences.isDoubleBackToExitMode || System.currentTimeMillis() - lastTimeMillis < 2000 ->
-                    (context as AppCompatActivity).finish()
+                    (context as ComponentActivity).finish()
                 else -> {
                     lastTimeMillis = System.currentTimeMillis()
                     showSnackbar(
@@ -113,7 +113,7 @@ internal fun HomeScreen(
                         actionLabel = context.getString(string.exit),
                         timeout = 2000,
                     ) {
-                        (context as AppCompatActivity).finish()
+                        (context as ComponentActivity).finish()
                     }
                 }
             }

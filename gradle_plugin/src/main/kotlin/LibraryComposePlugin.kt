@@ -56,6 +56,8 @@ class LibraryComposePlugin : Plugin<Project> {
                 add("debugImplementation", libs.findLibrary("androidx.compose.ui.test.manifest").get())
                 // Animation
                 add("implementation", libs.findLibrary("androidx.compose.animation").get())
+                // Lifecycle
+//                add("implementation", libs.findLibrary("androidx.lifecycle.runtime.compose").get())
             }
         }
     }
