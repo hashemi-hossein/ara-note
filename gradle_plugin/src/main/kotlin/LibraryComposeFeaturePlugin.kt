@@ -12,6 +12,7 @@ class LibraryComposeFeaturePlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("ara.library.compose")
+                apply("ara.hilt")
             }
 
             val libs = getVersionCatalogLibs()
