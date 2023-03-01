@@ -8,7 +8,7 @@ compileSdk = "33"
 targetSdk = "33"
 
 # @pin
-androidGradlePlugin = "7.4.1"
+androidGradle = "7.4.2"
 # @pin
 kotlin = "1.8.0"
 
@@ -41,7 +41,7 @@ jdkDesugar = "2.0.2"
 junit = "4.13.2"
 karn-notify = "1.4.0"
 kotlinx-datetime = "0.4.0"
-kotlinx-serialization = "1.4.1"
+kotlinx-serialization = "1.5.0"
 material = "1.8.0"
 mockk = "1.13.4"
 prettytime = "5.0.6.Final"
@@ -52,15 +52,15 @@ timber = "5.0.1"
 # @pin
 kotlin-symbolProcessing = "1.8.0-1.0.9"
 
-ben-manes-versions = "0.45.0"
+ben-manes-versions = "0.46.0"
 version-catalog-update = "0.7.0"
-spotless = "6.15.0"
+spotless = "6.16.0"
 ktlint = "0.48.2"
 
 [libraries]
 
 # gradle_plugin's dependencies
-androidGradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+androidGradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradle" }
 kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kspGradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "kotlin-symbolProcessing" }
 
@@ -127,7 +127,7 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "androidGradle" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-symbolProcessing = { id = "com.google.devtools.ksp", version.ref = "kotlin-symbolProcessing" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
