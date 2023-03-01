@@ -59,7 +59,7 @@ class AlarmReceiver : BroadcastReceiver() {
                             .show()
 //                        noteRepository.update(note.copy(alarmDateTime = null))
                     }
-                    is Result.Error -> Unit //println(result)
+                    is Result.Error -> Unit // println(result)
                 }
             }
         }

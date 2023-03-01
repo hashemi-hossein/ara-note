@@ -8,7 +8,7 @@ import ara.note.ui.theme.AppTheme
 
 @Composable
 fun Main(
-    viewModel: MainViewModel = viewModel()
+    viewModel: MainViewModel = viewModel(),
 ) {
     val isDark = when (viewModel.darkMode) {
         DarkMode.LIGHT -> false

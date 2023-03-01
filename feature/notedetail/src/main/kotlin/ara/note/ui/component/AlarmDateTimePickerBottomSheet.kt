@@ -1,66 +1,66 @@
 package ara.note.ui.component
 
-//import android.content.Context
-//import androidx.appcompat.app.AppCompatActivity
-//import androidx.compose.foundation.layout.Arrangement
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.Row
-//import androidx.compose.foundation.layout.Spacer
-//import androidx.compose.foundation.layout.fillMaxWidth
-//import androidx.compose.foundation.layout.height
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.foundation.layout.width
-//import androidx.compose.foundation.lazy.LazyRow
-//import androidx.compose.material.ExperimentalMaterialApi
-//import androidx.compose.material.ModalBottomSheetState
-//import androidx.compose.material.icons.Icons
-//import androidx.compose.material.icons.filled.Done
-//import androidx.compose.material.icons.filled.Undo
-//import androidx.compose.material3.Button
-//import androidx.compose.material3.Icon
-//import androidx.compose.material3.MaterialTheme
-//import androidx.compose.material3.OutlinedButton
-//import androidx.compose.material3.SnackbarHostState
-//import androidx.compose.material3.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.getValue
-//import androidx.compose.runtime.mutableStateOf
-//import androidx.compose.runtime.remember
-//import androidx.compose.runtime.rememberCoroutineScope
-//import androidx.compose.runtime.setValue
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.platform.LocalContext
-//import androidx.compose.ui.res.stringResource
-//import androidx.compose.ui.unit.dp
-//import ara.note.domain.entity.Note
-//import ara.note.notedetail.R.string
-//import ara.note.ui.screen.notedetail.NoteDetailState
-//import ara.note.util.DateTimeFormatPattern.DATE
-//import ara.note.util.DateTimeFormatPattern.TIME
-//import ara.note.util.HDateTime
-//import ara.note.util.change
-//import ara.note.util.millis
-//import ara.note.util.minus
-//import ara.note.util.plus
-//import com.google.android.material.datepicker.MaterialDatePicker.Builder
-//import com.google.android.material.timepicker.MaterialTimePicker
-//import kotlinx.coroutines.CoroutineScope
-//import kotlinx.coroutines.launch
-//import kotlin.time.Duration.Companion.hours
-//import kotlin.time.Duration.Companion.minutes
+// import android.content.Context
+// import androidx.appcompat.app.AppCompatActivity
+// import androidx.compose.foundation.layout.Arrangement
+// import androidx.compose.foundation.layout.Column
+// import androidx.compose.foundation.layout.Row
+// import androidx.compose.foundation.layout.Spacer
+// import androidx.compose.foundation.layout.fillMaxWidth
+// import androidx.compose.foundation.layout.height
+// import androidx.compose.foundation.layout.padding
+// import androidx.compose.foundation.layout.width
+// import androidx.compose.foundation.lazy.LazyRow
+// import androidx.compose.material.ExperimentalMaterialApi
+// import androidx.compose.material.ModalBottomSheetState
+// import androidx.compose.material.icons.Icons
+// import androidx.compose.material.icons.filled.Done
+// import androidx.compose.material.icons.filled.Undo
+// import androidx.compose.material3.Button
+// import androidx.compose.material3.Icon
+// import androidx.compose.material3.MaterialTheme
+// import androidx.compose.material3.OutlinedButton
+// import androidx.compose.material3.SnackbarHostState
+// import androidx.compose.material3.Text
+// import androidx.compose.runtime.Composable
+// import androidx.compose.runtime.getValue
+// import androidx.compose.runtime.mutableStateOf
+// import androidx.compose.runtime.remember
+// import androidx.compose.runtime.rememberCoroutineScope
+// import androidx.compose.runtime.setValue
+// import androidx.compose.ui.Alignment
+// import androidx.compose.ui.Modifier
+// import androidx.compose.ui.platform.LocalContext
+// import androidx.compose.ui.res.stringResource
+// import androidx.compose.ui.unit.dp
+// import ara.note.domain.entity.Note
+// import ara.note.notedetail.R.string
+// import ara.note.ui.screen.notedetail.NoteDetailState
+// import ara.note.util.DateTimeFormatPattern.DATE
+// import ara.note.util.DateTimeFormatPattern.TIME
+// import ara.note.util.HDateTime
+// import ara.note.util.change
+// import ara.note.util.millis
+// import ara.note.util.minus
+// import ara.note.util.plus
+// import com.google.android.material.datepicker.MaterialDatePicker.Builder
+// import com.google.android.material.timepicker.MaterialTimePicker
+// import kotlinx.coroutines.CoroutineScope
+// import kotlinx.coroutines.launch
+// import kotlin.time.Duration.Companion.hours
+// import kotlin.time.Duration.Companion.minutes
 //
 //
-//@OptIn(ExperimentalMaterialApi::class)
-//@Composable
-//internal fun AlarmDateTimePickerBottomSheet(
+// @OptIn(ExperimentalMaterialApi::class)
+// @Composable
+// internal fun AlarmDateTimePickerBottomSheet(
 //    uiState: NoteDetailState,
 //    onNoteChanged: (Note) -> Unit,
 //    snackbarHostState: SnackbarHostState,
 //    modalBottomSheetState: ModalBottomSheetState,
 //    scope: CoroutineScope= rememberCoroutineScope(),
 //    context: Context= LocalContext.current,
-//) {
+// ) {
 //    var dateTime by remember(modalBottomSheetState.isVisible) {
 //        mutableStateOf(uiState.note.alarmDateTime ?: HDateTime.getCurrentDateTime())
 //    }
@@ -81,7 +81,7 @@ package ara.note.ui.component
 //                            addOnPositiveButtonClickListener {
 //                                it?.let {
 //                                    val result = HDateTime.getDateTimeFromMillis(it)
-////                                    Timber.tag(TAG).d(result.toString())
+// //                                    Timber.tag(TAG).d(result.toString())
 //                                    dateTime = dateTime.change(
 //                                        year = result.year,
 //                                        month = result.monthNumber,
@@ -109,7 +109,7 @@ package ara.note.ui.component
 //                        .setMinute(dateTime.minute)
 //                        .build().apply {
 //                            addOnPositiveButtonClickListener {
-////                                Timber.tag(TAG).d("%d:%d", this.hour, this.minute)
+// //                                Timber.tag(TAG).d("%d:%d", this.hour, this.minute)
 //                                dateTime = dateTime.change(
 //                                    hour = this.hour,
 //                                    minute = this.minute,
@@ -207,4 +207,4 @@ package ara.note.ui.component
 //            }
 //        }
 //    }
-//}
+// }

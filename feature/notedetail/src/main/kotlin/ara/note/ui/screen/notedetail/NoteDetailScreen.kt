@@ -65,7 +65,7 @@ fun NoteDetailScreen(
                     Toast.makeText(
                         context,
                         context.getString(string.error_in_operation),
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_LONG,
                     ).show()
 
                 is NoteDetailSingleEvent.BackPressed -> {

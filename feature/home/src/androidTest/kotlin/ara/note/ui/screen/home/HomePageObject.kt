@@ -11,10 +11,10 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import ara.note.home.R.string
 import ara.note.test.BasePageObject
 import ara.note.test.TestUtil
 import ara.note.util.HDateTime
-import ara.note.home.R.string
 import ara.note.util.INVALID_NOTE_ID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -24,7 +24,7 @@ import kotlin.test.assertEquals
  * Page Object for HomeScreen
  */
 internal class HomePageObject(
-    private val composeTestRule: ComposeContentTestRule
+    private val composeTestRule: ComposeContentTestRule,
 ) : BasePageObject() {
 
     private val uiState = MutableStateFlow(
@@ -32,7 +32,7 @@ internal class HomePageObject(
             notes = TestUtil.tNoteEntityList,
             notebooks = TestUtil.tNotebookEntityList,
             currentNotebookId = TestUtil.tNotebookEntityList.first().id,
-        )
+        ),
     )
     private val singleEvent = mutableListOf<HomeSingleEvent>()
 
@@ -68,24 +68,24 @@ internal class HomePageObject(
     private fun findNotebookNameInAppbar() =
         composeTestRule.onNode(
             !SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
-                hasText(uiState.value.notebooks.find { it.id == uiState.value.currentNotebookId }!!.name)
+                hasText(uiState.value.notebooks.find { it.id == uiState.value.currentNotebookId }!!.name),
         )
 
     private fun findNotebookNameInDrawer(text: String) =
         composeTestRule.onNode(
             SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton) and
-                hasText(text)
+                hasText(text),
         )
 
-    private fun findFab()=composeTestRule.onNodeWithContentDescription(getString(string.cd_add_note))
+    private fun findFab() = composeTestRule.onNodeWithContentDescription(getString(string.cd_add_note))
 
     private fun findMenuButton() = composeTestRule.onNodeWithContentDescription(getString(ara.note.ui.R.string.cd_appbar_menu))
 
-    fun clickFab()=findFab().performClick()
+    fun clickFab() = findFab().performClick()
 
-    fun clickFirstNoteCard()=findNoteCardText(uiState.value.notes.first().text).performClick()
+    fun clickFirstNoteCard() = findNoteCardText(uiState.value.notes.first().text).performClick()
 
-    fun clickMenuButton()=findMenuButton().performClick()
+    fun clickMenuButton() = findMenuButton().performClick()
 
     fun clickOnLastNotebookInDrawer() = findNotebookNameInDrawer(uiState.value.notebooks.last().name).performClick()
 
@@ -98,17 +98,17 @@ internal class HomePageObject(
 
     fun assertNotebookNameInAppbarIsDisplaying() = findNotebookNameInAppbar().assertIsDisplayed()
 
-    fun assertAllNotebooksInDrawerAreDisplaying(){
+    fun assertAllNotebooksInDrawerAreDisplaying() {
         for (item in uiState.value.notebooks)
             findNotebookNameInDrawer(item.name).assertIsDisplayed()
     }
 
-    fun assertNavigateToNodeDetailScreenWithNewNoteId()=
-        assertEquals(noteIdToNavigate,INVALID_NOTE_ID)
+    fun assertNavigateToNodeDetailScreenWithNewNoteId() =
+        assertEquals(noteIdToNavigate, INVALID_NOTE_ID)
 
-    fun assertNavigateToNodeDetailScreenWithItsNoteId()=
-        assertEquals(noteIdToNavigate,uiState.value.notes.first().id)
+    fun assertNavigateToNodeDetailScreenWithItsNoteId() =
+        assertEquals(noteIdToNavigate, uiState.value.notes.first().id)
 
-    fun assertCurrentNotebookIdIsTheLastOne()=
-        assertEquals(uiState.value.currentNotebookId,uiState.value.notebooks.last().id)
+    fun assertCurrentNotebookIdIsTheLastOne() =
+        assertEquals(uiState.value.currentNotebookId, uiState.value.notebooks.last().id)
 }

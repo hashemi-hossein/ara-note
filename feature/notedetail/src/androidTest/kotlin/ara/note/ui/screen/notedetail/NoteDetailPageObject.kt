@@ -27,7 +27,7 @@ import kotlin.test.assertContains
  * Page Object for NoteDetailScreen
  */
 internal class NoteDetailPageObject(
-    private val composeTestRule: ComposeContentTestRule
+    private val composeTestRule: ComposeContentTestRule,
 ) : BasePageObject() {
 
     private val uiState = MutableStateFlow(NoteDetailState(notebooks = TestUtil.tNotebookEntityList))

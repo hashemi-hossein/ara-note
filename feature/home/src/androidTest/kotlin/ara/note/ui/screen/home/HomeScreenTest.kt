@@ -59,7 +59,6 @@ class HomeScreenTest {
         }
     }
 
-
     @Test
     fun drawer_changeCurrentNotebookWhenClickingOnLastNotebook() {
         with(pageObject) {

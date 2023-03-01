@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import ara.note.domain.repository.NoteRepository
 import ara.note.util.CoroutineDispatcherProvider
-import ara.note.util.Result
-import ara.note.util.millis
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -33,7 +31,7 @@ class BootReceiver : BroadcastReceiver() {
 //                when (val result = noteRepository.getAllNotesWithAlarm()) {
 //                    is Result.Success -> {
 //                        val notes = result.data
-////                        println(notes.toString())
+// //                        println(notes.toString())
 //
 //                        for (note in notes) {
 //                            hManageAlarm(
