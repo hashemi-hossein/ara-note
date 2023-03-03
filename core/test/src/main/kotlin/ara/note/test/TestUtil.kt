@@ -11,10 +11,12 @@ object TestUtil {
     val tNotebookEntity = Notebook(
         id = 1,
         name = "notebook",
+        noteCount = 1,
     )
     val tNotebookEntity2 = Notebook(
         id = 2,
         name = "notebook2",
+        noteCount = 2,
     )
     val tNotebookEntityList = listOf(tNotebookEntity, tNotebookEntity2)
 
@@ -35,12 +37,14 @@ object TestUtil {
         notebookId = tNotebookEntity.id,
         text = "test",
         createdDateTime = tDateTime,
+        modifiedDateTime = tDateTime,
     )
     val tNoteEntity2 = Note(
         id = 2,
         notebookId = tNotebookEntity2.id,
         text = "test2",
         createdDateTime = tDateTime2,
+        modifiedDateTime = tDateTime2,
     )
     val tNoteEntityList = listOf(tNoteEntity, tNoteEntity2)
 
