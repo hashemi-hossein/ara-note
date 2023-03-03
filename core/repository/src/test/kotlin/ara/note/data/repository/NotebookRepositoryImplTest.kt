@@ -1,10 +1,10 @@
 package ara.note.data.repository
 
 import ara.note.data.localdatasource.NotebookDao
+import ara.note.data.model.toDomainEntity
 import ara.note.domain.entity.toDataModel
 import ara.note.test.TestUtil
 import ara.note.util.Result
-import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -15,60 +15,57 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertContains
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
 @ExperimentalCoroutinesApi
 class NotebookRepositoryImplTest {
 
     private val notebookDaoMock = mockk<NotebookDao>()
 
-    private val systemUnderTest = NotebookRepositoryImpl(
-        notebookDao = notebookDaoMock,
-    )
+    private val systemUnderTest = NotebookRepositoryImpl(notebookDao = notebookDaoMock)
 
     @Test
     fun observeNotebooks() = runTest {
-        // arrange
-        every { notebookDaoMock.observe() } returns flowOf(
-            TestUtil.tNotebookModelList,
-            TestUtil.tNotebookModelList,
+        // given
+        every { notebookDaoMock.observeWithCount() } returns flowOf(
+            mapOf(TestUtil.tNotebookModel to 5, TestUtil.tNotebookModel2 to 10),
         )
 
-        // act
+        // when
         val r = systemUnderTest.observe()
         val r2 = r.toList()
 
-        // assert
-        verify { notebookDaoMock.observe() }
-        assertThat(r2).containsExactly(TestUtil.tNotebookEntityList, TestUtil.tNotebookEntityList)
-            .inOrder()
+        // then
+        verify { notebookDaoMock.observeWithCount() }
+        assertContains(r2, listOf(TestUtil.tNotebookModel.toDomainEntity(5), TestUtil.tNotebookModel2.toDomainEntity(10)))
     }
 
     @Test
     fun insertNotebook_onDbSuccessful() = runTest {
-        // arrange
-        coEvery { notebookDaoMock.insert(TestUtil.tNotebookModel) } returns 1
+        // given
+        coEvery { notebookDaoMock.insert(TestUtil.tNotebookEntity.toDataModel()) } returns 1
 
-        // act
+        // when
         val r = systemUnderTest.insert(TestUtil.tNotebookEntity)
 
-        // assert
-        coVerify { TestUtil.tNotebookEntity.toDataModel() }
-        coVerify { notebookDaoMock.insert(TestUtil.tNotebookModel) }
-        assertThat(r).isInstanceOf(Result.Success::class.java)
-        assertThat((r as Result.Success).data).isEqualTo(1)
+        // then
+        coVerify { notebookDaoMock.insert(TestUtil.tNotebookEntity.toDataModel()) }
+        assertIs<Result.Success<Int>>(r)
+        assertEquals(r.data, 1)
     }
 
     @Test
     fun insertNotebook_onDbError() = runTest {
-        // arrange
-        coEvery { notebookDaoMock.insert(TestUtil.tNotebookModel) } returns null
+        // given
+        coEvery { notebookDaoMock.insert(TestUtil.tNotebookEntity.toDataModel()) } returns null
 
-        // act
+        // when
         val r = systemUnderTest.insert(TestUtil.tNotebookEntity)
 
-        // assert
-        coVerify { TestUtil.tNotebookEntity.toDataModel() }
-        coVerify { notebookDaoMock.insert(TestUtil.tNotebookModel) }
-        assertThat(r).isInstanceOf(Result.Error::class.java)
+        // then
+        coVerify { notebookDaoMock.insert(TestUtil.tNotebookEntity.toDataModel()) }
+        assertIs<Result.Error>(r)
     }
 }
