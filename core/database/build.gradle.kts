@@ -13,5 +13,5 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
-    testImplementation(libs.google.truth)
+    testImplementation(kotlin("test"))
 }

@@ -1,8 +1,8 @@
 package ara.note.data.localdatasource
 
-import com.google.common.truth.Truth.assertThat
 import kotlinx.datetime.LocalDateTime
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class DatabaseTypeConvertersTest {
 
@@ -13,46 +13,46 @@ class DatabaseTypeConvertersTest {
 
     @Test
     fun timestampToDate_whenCorrect() {
-        // act
+        // when
         val r = systemUnderTest.stringToLocalDateTime(tString)
 
-        // assert
-        assertThat(r).isEqualTo(tDateTime)
+        // then
+        assertEquals(r, tDateTime)
     }
 
     @Test
     fun timestampToDate_whenInCorrect() {
-        // act
+        // when
         val r = systemUnderTest.stringToLocalDateTime("")
 
-        // assert
-        assertThat(r).isEqualTo(null)
+        // then
+        assertEquals(r, null)
     }
 
     @Test
     fun timestampToDate_whenNull() {
-        // act
+        // when
         val r = systemUnderTest.stringToLocalDateTime(null)
 
-        // assert
-        assertThat(r).isEqualTo(null)
+        // then
+        assertEquals(r, null)
     }
 
     @Test
     fun localDateTimeToString_whenCorrect() {
-        // act
+        // when
         val r = systemUnderTest.localDateTimeToString(tDateTime)
 
-        // assert
-        assertThat(r).isEqualTo(tString)
+        // then
+        assertEquals(r, tString)
     }
 
     @Test
     fun localDateTimeToString_whenNull() {
-        // act
+        // when
         val r = systemUnderTest.localDateTimeToString(null)
 
-        // assert
-        assertThat(r).isEqualTo(null)
+        // then
+        assertEquals(r, null)
     }
 }
