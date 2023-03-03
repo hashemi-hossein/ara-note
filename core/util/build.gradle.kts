@@ -4,6 +4,11 @@ plugins {
 
 android {
     namespace = "ara.note.util"
+
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
@@ -13,4 +18,6 @@ dependencies {
     implementation(libs.javax.inject)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    coreLibraryDesugaring(libs.core.jdk.desugaring)
 }
