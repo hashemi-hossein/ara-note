@@ -1,9 +1,11 @@
 package ara.note.data.repository
 
 import ara.note.data.localdatasource.NoteDao
+import ara.note.data.model.toDomainEntity
+import ara.note.domain.entity.Note
+import ara.note.domain.entity.toDataModel
 import ara.note.test.TestUtil
 import ara.note.util.Result
-import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -14,6 +16,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
 @ExperimentalCoroutinesApi
 class NoteRepositoryImplTest {
@@ -26,154 +30,154 @@ class NoteRepositoryImplTest {
 
     @Test
     fun insertNote_onDbSuccessful() = runTest {
-        // arrange
-        coEvery { noteDaoMock.insert(TestUtil.tNoteModel) } returns 1
+        // given
+        coEvery { noteDaoMock.insert(TestUtil.tNoteEntity.toDataModel()) } returns 1
 
-        // act
+        // when
         val r = systemUnderTest.insert(TestUtil.tNoteEntity)
 
-        // assert
-        coVerify { noteDaoMock.insert(TestUtil.tNoteModel) }
-        assertThat(r).isInstanceOf(Result.Success::class.java)
-        assertThat((r as Result.Success).data).isEqualTo(1)
+        // then
+        coVerify { noteDaoMock.insert(TestUtil.tNoteEntity.toDataModel()) }
+        assertIs<Result.Success<Int>>(r)
+        assertEquals(r.data, 1)
     }
 
     @Test
     fun insertNote_onDbError() = runTest {
-        // arrange
-        coEvery { noteDaoMock.insert(TestUtil.tNoteModel) } returns null
+        // given
+        coEvery { noteDaoMock.insert(TestUtil.tNoteEntity.toDataModel()) } returns null
 
-        // act
+        // when
         val r = systemUnderTest.insert(TestUtil.tNoteEntity)
 
-        // assert
-        coVerify { noteDaoMock.insert(TestUtil.tNoteModel) }
-        assertThat(r).isInstanceOf(Result.Error::class.java)
+        // then
+        coVerify { noteDaoMock.insert(TestUtil.tNoteEntity.toDataModel()) }
+        assertIs<Result.Error>(r)
     }
 
     @Test
     fun observeNotes() = runTest {
-        // arrange
+        // given
         every { noteDaoMock.observe(any<Int>()) } returns flowOf(
             TestUtil.tNoteModelList,
             TestUtil.tNoteModelList,
         )
-        val reorderedList = TestUtil.tNoteEntityList.sortedByDescending { it.modifiedDateTime }
 
-        // act
-        val r = systemUnderTest.observe(0)
+        // when
+        val r = systemUnderTest.observe(notebookId = 0)
         val r2 = r.toList()
 
-        // assert
+        // then
         verify { noteDaoMock.observe(any<Int>()) }
-        assertThat(r2).containsExactly(reorderedList, reorderedList).inOrder()
+        val reorderedList = TestUtil.tNoteModelList.toDomainEntity().sortedByDescending { it.modifiedDateTime }
+        assertEquals(r2, listOf(reorderedList, reorderedList))
     }
 
     @Test
     fun getNote_onDbSuccessful() = runTest {
-        // arrange
+        // given
         coEvery { noteDaoMock.getById(1) } returns TestUtil.tNoteModel
 
-        // act
+        // when
         val r = systemUnderTest.getById(1)
 
-        // assert
+        // then
         coVerify { noteDaoMock.getById(1) }
-        assertThat(r).isInstanceOf(Result.Success::class.java)
-        assertThat((r as Result.Success).data).isEqualTo(TestUtil.tNoteEntity)
+        assertIs<Result.Success<Note>>(r)
+        assertEquals(r.data, TestUtil.tNoteModel.toDomainEntity())
     }
 
     @Test
     fun getNote_onDbError() = runTest {
-        // arrange
+        // given
         coEvery { noteDaoMock.getById(1) } returns null
 
-        // act
+        // when
         val r = systemUnderTest.getById(1)
 
-        // assert
+        // then
         coVerify { noteDaoMock.getById(1) }
-        assertThat(r).isInstanceOf(Result.Error::class.java)
+        assertIs<Result.Error>(r)
     }
 
     @Test
     fun updateNote_onDbSuccessful() = runTest {
-        // arrange
-        coEvery { noteDaoMock.update(TestUtil.tNoteModel) } returns 1
+        // given
+        coEvery { noteDaoMock.update(TestUtil.tNoteEntity.toDataModel()) } returns 1
 
-        // act
+        // when
         val r = systemUnderTest.update(TestUtil.tNoteEntity)
 
-        // assert
-        coVerify { noteDaoMock.update(TestUtil.tNoteModel) }
-        assertThat(r).isInstanceOf(Result.Success::class.java)
-        assertThat((r as Result.Success).data).isTrue()
+        // then
+        coVerify { noteDaoMock.update(TestUtil.tNoteEntity.toDataModel()) }
+        assertIs<Result.Success<Boolean>>(r)
+        assert(r.data)
     }
 
     @Test
     fun updateNote_onDbError() = runTest {
-        // arrange
-        coEvery { noteDaoMock.update(TestUtil.tNoteModel) } returns null
+        // given
+        coEvery { noteDaoMock.update(TestUtil.tNoteEntity.toDataModel()) } returns null
 
-        // act
+        // when
         val r = systemUnderTest.update(TestUtil.tNoteEntity)
 
-        // assert
-        coVerify { noteDaoMock.update(TestUtil.tNoteModel) }
-        assertThat(r).isInstanceOf(Result.Error::class.java)
+        // then
+        coVerify { noteDaoMock.update(TestUtil.tNoteEntity.toDataModel()) }
+        assertIs<Result.Error>(r)
     }
 
     @Test
     fun deleteNote_onDbSuccessful() = runTest {
-        // arrange
-        coEvery { noteDaoMock.delete(TestUtil.tNoteModel) } returns 1
+        // given
+        coEvery { noteDaoMock.delete(TestUtil.tNoteEntity.toDataModel()) } returns 1
 
-        // act
+        // when
         val r = systemUnderTest.delete(TestUtil.tNoteEntity)
 
-        // assert
-        coEvery { noteDaoMock.delete(TestUtil.tNoteModel) }
-        assertThat(r).isInstanceOf(Result.Success::class.java)
-        assertThat((r as Result.Success).data).isTrue()
+        // then
+        coEvery { noteDaoMock.delete(TestUtil.tNoteEntity.toDataModel()) }
+        assertIs<Result.Success<Boolean>>(r)
+        assert(r.data)
     }
 
     @Test
     fun deleteNote_onDbError() = runTest {
-        // arrange
-        coEvery { noteDaoMock.delete(TestUtil.tNoteModel) } returns null
+        // given
+        coEvery { noteDaoMock.delete(TestUtil.tNoteEntity.toDataModel()) } returns null
 
-        // act
+        // when
         val r = systemUnderTest.delete(TestUtil.tNoteEntity)
 
-        // assert
-        coEvery { noteDaoMock.delete(TestUtil.tNoteModel) }
-        assertThat(r).isInstanceOf(Result.Error::class.java)
+        // then
+        coEvery { noteDaoMock.delete(TestUtil.tNoteEntity.toDataModel()) }
+        assertIs<Result.Error>(r)
     }
 
     @Test
     fun getLastId_onDbSuccessful() = runTest {
-        // arrange
+        // given
         coEvery { noteDaoMock.getLastId() } returns 1
 
-        // act
+        // when
         val r = systemUnderTest.getLastId()
 
-        // assert
+        // then
         coVerify { noteDaoMock.getLastId() }
-        assertThat(r).isInstanceOf(Result.Success::class.java)
-        assertThat((r as Result.Success).data).isEqualTo(1)
+        assertIs<Result.Success<Int>>(r)
+        assertEquals(r.data, 1)
     }
 
     @Test
     fun getLastId_onEmptyDb_or_onDbError() = runTest {
-        // arrange
+        // given
         coEvery { noteDaoMock.getLastId() } returns null
 
-        // act
+        // when
         val r = systemUnderTest.getLastId()
 
-        // assert
+        // then
         coVerify { noteDaoMock.getLastId() }
-        assertThat(r).isInstanceOf(Result.Error::class.java)
+        assertIs<Result.Error>(r)
     }
 }
