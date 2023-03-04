@@ -12,7 +12,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.kotlinx.datetime)
     implementation(libs.prettytime)
     implementation(libs.javax.inject)

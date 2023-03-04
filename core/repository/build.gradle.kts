@@ -8,7 +8,6 @@ android {
 }
 
 dependencies {
-
     implementation(project(":core:entity"))
     implementation(project(":core:util"))
     implementation(project(":core:database"))
@@ -21,7 +20,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.kotlinx.coroutines.test)
 
-    testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.mockk.agent.jvm)
     testImplementation(libs.kotlin.reflect)

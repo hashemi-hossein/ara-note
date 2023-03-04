@@ -8,7 +8,6 @@ android {
 }
 
 dependencies {
-
     implementation(project(":core:util"))
 
     implementation(libs.kotlinx.datetime)
