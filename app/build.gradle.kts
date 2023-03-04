@@ -101,9 +101,6 @@ dependencies {
     testImplementation(libs.androidx.test.ext.junit.ktx)
     androidTestImplementation(libs.androidx.test.ext.junit.ktx)
     androidTestImplementation(libs.androidx.test.ext.truth)
-    // Espresso dependencies
-    testImplementation(libs.androidx.test.espresso.core)
-    androidTestImplementation(libs.androidx.test.espresso.core)
     // Other Test Libs
     testImplementation(libs.robolectric)
 
