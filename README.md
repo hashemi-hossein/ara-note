@@ -44,4 +44,4 @@ A reliable note taking app
 * UI Tests
 * [Page Object Models](https://www.selenium.dev/documentation/test_practices/encouraged/page_object_models/) for UI Tests
 * [MockK](https://mockk.io/) mocking lib
-* [Truth](https://truth.dev/) assertion lib
+* [kotlin.test](https://kotlinlang.org/api/latest/kotlin.test/) assertion lib
