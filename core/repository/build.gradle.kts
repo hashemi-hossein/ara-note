@@ -25,5 +25,5 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.mockk.agent.jvm)
     testImplementation(libs.kotlin.reflect)
-    testImplementation(libs.google.truth)
+    testImplementation(kotlin("test"))
 }
