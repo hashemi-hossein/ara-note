@@ -3,7 +3,21 @@
 A reliable note taking app
 
 
+## Screenshots
+
+<div style="width:100%; display:flex; justify-content:space-between;">
+
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot1.jpg" width=18% alt="Home">](fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot1.jpg)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot2.jpg" width=18% alt="Drawer">](fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot2.jpg)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot3.jpg" width=18% alt="Settings">](fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot3.jpg)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot4.jpg" width=18% alt="Home_Dark">](fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot4.jpg)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot5.jpg" width=18% alt="Drawer_Dark">](fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot5.jpg)
+
+</div>
+
+
 ## Directory structure
+
     .
     ├── app
     ├── core
