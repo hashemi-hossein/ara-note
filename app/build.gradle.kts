@@ -33,6 +33,14 @@ android {
         }
     }
 
+    applicationVariants.all {
+        val outputFileName = "AraNote_${versionName}.apk"
+        outputs.all {
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl)
+                .outputFileName = outputFileName
+        }
+    }
+
     packagingOptions {
         resources {
             // Multiple dependency bring these files in. Exclude them to enable
