@@ -13,21 +13,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import ara.note.domain.entity.Note
 import ara.note.notedetail.R.string
 import ara.note.ui.screen.notedetail.NoteDetailState
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DELETE
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DISCARD
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun HAppBarActions(
     uiState: NoteDetailState,
     onNoteChanged: (Note) -> Unit,
-    onBackPressed: (TheOperation) -> Unit,
+    onDiscard: () -> Unit,
+    onDelete: () -> Unit,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
     IconButton(onClick = {
         keyboardController?.hide()
-        onBackPressed(if (!uiState.isNewNote) DELETE else DISCARD)
+        if (!uiState.isNewNote) onDelete() else onDiscard()
     }) {
         Icon(
             imageVector = Icons.Default.Delete,
@@ -86,6 +84,7 @@ private fun HPreview() {
     HAppBarActions(
         uiState = NoteDetailState(),
         onNoteChanged = {},
-        onBackPressed = {},
+        onDiscard = {},
+        onDelete = {},
     )
 }

@@ -56,7 +56,8 @@ class NoteDetailScreenTest {
             clickOnBackButton()
 
             // then
-            assertDiscardTriggered()
+            confirmSnackbarDiscarding()
+            assertNavigateUpTriggered()
         }
     }
 
@@ -70,7 +71,8 @@ class NoteDetailScreenTest {
             clickOnDeleteButton()
 
             // then
-            assertDiscardTriggered()
+            confirmSnackbarDiscarding()
+            assertNavigateUpTriggered()
         }
     }
 
@@ -84,6 +86,7 @@ class NoteDetailScreenTest {
             clickOnDeleteButton()
 
             // then
+            confirmSnackbarDeleting()
             assertDeleteTriggered()
         }
     }

@@ -16,9 +16,7 @@ import androidx.compose.ui.test.performTextInput
 import ara.note.notedetail.R.string
 import ara.note.test.BasePageObject
 import ara.note.test.TestUtil
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DELETE
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.DISCARD
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation.SAVE
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.test.assertContains
@@ -31,15 +29,18 @@ internal class NoteDetailPageObject(
 ) : BasePageObject() {
 
     private val uiState = MutableStateFlow(NoteDetailState(notebooks = TestUtil.tNotebookEntityList))
-    private val singleEvent = mutableListOf<NoteDetailSingleEvent>()
+    private val event = mutableListOf<String>()
 
     @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
     override fun setUp() {
         composeTestRule.setContent {
             NoteDetailScreen(
                 uiState = uiState.collectAsState().value,
+                singleEvent = MutableSharedFlow(),
+                navigateUp = { event.add("navigateUp") },
+                saveNote = { event.add("saveNote") },
+                deleteNote = { event.add("deleteNote") },
                 onNoteChanged = { note -> uiState.update { it.copy(note = note) } },
-                onBackPressed = { singleEvent.add(NoteDetailSingleEvent.BackPressed(it)) },
             )
         }
     }
@@ -59,6 +60,8 @@ internal class NoteDetailPageObject(
 
     private fun findBackButton() = composeTestRule.onNodeWithContentDescription(getString(ara.note.ui.R.string.cd_appbar_back))
 
+    private fun findSnackbarButton(text: String) = composeTestRule.onNodeWithText(text)
+
     fun setIsNewNote(isNewNote: Boolean) = uiState.update { it.copy(isNewNote = isNewNote) }
 
     fun setAutoSaveMode(on: Boolean) = uiState.update { it.copy(userPreferences = it.userPreferences.copy(isAutoSaveMode = on)) }
@@ -76,6 +79,9 @@ internal class NoteDetailPageObject(
     fun clickOnLastDropdownItem() =
         findNotebookDropdownItem(uiState.value.notebooks.last().name).assertIsDisplayed().performClick()
 
+    fun confirmSnackbarDiscarding() = findSnackbarButton(getString(string.discard)).performClick()
+    fun confirmSnackbarDeleting() = findSnackbarButton(getString(string.delete)).performClick()
+
     fun assertLastNotebookIsDisplaying() = findNotebookText(uiState.value.notebooks.last().name).assertIsDisplayed()
 
     fun assertAllNotebooksAreDisplaying() {
@@ -83,9 +89,9 @@ internal class NoteDetailPageObject(
             findNotebookDropdownItem(item.name).assertIsDisplayed()
     }
 
-    fun assertSaveTriggered() = assertContains(singleEvent, NoteDetailSingleEvent.BackPressed(SAVE))
+    fun assertSaveTriggered() = assertContains(event, "saveNote")
 
-    fun assertDiscardTriggered() = assertContains(singleEvent, NoteDetailSingleEvent.BackPressed(DISCARD))
+    fun assertNavigateUpTriggered() = assertContains(event, "navigateUp")
 
-    fun assertDeleteTriggered() = assertContains(singleEvent, NoteDetailSingleEvent.BackPressed(DELETE))
+    fun assertDeleteTriggered() = assertContains(event, "deleteNote")
 }

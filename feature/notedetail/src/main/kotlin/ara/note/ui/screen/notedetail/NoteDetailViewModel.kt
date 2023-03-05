@@ -72,13 +72,13 @@ class NoteDetailViewModel
                 val result =
                     if (state.isNewNote) {
 //              if(text.isNotBlank())
-                        if (!intent.doesDelete && (state.note.text.isNotEmpty() /*|| state.note.alarmDateTime != null*/)) {
+                        if (!intent.shouldDelete && (state.note.text.isNotEmpty() /*|| state.note.alarmDateTime != null*/)) {
                             createNoteUseCase(state.note)
                         } else {
                             true
                         }
                     } else {
-                        if (!intent.doesDelete) {
+                        if (!intent.shouldDelete) {
                             sendIntent(NoteDetailIntent.UpdateNote)
                             true
                         } else {
@@ -105,10 +105,6 @@ class NoteDetailViewModel
 
     override val reducer: Reducer<NoteDetailState, NoteDetailIntent>
         get() = NoteDetailReducer()
-
-    enum class TheOperation {
-        SAVE, DISCARD, DELETE
-    }
 }
 
 internal class NoteDetailReducer : BaseViewModel.Reducer<NoteDetailState, NoteDetailIntent> {

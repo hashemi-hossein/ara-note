@@ -4,6 +4,7 @@
     <string name="type_here">Type here…</string>
     <string name="discard">Discard</string>
     <string name="ok">OK</string>
+    <string name="exit">Exit</string>
     <string name="delete">Delete</string>
     <string name="error_in_operation">error in operation occurred</string>
     <string name="modified_at">\"Modified at \"</string>

@@ -3,7 +3,6 @@ package ara.note.ui.screen.notedetail
 import ara.note.data.datastore.UserPreferences
 import ara.note.domain.entity.Note
 import ara.note.domain.entity.Notebook
-import ara.note.ui.screen.notedetail.NoteDetailViewModel.TheOperation
 import ara.note.util.MviIntent
 import ara.note.util.MviSingleEvent
 import ara.note.util.MviState
@@ -26,7 +25,7 @@ sealed interface NoteDetailIntent : MviIntent {
 
     object UpdateNote : NoteDetailIntent
 
-    data class BackPressed(val doesDelete: Boolean) : NoteDetailIntent
+    data class BackPressed(val shouldDelete: Boolean) : NoteDetailIntent
 
     object LoadUserPreferences : NoteDetailIntent
     data class ShowUserPreferences(val userPreferences: UserPreferences) : NoteDetailIntent
@@ -34,7 +33,6 @@ sealed interface NoteDetailIntent : MviIntent {
 
 sealed interface NoteDetailSingleEvent : MviSingleEvent {
     object NavigateUp : NoteDetailSingleEvent
-    data class DisableAlarm(val noteId: Int) : NoteDetailSingleEvent
+//    data class DisableAlarm(val noteId: Int) : NoteDetailSingleEvent
     data class OperationError(val message: String = "") : NoteDetailSingleEvent
-    data class BackPressed(val theOperation: TheOperation) : NoteDetailSingleEvent
 }
