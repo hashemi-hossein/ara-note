@@ -125,8 +125,7 @@ internal fun HomeScreen(
         gesturesEnabled = uiState.searchText == null,
         drawerContent = {
             AppDrawer(
-                notebooks = uiState.notebooks,
-                currentNotebookId = uiState.currentNotebookId,
+                uiState = uiState,
                 setCurrentNotebookId = {
                     if (it != uiState.currentNotebookId) {
                         setCurrentNotebookId(it)

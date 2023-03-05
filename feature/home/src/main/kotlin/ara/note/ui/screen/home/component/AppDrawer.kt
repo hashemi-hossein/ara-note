@@ -17,9 +17,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,12 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ara.note.domain.entity.Notebook
 import ara.note.home.R.string
+import ara.note.ui.screen.home.HomeState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDrawer(
-    notebooks: List<Notebook>,
-    currentNotebookId: Int,
+    uiState: HomeState,
     setCurrentNotebookId: (Int) -> Unit,
     navigateToSettingsScreen: () -> Unit,
     navigateToNotebooksScreen: () -> Unit,
@@ -64,32 +64,31 @@ fun AppDrawer(
             LazyColumn(
                 modifier = Modifier.weight(1f),
             ) {
-                items(notebooks) { item: Notebook ->
-                    Surface(
-                        color = if (item.id == currentNotebookId) {
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
-                        } else {
-                            MaterialTheme.colorScheme.surface
-                        },
+                items(uiState.notebooks) { item: Notebook ->
+                    ListItem(
                         modifier = Modifier
                             .selectable(
-                                selected = item.id == currentNotebookId,
+                                selected = item.id == uiState.currentNotebookId,
                                 role = Role.RadioButton,
                             ) { setCurrentNotebookId(item.id) },
-                    ) {
-                        ListItem(
-                            headlineText = {
-                                Text(
-                                    text = item.name,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.primary,
-                                )
-                            },
-                            trailingContent = {
-                                Text(text = item.noteCount.toString())
-                            },
-                        )
-                    }
+                        headlineText = {
+                            Text(
+                                text = item.name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                        },
+                        trailingContent = {
+                            Text(text = item.noteCount.toString())
+                        },
+                        colors = ListItemDefaults.colors(
+                            containerColor = if (item.id == uiState.currentNotebookId) {
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+                            } else {
+                                MaterialTheme.colorScheme.surface
+                            }
+                        ),
+                    )
                 }
             }
             Divider()
@@ -113,11 +112,13 @@ fun AppDrawer(
 @Composable
 private fun HPreview() {
     AppDrawer(
-        notebooks = listOf(
-            Notebook(id = 1, name = "first notebook", noteCount = 5),
-            Notebook(id = 2, name = "second notebook", noteCount = 2),
+        uiState = HomeState(
+            notebooks = listOf(
+                Notebook(id = 1, name = "first notebook", noteCount = 5),
+                Notebook(id = 2, name = "second notebook", noteCount = 2),
+            ),
+            currentNotebookId = 1,
         ),
-        currentNotebookId = 1,
         setCurrentNotebookId = {},
         navigateToNotebooksScreen = {},
         navigateToSettingsScreen = {},
