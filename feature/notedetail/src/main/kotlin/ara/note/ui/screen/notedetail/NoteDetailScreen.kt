@@ -50,8 +50,8 @@ fun NoteDetailScreen(
         uiState = uiState,
         singleEvent = viewModel.singleEvent,
         navigateUp = navigateUp,
-        saveNote = { viewModel.sendIntent(NoteDetailIntent.BackPressed(shouldDelete = false)) },
-        deleteNote = { viewModel.sendIntent(NoteDetailIntent.BackPressed(shouldDelete = true)) },
+        saveNote = { viewModel.sendIntent(NoteDetailIntent.CreateOrUpdateNote) },
+        deleteNote = { viewModel.sendIntent(NoteDetailIntent.DeleteNote) },
         onNoteChanged = { viewModel.sendIntent(NoteDetailIntent.ModifyNote(it)) },
     )
 }

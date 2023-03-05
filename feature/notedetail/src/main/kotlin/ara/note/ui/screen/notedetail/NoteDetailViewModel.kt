@@ -2,11 +2,10 @@ package ara.note.ui.screen.notedetail
 
 import androidx.lifecycle.SavedStateHandle
 import ara.note.domain.entity.Note
-import ara.note.domain.usecase.note.CreateNoteUseCase
+import ara.note.domain.usecase.note.CreateOrUpdateNoteUseCase
 import ara.note.domain.usecase.note.DeleteNoteUseCase
 import ara.note.domain.usecase.note.GetLastNoteIdUseCase
 import ara.note.domain.usecase.note.GetNoteByIdUseCase
-import ara.note.domain.usecase.note.UpdateNoteUseCase
 import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
 import ara.note.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
 import ara.note.util.BaseViewModel
@@ -14,6 +13,7 @@ import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.INVALID_NOTE_ID
 import ara.note.util.NAV_ARGUMENT_NOTEBOOK_ID
 import ara.note.util.NAV_ARGUMENT_NOTE_ID
+import ara.note.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -23,8 +23,7 @@ class NoteDetailViewModel
 @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val observeNotebooksUseCase: ObserveNotebooksUseCase,
-    private val createNoteUseCase: CreateNoteUseCase,
-    private val updateNoteUseCase: UpdateNoteUseCase,
+    private val createOrUpdateNoteUseCase: CreateOrUpdateNoteUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase,
     private val getLastNoteIdUseCase: GetLastNoteIdUseCase,
     private val getNoteByIdUseCase: GetNoteByIdUseCase,
@@ -47,10 +46,11 @@ class NoteDetailViewModel
                 val notebookId =
                     savedStateHandle.get<Int>(NAV_ARGUMENT_NOTEBOOK_ID) ?: DEFAULT_NOTEBOOK_ID
 
-//                Timber.tag(TAG).d("loading note - noteId=$noteId")
-
                 val note = if (noteId >= 0) {
-                    getNoteByIdUseCase(noteId)
+                    when (val result = getNoteByIdUseCase(noteId)) {
+                        is Result.Success -> result.data
+                        is Result.Error -> error("Not Found")
+                    }
                 } else {
                     val lastId = getLastNoteIdUseCase()
                     Note(id = lastId + 1, notebookId = notebookId)
@@ -59,46 +59,24 @@ class NoteDetailViewModel
                 sendIntent(NoteDetailIntent.SetIsNewNote(isNewNote))
                 sendIntent(NoteDetailIntent.ModifyNote(note))
             }
-            is NoteDetailIntent.ModifyNote -> Unit
             is NoteDetailIntent.SetIsNewNote -> Unit
 
-            is NoteDetailIntent.LoadNotebooks -> observeNotebooksUseCase().first()
-                .let { sendIntent(NoteDetailIntent.ShowNotebooks(it)) }
+            is NoteDetailIntent.ModifyNote -> Unit
+            is NoteDetailIntent.CreateOrUpdateNote ->
+                if (createOrUpdateNoteUseCase(state.note))
+                    triggerSingleEvent(NoteDetailSingleEvent.NavigateUp)
+                else
+                    triggerSingleEvent(NoteDetailSingleEvent.OperationError())
+            is NoteDetailIntent.DeleteNote ->
+                if (deleteNoteUseCase(state.note))
+                    triggerSingleEvent(NoteDetailSingleEvent.NavigateUp)
+                else
+                    triggerSingleEvent(NoteDetailSingleEvent.OperationError())
+
+            is NoteDetailIntent.LoadNotebooks -> sendIntent(NoteDetailIntent.ShowNotebooks(observeNotebooksUseCase().first()))
             is NoteDetailIntent.ShowNotebooks -> Unit
 
-            is NoteDetailIntent.UpdateNote -> updateNoteUseCase(state.note)
-
-            is NoteDetailIntent.BackPressed -> {
-                val result =
-                    if (state.isNewNote) {
-//              if(text.isNotBlank())
-                        if (!intent.shouldDelete && (state.note.text.isNotEmpty() /*|| state.note.alarmDateTime != null*/)) {
-                            createNoteUseCase(state.note)
-                        } else {
-                            true
-                        }
-                    } else {
-                        if (!intent.shouldDelete) {
-                            sendIntent(NoteDetailIntent.UpdateNote)
-                            true
-                        } else {
-//                            if (state.note.alarmDateTime != null) {
-//                                triggerSingleEvent(NoteDetailSingleEvent.DisableAlarm(state.note.id))
-//                            }
-
-                            deleteNoteUseCase(state.note)
-                        }
-                    }
-                if (result) {
-                    triggerSingleEvent(NoteDetailSingleEvent.NavigateUp)
-                } else {
-//                    Timber.tag(TAG).d("error in operation occurred")
-                    triggerSingleEvent(NoteDetailSingleEvent.OperationError())
-                }
-            }
-
-            is NoteDetailIntent.LoadUserPreferences -> observeUserPreferencesUseCase().first()
-                .let { sendIntent(NoteDetailIntent.ShowUserPreferences(it)) }
+            is NoteDetailIntent.LoadUserPreferences -> sendIntent(NoteDetailIntent.ShowUserPreferences(observeUserPreferencesUseCase().first()))
             is NoteDetailIntent.ShowUserPreferences -> Unit
         }
     }
@@ -113,13 +91,13 @@ internal class NoteDetailReducer : BaseViewModel.Reducer<NoteDetailState, NoteDe
         when (intent) {
             is NoteDetailIntent.PrepareNote -> state
             is NoteDetailIntent.SetIsNewNote -> state.copy(isNewNote = intent.isNewNote)
+
             is NoteDetailIntent.ModifyNote -> state.copy(note = intent.note)
+            is NoteDetailIntent.CreateOrUpdateNote -> state
+            is NoteDetailIntent.DeleteNote -> state
 
             is NoteDetailIntent.LoadNotebooks -> state
             is NoteDetailIntent.ShowNotebooks -> state.copy(notebooks = intent.notebooks)
-
-            is NoteDetailIntent.UpdateNote -> state
-            is NoteDetailIntent.BackPressed -> state
 
             is NoteDetailIntent.LoadUserPreferences -> state
             is NoteDetailIntent.ShowUserPreferences -> state.copy(userPreferences = intent.userPreferences)

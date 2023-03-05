@@ -19,13 +19,11 @@ sealed interface NoteDetailIntent : MviIntent {
     data class SetIsNewNote(val isNewNote: Boolean) : NoteDetailIntent
 
     data class ModifyNote(val note: Note) : NoteDetailIntent
+    object CreateOrUpdateNote : NoteDetailIntent
+    object DeleteNote : NoteDetailIntent
 
     object LoadNotebooks : NoteDetailIntent
     data class ShowNotebooks(val notebooks: List<Notebook>) : NoteDetailIntent
-
-    object UpdateNote : NoteDetailIntent
-
-    data class BackPressed(val shouldDelete: Boolean) : NoteDetailIntent
 
     object LoadUserPreferences : NoteDetailIntent
     data class ShowUserPreferences(val userPreferences: UserPreferences) : NoteDetailIntent
