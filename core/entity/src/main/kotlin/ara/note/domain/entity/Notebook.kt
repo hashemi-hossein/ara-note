@@ -1,8 +1,10 @@
 package ara.note.domain.entity
 
+import androidx.annotation.Keep
 import ara.note.data.model.NotebookModel
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class Notebook(
     val id: Int = 0,

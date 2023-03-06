@@ -1,11 +1,13 @@
 package ara.note.domain.entity
 
+import androidx.annotation.Keep
 import ara.note.data.model.NoteModel
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.HDateTime
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class Note(
     val id: Int = 0,
