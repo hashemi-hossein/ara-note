@@ -2,6 +2,7 @@ package ara.note.backup
 
 import android.content.Context
 import android.net.Uri
+import androidx.annotation.Keep
 import ara.note.domain.entity.Note
 import ara.note.domain.entity.Notebook
 import ara.note.domain.repository.NoteRepository
@@ -31,6 +32,7 @@ class HDataBackup
     private val coroutineDispatcherProvider: CoroutineDispatcherProvider,
 ) {
 
+    @Keep
     @Serializable
     data class HBackup(val notebooks: List<Notebook>, val notes: List<Note>)
 

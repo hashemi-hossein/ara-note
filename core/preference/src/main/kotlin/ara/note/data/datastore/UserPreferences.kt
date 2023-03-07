@@ -1,9 +1,11 @@
 package ara.note.data.datastore
 
+import androidx.annotation.Keep
 import ara.note.data.datastore.DarkMode.SYSTEM
 import ara.note.data.datastore.NoteViewMode.GRID
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class UserPreferences(
     val darkMode: DarkMode = SYSTEM,
