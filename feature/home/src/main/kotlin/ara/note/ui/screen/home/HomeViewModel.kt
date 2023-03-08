@@ -28,7 +28,7 @@ class HomeViewModel
     override suspend fun handleIntent(intent: HomeIntent, state: HomeState) {
         when (intent) {
             HomeIntent.ObserveNotes -> {
-                observeFlow(taskId = "Home_observeNotes", isUnique = false) {
+                observeFlow("Home_observeNotes") {
                     observeNotesUseCase(state.currentNotebookId, state.searchText).collect {
                         sendIntent(HomeIntent.ShowNotes(it))
                     }
