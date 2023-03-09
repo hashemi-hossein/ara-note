@@ -31,6 +31,7 @@ class NoteDetailViewModel
 ) : BaseViewModel<NoteDetailState, NoteDetailIntent, NoteDetailSingleEvent>() {
 
     override fun initialState(): NoteDetailState = NoteDetailState()
+    override val reducer: Reducer<NoteDetailState, NoteDetailIntent> = NoteDetailReducer()
 
     init {
         sendIntent(NoteDetailIntent.PrepareNote)
@@ -80,9 +81,6 @@ class NoteDetailViewModel
             is NoteDetailIntent.ShowUserPreferences -> Unit
         }
     }
-
-    override val reducer: Reducer<NoteDetailState, NoteDetailIntent>
-        get() = NoteDetailReducer()
 }
 
 internal class NoteDetailReducer : BaseViewModel.Reducer<NoteDetailState, NoteDetailIntent> {

@@ -18,6 +18,7 @@ class HomeViewModel
 ) : BaseViewModel<HomeState, HomeIntent, HomeSingleEvent>() {
 
     override fun initialState(): HomeState = HomeState()
+    override val reducer: Reducer<HomeState, HomeIntent> = HomeReducer()
 
     init {
         sendIntent(HomeIntent.ObserveNotes)
@@ -59,9 +60,6 @@ class HomeViewModel
             is HomeIntent.ModifySearchText -> sendIntent(HomeIntent.ObserveNotes)
         }
     }
-
-    override val reducer: Reducer<HomeState, HomeIntent>
-        get() = HomeReducer()
 }
 
 internal class HomeReducer : BaseViewModel.Reducer<HomeState, HomeIntent> {

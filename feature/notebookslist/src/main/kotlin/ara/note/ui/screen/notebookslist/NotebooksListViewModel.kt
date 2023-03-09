@@ -19,6 +19,7 @@ class NotebooksListViewModel
 ) : BaseViewModel<NotebooksListState, NotebooksListIntent, NotebooksListSingleEvent>() {
 
     override fun initialState(): NotebooksListState = NotebooksListState()
+    override val reducer: Reducer<NotebooksListState, NotebooksListIntent> = NotebooksListReducer()
 
     init {
         sendIntent(NotebooksListIntent.ObserveNotebooks)
@@ -44,9 +45,6 @@ class NotebooksListViewModel
             is NotebooksListIntent.DeleteNotebook -> deleteNotebookUseCase(intent.notebook)
         }
     }
-
-    override val reducer: Reducer<NotebooksListState, NotebooksListIntent>
-        get() = NotebooksListReducer()
 }
 
 internal class NotebooksListReducer :

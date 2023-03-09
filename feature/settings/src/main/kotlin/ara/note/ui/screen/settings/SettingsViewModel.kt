@@ -16,6 +16,7 @@ class SettingsViewModel
 ) : BaseViewModel<SettingsState, SettingsIntent, SettingsSingleEvent>() {
 
     override fun initialState(): SettingsState = SettingsState()
+    override val reducer: Reducer<SettingsState, SettingsIntent> = SettingsReducer()
 
     init {
         sendIntent(SettingsIntent.ObserveUserPreferences)
@@ -38,9 +39,6 @@ class SettingsViewModel
             is SettingsIntent.ImportData -> hDataBackup.importData(intent.uri, intent.onComplete)
         }
     }
-
-    override val reducer: Reducer<SettingsState, SettingsIntent>
-        get() = SettingsReducer()
 }
 
 internal class SettingsReducer : BaseViewModel.Reducer<SettingsState, SettingsIntent> {
