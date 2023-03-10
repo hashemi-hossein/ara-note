@@ -1,7 +1,6 @@
 package ara.note.ui.screen.home
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -11,6 +10,7 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ara.note.home.R.string
 import ara.note.test.BasePageObject
 import ara.note.test.TestUtil
@@ -46,7 +46,7 @@ internal class HomePageObject(
         filterNotes()
         composeTestRule.setContent {
             HomeScreen(
-                uiState = uiState.collectAsState().value,
+                uiState = uiState.collectAsStateWithLifecycle().value,
                 navigateToNoteDetailScreen = { noteId ->
                     noteIdToNavigate = noteId
                 },

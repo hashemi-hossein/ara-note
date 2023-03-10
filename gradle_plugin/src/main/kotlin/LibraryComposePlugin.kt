@@ -57,7 +57,7 @@ class LibraryComposePlugin : Plugin<Project> {
                 // Animation
                 add("implementation", libs.findLibrary("androidx.compose.animation").get())
                 // Lifecycle
-//                add("implementation", libs.findLibrary("androidx.lifecycle.runtime.compose").get())
+                add("implementation", libs.findLibrary("androidx.lifecycle.runtime.compose").get())
             }
         }
     }

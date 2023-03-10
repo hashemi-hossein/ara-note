@@ -1,7 +1,6 @@
 package ara.note.ui.screen.notedetail
 
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -13,6 +12,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ara.note.notedetail.R.string
 import ara.note.test.BasePageObject
 import ara.note.test.TestUtil
@@ -35,7 +35,7 @@ internal class NoteDetailPageObject(
     override fun setUp() {
         composeTestRule.setContent {
             NoteDetailScreen(
-                uiState = uiState.collectAsState().value,
+                uiState = uiState.collectAsStateWithLifecycle().value,
                 singleEvent = MutableSharedFlow(),
                 navigateUp = { event.add("navigateUp") },
                 saveNote = { event.add("saveNote") },
