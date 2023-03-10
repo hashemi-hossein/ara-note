@@ -1,4 +1,3 @@
-import ara.getVersionCatalogLibs
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -14,8 +13,6 @@ class LibraryComposeFeaturePlugin : Plugin<Project> {
                 apply("ara.library.compose")
                 apply("ara.hilt")
             }
-
-            val libs = getVersionCatalogLibs()
 
             extensions.configure<LibraryExtension> {
                 defaultConfig {
