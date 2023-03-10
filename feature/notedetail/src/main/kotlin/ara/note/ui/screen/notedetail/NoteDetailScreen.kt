@@ -108,7 +108,7 @@ internal fun NoteDetailScreen(
                         scope = scope,
                         snackbarHostState = snackbarHostState,
                         message = context.getString(string.error_in_operation),
-                        actionLabel = context.getString(string.exit)
+                        actionLabel = context.getString(string.exit),
                     ) {
                         navigateUp()
                     }

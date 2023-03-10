@@ -86,7 +86,7 @@ fun AppDrawer(
                                 MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
                             } else {
                                 MaterialTheme.colorScheme.surface
-                            }
+                            },
                         ),
                     )
                 }

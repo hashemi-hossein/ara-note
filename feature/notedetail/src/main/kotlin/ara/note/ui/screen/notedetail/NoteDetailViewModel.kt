@@ -64,15 +64,17 @@ class NoteDetailViewModel
 
             is NoteDetailIntent.ModifyNote -> Unit
             is NoteDetailIntent.CreateOrUpdateNote ->
-                if (createOrUpdateNoteUseCase(state.note))
+                if (createOrUpdateNoteUseCase(state.note)) {
                     triggerSingleEvent(NoteDetailSingleEvent.NavigateUp)
-                else
+                } else {
                     triggerSingleEvent(NoteDetailSingleEvent.OperationError())
+                }
             is NoteDetailIntent.DeleteNote ->
-                if (deleteNoteUseCase(state.note))
+                if (deleteNoteUseCase(state.note)) {
                     triggerSingleEvent(NoteDetailSingleEvent.NavigateUp)
-                else
+                } else {
                     triggerSingleEvent(NoteDetailSingleEvent.OperationError())
+                }
 
             is NoteDetailIntent.LoadNotebooks -> sendIntent(NoteDetailIntent.ShowNotebooks(observeNotebooksUseCase().first()))
             is NoteDetailIntent.ShowNotebooks -> Unit

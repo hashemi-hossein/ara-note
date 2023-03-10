@@ -20,7 +20,9 @@ class CreateOrUpdateNoteUseCase @Inject constructor(
                         note
                     }
                     noteRepository.update(noteToUpdate) is Result.Success
-                } else true
+                } else {
+                    true
+                }
             }
             is Result.Error -> if (note.text.isNotBlank()) noteRepository.insert(note) is Result.Success else true
         }
