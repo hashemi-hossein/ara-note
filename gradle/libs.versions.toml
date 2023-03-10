@@ -17,7 +17,7 @@ compose-compiler = "1.4.0"
 
 androidx-activity-compose = "1.6.1"
 androidx-activity-ktx = "1.5.1"
-androidx-appcompat = "1.6.1"
+#androidx-appcompat = "1.6.1"
 androidx-corektx = "1.9.0"
 androidx-datastore = "1.0.0"
 androidx-lifecycle = "2.6.0"
@@ -81,7 +81,7 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 # androidx
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity-ktx" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+#androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-corektx" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "androidx-datastore" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
