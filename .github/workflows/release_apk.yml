@@ -21,14 +21,16 @@ jobs:
           distribution: 'corretto'
           java-package: 'jdk'
 
-      - name: Build with Gradle
+      - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assembleRelease
           gradle-version: 'wrapper'
 
       - name: Run Local Unit Tests
         run: ./gradlew test
+
+      - name: Build with Gradle
+        run: ./gradlew assembleRelease
 
       - name: Sign APK
         id: sign_apk
