@@ -2,9 +2,9 @@ package ara.note.ui.screen.settings
 
 import android.net.Uri
 import ara.note.data.datastore.UserPreferences
-import ara.note.util.MviIntent
-import ara.note.util.MviSingleEvent
-import ara.note.util.MviState
+import ara.note.ui.MviIntent
+import ara.note.ui.MviSingleEvent
+import ara.note.ui.MviState
 import kotlin.reflect.KProperty1
 
 data class SettingsState(

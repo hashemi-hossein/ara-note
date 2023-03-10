@@ -4,7 +4,7 @@ import ara.note.domain.usecase.note.ObserveNotesUseCase
 import ara.note.domain.usecase.notebook.CreateDefaultNotebookUseCase
 import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
 import ara.note.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
-import ara.note.util.BaseViewModel
+import ara.note.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

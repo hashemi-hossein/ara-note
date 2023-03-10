@@ -1,4 +1,4 @@
-package ara.note.util
+package ara.note.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

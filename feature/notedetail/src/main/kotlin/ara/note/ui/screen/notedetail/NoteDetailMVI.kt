@@ -3,9 +3,9 @@ package ara.note.ui.screen.notedetail
 import ara.note.data.datastore.UserPreferences
 import ara.note.domain.entity.Note
 import ara.note.domain.entity.Notebook
-import ara.note.util.MviIntent
-import ara.note.util.MviSingleEvent
-import ara.note.util.MviState
+import ara.note.ui.MviIntent
+import ara.note.ui.MviSingleEvent
+import ara.note.ui.MviState
 
 data class NoteDetailState(
     val note: Note = Note(),

@@ -8,7 +8,7 @@ import ara.note.domain.usecase.note.GetLastNoteIdUseCase
 import ara.note.domain.usecase.note.GetNoteByIdUseCase
 import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
 import ara.note.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
-import ara.note.util.BaseViewModel
+import ara.note.ui.BaseViewModel
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.INVALID_NOTE_ID
 import ara.note.util.NAV_ARGUMENT_NOTEBOOK_ID

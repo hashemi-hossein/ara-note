@@ -1,9 +1,9 @@
 package ara.note.ui.screen.notebookslist
 
 import ara.note.domain.entity.Notebook
-import ara.note.util.MviIntent
-import ara.note.util.MviSingleEvent
-import ara.note.util.MviState
+import ara.note.ui.MviIntent
+import ara.note.ui.MviSingleEvent
+import ara.note.ui.MviState
 
 data class NotebooksListState(
     val notebooks: List<Notebook> = emptyList(),

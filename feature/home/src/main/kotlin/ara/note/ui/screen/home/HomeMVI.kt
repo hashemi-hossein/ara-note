@@ -3,10 +3,10 @@ package ara.note.ui.screen.home
 import ara.note.data.datastore.UserPreferences
 import ara.note.domain.entity.Note
 import ara.note.domain.entity.Notebook
+import ara.note.ui.MviIntent
+import ara.note.ui.MviSingleEvent
+import ara.note.ui.MviState
 import ara.note.util.DEFAULT_NOTEBOOK_ID
-import ara.note.util.MviIntent
-import ara.note.util.MviSingleEvent
-import ara.note.util.MviState
 
 data class HomeState(
     val notes: List<Note> = emptyList(),
