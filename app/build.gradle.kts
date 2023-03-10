@@ -12,7 +12,7 @@ android {
         versionName = "1.0.0"
 
         testInstrumentationRunnerArguments["disableAnalytics"] = "true"
-        testInstrumentationRunner = "com.ara.aranote.HTestRunner"
+        testInstrumentationRunner = "ara.note.test.HTestRunner"
 
         vectorDrawables.useSupportLibrary = true
     }
