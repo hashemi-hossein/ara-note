@@ -1,1 +1,1 @@
-Manage your notes with ease
+<p>Manage your notes with ease</p><p>Current features:<ul><li>Material You Design</li><li>Light/Dark theme</li><li>Multiple notebooks</li><li>Grid/List view mode</li><li>Optional auto-save mode</li></ul></p>
