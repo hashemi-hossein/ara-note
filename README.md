@@ -2,6 +2,12 @@
 
 A reliable note taking app
 
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+     alt="Get it on IzzyOnDroid"
+     height="80">](https://apt.izzysoft.de/fdroid/index/apk/ara.note)
+
+Or get the latest APK from the [Releases Section](https://github.com/hashemi-hossein/ara-note/releases/latest)
+
 
 ## Screenshots
 
