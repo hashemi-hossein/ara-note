@@ -1,6 +1,6 @@
 package ara.note.ui.screen.home
 
-import ara.note.data.datastore.UserPreferences
+import ara.note.data.model.UserPreferences
 import ara.note.domain.entity.Note
 import ara.note.domain.entity.Notebook
 import ara.note.ui.MviIntent

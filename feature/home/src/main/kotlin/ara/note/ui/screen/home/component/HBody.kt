@@ -10,8 +10,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ara.note.data.datastore.NoteViewMode.GRID
-import ara.note.data.datastore.NoteViewMode.LIST
+import ara.note.data.model.NoteViewMode.GRID
+import ara.note.data.model.NoteViewMode.LIST
 import ara.note.domain.entity.Note
 import ara.note.ui.screen.home.HomeState
 

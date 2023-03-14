@@ -1,6 +1,7 @@
 package ara.note.data.datastore
 
 import androidx.datastore.core.Serializer
+import ara.note.data.model.UserPreferences
 import ara.note.util.CoroutineDispatcherProvider
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext

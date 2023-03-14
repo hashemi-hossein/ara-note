@@ -27,9 +27,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ara.note.data.datastore.DarkMode
-import ara.note.data.datastore.NoteViewMode
-import ara.note.data.datastore.UserPreferences
+import ara.note.data.model.DarkMode
+import ara.note.data.model.NoteViewMode
+import ara.note.data.model.UserPreferences
 import ara.note.settings.R.string
 import ara.note.ui.component.HAppBar
 import ara.note.ui.component.HDropdown

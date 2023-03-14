@@ -3,7 +3,7 @@ package ara.note.ui.navigation
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ara.note.data.datastore.DarkMode
+import ara.note.data.model.DarkMode
 import ara.note.ui.theme.AppTheme
 
 @Composable

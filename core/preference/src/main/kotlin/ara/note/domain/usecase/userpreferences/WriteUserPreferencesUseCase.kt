@@ -1,6 +1,6 @@
 package ara.note.domain.usecase.userpreferences
 
-import ara.note.data.datastore.UserPreferences
+import ara.note.data.model.UserPreferences
 import ara.note.data.repository.UserPreferencesRepository
 import javax.inject.Inject
 import kotlin.reflect.KProperty1

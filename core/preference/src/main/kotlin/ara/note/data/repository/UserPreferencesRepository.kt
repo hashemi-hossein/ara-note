@@ -2,9 +2,9 @@ package ara.note.data.repository
 
 import android.util.Log
 import androidx.datastore.core.DataStore
-import ara.note.data.datastore.DarkMode
-import ara.note.data.datastore.NoteViewMode
-import ara.note.data.datastore.UserPreferences
+import ara.note.data.model.DarkMode
+import ara.note.data.model.NoteViewMode
+import ara.note.data.model.UserPreferences
 import ara.note.util.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

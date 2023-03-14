@@ -1,8 +1,8 @@
-package ara.note.data.datastore
+package ara.note.data.model
 
 import androidx.annotation.Keep
-import ara.note.data.datastore.DarkMode.SYSTEM
-import ara.note.data.datastore.NoteViewMode.GRID
+import ara.note.data.model.DarkMode.SYSTEM
+import ara.note.data.model.NoteViewMode.GRID
 import kotlinx.serialization.Serializable
 
 @Keep
