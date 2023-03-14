@@ -80,6 +80,7 @@ internal fun NoteDetailScreen(
         showSnackbar(
             scope = scope,
             snackbarHostState = snackbarHostState,
+            message = context.getString(string.are_you_sure),
             actionLabel = context.getString(string.discard),
         ) {
             navigateUp()
@@ -89,6 +90,7 @@ internal fun NoteDetailScreen(
         showSnackbar(
             scope = scope,
             snackbarHostState = snackbarHostState,
+            message = context.getString(string.are_you_sure),
             actionLabel = context.getString(string.delete),
         ) {
             deleteNote()
@@ -103,15 +105,14 @@ internal fun NoteDetailScreen(
 //                is NoteDetailSingleEvent.DisableAlarm -> Unit
 //                    hManageAlarm(context = context, doesCreate = false, noteId = it.noteId)
 
-                is NoteDetailSingleEvent.OperationError ->
+                is NoteDetailSingleEvent.ShowSnackbar ->
                     showSnackbar(
                         scope = scope,
                         snackbarHostState = snackbarHostState,
-                        message = context.getString(string.error_in_operation),
-                        actionLabel = context.getString(string.exit),
-                    ) {
-                        navigateUp()
-                    }
+                        message = context.getString(it.message),
+                        actionLabel = context.getString(it.actionLabel),
+                        onClick = it.onClick
+                    )
             }
         }
     }

@@ -33,5 +33,5 @@ sealed interface NoteDetailSingleEvent : MviSingleEvent {
     object NavigateUp : NoteDetailSingleEvent
 
 //    data class DisableAlarm(val noteId: Int) : NoteDetailSingleEvent
-    data class OperationError(val message: String = "") : NoteDetailSingleEvent
+    data class ShowSnackbar(val message: Int, val actionLabel: Int, val onClick: (() -> Unit)? = null) : NoteDetailSingleEvent
 }

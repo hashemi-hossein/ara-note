@@ -22,10 +22,10 @@ private var snackbarJob: Job = Job()
 fun showSnackbar(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
-    message: String = "Are you sure?",
-    actionLabel: String = "Yes",
+    message: String,
+    actionLabel: String,
     timeout: Long = 4000,
-    onClick: () -> Unit = { snackbarJob.cancel() },
+    onClick: (() -> Unit)? = null,
 ) {
     val snackbarFun = {
         snackbarJob = scope.launch {
@@ -35,7 +35,10 @@ fun showSnackbar(
                     actionLabel = actionLabel,
                 )
                 if (snackbarResult == SnackbarResult.ActionPerformed) {
-                    onClick()
+                    if (onClick != null)
+                        onClick()
+
+                    snackbarJob.cancel()
                 }
             }
         }

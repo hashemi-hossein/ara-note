@@ -6,6 +6,7 @@
     <string name="ok">OK</string>
     <string name="exit">Exit</string>
     <string name="delete">Delete</string>
+    <string name="are_you_sure">Are you sure?</string>
     <string name="error_in_operation">error in operation occurred</string>
     <string name="modified_at">\"Modified at \"</string>
 <!--    <string name="alarm_has_been_set_for">\"Alarm has been set for \"</string>-->

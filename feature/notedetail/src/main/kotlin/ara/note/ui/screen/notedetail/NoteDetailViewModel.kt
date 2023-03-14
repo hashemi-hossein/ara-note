@@ -8,6 +8,7 @@ import ara.note.domain.usecase.note.GetLastNoteIdUseCase
 import ara.note.domain.usecase.note.GetNoteByIdUseCase
 import ara.note.domain.usecase.notebook.ObserveNotebooksUseCase
 import ara.note.domain.usecase.userpreferences.ObserveUserPreferencesUseCase
+import ara.note.notedetail.R.string
 import ara.note.ui.BaseViewModel
 import ara.note.util.DEFAULT_NOTEBOOK_ID
 import ara.note.util.INVALID_NOTE_ID
@@ -67,13 +68,25 @@ class NoteDetailViewModel
                 if (createOrUpdateNoteUseCase(state.note)) {
                     triggerSingleEvent(NoteDetailSingleEvent.NavigateUp)
                 } else {
-                    triggerSingleEvent(NoteDetailSingleEvent.OperationError())
+                    triggerSingleEvent(
+                        NoteDetailSingleEvent.ShowSnackbar(
+                            message = string.error_in_operation,
+                            actionLabel = string.exit,
+                            onClick = { triggerSingleEvent(NoteDetailSingleEvent.NavigateUp) },
+                        )
+                    )
                 }
             is NoteDetailIntent.DeleteNote ->
                 if (deleteNoteUseCase(state.note)) {
                     triggerSingleEvent(NoteDetailSingleEvent.NavigateUp)
                 } else {
-                    triggerSingleEvent(NoteDetailSingleEvent.OperationError())
+                    triggerSingleEvent(
+                        NoteDetailSingleEvent.ShowSnackbar(
+                            message = string.error_in_operation,
+                            actionLabel = string.exit,
+                            onClick = { triggerSingleEvent(NoteDetailSingleEvent.NavigateUp) },
+                        )
+                    )
                 }
 
             is NoteDetailIntent.LoadNotebooks -> sendIntent(NoteDetailIntent.ShowNotebooks(observeNotebooksUseCase().first()))
